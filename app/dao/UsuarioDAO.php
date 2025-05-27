@@ -128,7 +128,7 @@ class UsuarioDAO
 				$_SESSION['tipo_usuario'] = $dadosUsuario['tipo_usuario'];
 				$_SESSION['descricao'] = $dadosUsuario['descricao'];
 			}
-
+			
 		} catch (Exception $e) {
 			print "Erro ao inserir Usuario <br>" . $e . '<br>';
 		}
@@ -159,7 +159,7 @@ class UsuarioDAO
 			$consulta->bindValue(':descricao', $usuario->getDesc());
 			
 			$consulta->execute();
-
+			return true;
 		} catch (Exception $e) {
 			print "Erro ao atualizar Usuario <br>" . $e . '<br>';
 		}

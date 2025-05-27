@@ -93,9 +93,11 @@
             $_SESSION['email'] = $usuario->getEmail();
             $_SESSION['nome'] = $usuario->getNome();
             $_SESSION['descricao'] = $usuario->getDesc();
+            var_dump($user);
+            header("Location: ../../view/paginaInicial/index.php");
         }
 
-       // header("Location: ../../view/paginaInicial/index.php?msg=editado");
+       //header("Location: ../../view/paginaInicial/index.php");
     }
     // se a requisição for deletar
     else if(isset($_GET['deletar'])){
