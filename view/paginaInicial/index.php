@@ -495,7 +495,7 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
 
     <div class="main">
         <div class="profile">
-            <form action="upload.php" method="post" enctype="multipart/form-data">
+            <form action="../../app/controller/imagem_usuarioController.php" method="post" enctype="multipart/form-data">
                 <label for="fileUpload">
                     <div class="cover">
                         <img src="https://preview.redd.it/34mmdb3oo42d1.png?auto=webp&s=5b038c9df7e574ce5b88b9664471e7bd83fc94ca"
@@ -506,7 +506,7 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
                 <input type="file" id="fileUpload" name="foto" accept="image/*" style="display:none;"
                     onchange="this.form.submit();">
             </form>
-            <form action="upload.php" method="post" enctype="multipart/form-data">
+            <form action="../../app/controller/imagem_usuarioController.php" method="post" enctype="multipart/form-data">
                 <label for="fileUpload">
                     <div class="avatar">
                         <img src="https://dimensaosete.com.br/static/7fc311549694666167a49cdb0fb1293c/2493a/gojo.webp"
