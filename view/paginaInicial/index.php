@@ -271,6 +271,7 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
             width: 100%;
             height: auto;
             transition: filter 0.3s ease;
+            
         }
 
         .cover:hover #imgCover {
