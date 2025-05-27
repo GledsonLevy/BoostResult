@@ -57,7 +57,7 @@
 		}
 
 		public function getDesc(){
-			return $this->tipo;
+			return $this->desc;
 		}
 
 		

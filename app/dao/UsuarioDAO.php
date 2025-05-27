@@ -2,8 +2,6 @@
 
 /* @Autor: Dalker Pinheiro
 	  Classe DAO */
-
-session_start();
 class UsuarioDAO
 {
 
@@ -15,7 +13,7 @@ class UsuarioDAO
 			$consulta = Conexao::getConexao()->prepare($sql);
 			$consulta->bindValue(":id_user", $id_user);
 			$consulta->execute();
-			return ($consulta->fetchAll(PDO::FETCH_ASSOC));
+			return ($consulta->fetch(PDO::FETCH_ASSOC));
 		} catch (Exception $e) {
 			print "Erro ao carregar Usuario <br>" . $e . '<br>';
 		}
@@ -157,8 +155,11 @@ class UsuarioDAO
 			$consulta->bindValue(':sexo', $usuario->getSexo());
 
 			$consulta->bindValue(':tipo', $usuario->getTipo());
+
 			$consulta->bindValue(':descricao', $usuario->getDesc());
+			
 			$consulta->execute();
+			
 		} catch (Exception $e) {
 			print "Erro ao atualizar Usuario <br>" . $e . '<br>';
 		}

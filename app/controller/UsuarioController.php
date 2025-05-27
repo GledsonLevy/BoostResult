@@ -67,26 +67,34 @@
     // se a requisição for editar 
     else if(isset($_POST['acao']) && ($_POST['acao'] == "ATUALIZAR")){
 
-        $usuario->setId_user($u[$_SESSION['id_user']]); 
+        $user = $usuarioDAO->carregar($_SESSION['id_user']);
+        
+		$usuario->setNome($user['nome']); 
 
-		$usuario->setNome($u['nome']); 
+		$usuario->setIdade($user['idade']); 
 
-		$usuario->setIdade($u['idade']); 
+		$usuario->setTelefone($user['telefone']); 
 
-		$usuario->setTelefone($u['telefone']); 
+		$usuario->setEmail($user['email']); 
 
-		$usuario->setEmail($u['email']); 
+		$usuario->setSenha($user['senha']); 
 
-		$usuario->setSenha($u['senha']); 
+		$usuario->setSexo($user['sexo']); 
 
-		$usuario->setSexo($u['sexo']); 
-
-		$usuario->setTipo($u['tipo']);
+		$usuario->setTipo($user['tipo']);
 
         $usuario->setDesc($u['descricao']);
-        $usuarioDAO->atualizar($usuario);
+			
+        if ($usuarioDAO->atualizar($usuario)) {
+            $_SESSION['tipo'] = $usuario->getTipo();
+            $_SESSION['id_user'] = $usuario->getId_user();
+            $_SESSION['email'] = $usuario->getEmail();
+            $_SESSION['nome'] = $usuario->getNome();
+            $_SESSION['tipo_usuario'] = $usuario->getTipo();
+            $_SESSION['descricao'] = $usuario->getDesc();
+        }
 
-        header("Location: ../../view/paginaInicial/index.php?msg=editado");
+       // header("Location: ../../view/paginaInicial/index.php?msg=editado");
     }
     // se a requisição for deletar
     else if(isset($_GET['deletar'])){

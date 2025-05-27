@@ -379,7 +379,7 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
             color: red;
         }
 
-        #TextDescription {
+        #descricao {
             width: 80%;
             height: 200px;
             /* Defina a altura desejada */
@@ -410,7 +410,7 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
         }
 
         .dark-mode .search-input {
-            background-color: #333;
+            background-color: #333;     
             color: #FAFAFA;
             border-color: #555;
         }
@@ -522,6 +522,7 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
                 </h1>
                 <p id="tipoConta">
                     <?php echo $_SESSION['tipo']; ?>
+
                 </p>
                 <p>
                     <?php
@@ -596,7 +597,7 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
                 <div class="modal-body">
                     <form action="../../app/controller/UsuarioController.php" method="POST">
                         <label for="descricao">Descrição</label><br>
-                        <textarea id="TextDescription" name="descricao" autofocus></textarea><br><br>
+                        <textarea id="descricao" name="descricao" autofocus></textarea><br><br>
                         <button type="submit" name="acao" value="ATUALIZAR" class="secondary btn-sm border-0">Atualizar</button>
                     </form>
                 </div>
