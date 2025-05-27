@@ -69,6 +69,8 @@
 
         $user = $usuarioDAO->carregar($_SESSION['id_user']);
         
+        $usuario->setId_user($user['id_user']);
+
 		$usuario->setNome($user['nome']); 
 
 		$usuario->setIdade($user['idade']); 
@@ -84,13 +86,12 @@
 		$usuario->setTipo($user['tipo']);
 
         $usuario->setDesc($u['descricao']);
-			
+		
         if ($usuarioDAO->atualizar($usuario)) {
             $_SESSION['tipo'] = $usuario->getTipo();
             $_SESSION['id_user'] = $usuario->getId_user();
             $_SESSION['email'] = $usuario->getEmail();
             $_SESSION['nome'] = $usuario->getNome();
-            $_SESSION['tipo_usuario'] = $usuario->getTipo();
             $_SESSION['descricao'] = $usuario->getDesc();
         }
 

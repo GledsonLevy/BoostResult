@@ -138,7 +138,7 @@ class UsuarioDAO
 	public function atualizar(Usuario $usuario)
 	{
 		try {
-			$sql = 'UPDATE usuario SET id_user = :id_user, nome = :nome, idade = :idade, telefone = :telefone, email = :email, senha = :senha, sexo = :sexo, tipo = :tipo, descricao = :descricao WHERE id_user = :id_user';
+			$sql = 'UPDATE usuario SET nome = :nome, idade = :idade, telefone = :telefone, email = :email, senha = :senha, sexo = :sexo, tipo = :tipo, descricao = :descricao WHERE id_user = :id_user';
 			$consulta = Conexao::getConexao()->prepare($sql);
 			$consulta->bindValue(':id_user', $usuario->getId_user());
 
@@ -159,7 +159,7 @@ class UsuarioDAO
 			$consulta->bindValue(':descricao', $usuario->getDesc());
 			
 			$consulta->execute();
-			
+
 		} catch (Exception $e) {
 			print "Erro ao atualizar Usuario <br>" . $e . '<br>';
 		}
