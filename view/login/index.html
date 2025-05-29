@@ -70,7 +70,7 @@
                                     </div>
                                 </div>
                                 <div class="form-row">
-                                    <div  class="form-holder form-holder-2">
+                                    <div class="form-holder form-holder-2">
                                         <input type="password" placeholder="Senha" name="senha" class="form-control" id="senha">
                                         <button type="button" class="btn btn-sm btn-outline-secondary toggle-password" data-target="senha" style="position:absolute; right:10px; top:50%; transform:translateY(-50%);">👁</button>
                                     </div>
@@ -120,21 +120,8 @@
                 input.attr('type', tipoAtual === 'password' ? 'text' : 'password');
             });
 
-            
-            
-            $('.toggle-password').click(function () {
-                const targetId = $(this).data('target');
-                const input = $('#' + targetId);
-                const tipoAtual = input.attr('type');
-                input.attr('type', tipoAtual === 'password' ? 'text' : 'password');
-            });
-
    
     });
-
-            
-
-   
 
 
 function showErrorMsg(input, message) {

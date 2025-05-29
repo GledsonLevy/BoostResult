@@ -479,9 +479,18 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
             <li>Minha Conta</li>
             <li>
                 <?php
-                echo ($_SESSION['tipo'] == "aluno") ? 'Personais' : 'Alunos';
+
+                if ($_SESSION['tipo_usuario'] == "admin") {
+                    echo 'Alunos';
+                    echo '<li>Personais</li>';
+                }
+                else {
+
+                     echo ($_SESSION['tipo'] == "aluno") ? 'Personais' : 'Alunos';
+                }
+               
                 ?>
-            </li>
+            </li>   
             <li id="mensagens-btn">Mensagens</li>
             <li>Suporte</li>
             <form method="post" action="../../app/controller/UsuarioController.php">
