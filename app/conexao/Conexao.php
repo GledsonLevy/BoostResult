@@ -27,7 +27,7 @@ class Conexao {
                self::$instance->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_EMPTY_STRING);
                self::$instance->exec("SET CHARACTER SET utf8");
 
-               echo "Conexão realizada com sucesso.";
+               //echo "Conexão realizada com sucesso.";
            } catch (PDOException $e) {
                
                echo "Erro ao conectar: " . $e->getMessage();

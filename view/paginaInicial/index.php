@@ -14,463 +14,35 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BoostResult</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            display: flex;
-            background-color: #f5f8fa;
-            cursor: url('https://cdn.custom-cursor.com/packs/1863/pack2490.png'), auto;
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-
-        body,
-        html {
-            overflow: hidden;
-        }
-
-        .sidebar {
-            width: 250px;
-            padding: 20px;
-            border-right: 1px solid #e1e8ed;
-            height: 100vh;
-        }
-
-        .sidebar h2 {
-            margin-bottom: 30px;
-        }
-
-        .sidebar ul {
-            list-style: none;
-        }
-
-        .sidebar ul li {
-            margin: 20px 0;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .main {
-            flex: 1;
-            padding: 20px;
-        }
-
-        .profile {
-            background: #FAFAFA;
-            border: 1px solid #e1e8ed;
-            border-radius: 8px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-
-        .cover {
-            background: #000;
-            height: 150px;
-        }
-
-        .cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-
-        .avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 10px;
-            margin: -40px 20px 10px;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            color: #FAFAFA;
-            border: 2px white solid;
-        }
-
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-
-        .profile-info {
-            padding: 0 20px 20px;
-            text-align: left;
-        }
-
-        .profile-info h1 {
-            font-size: 20px;
-        }
-
-        .profile-info p {
-            color: #657786;
-            font-size: 14px;
-        }
-
-        .right-sidebar {
-            width: 300px;
-            padding: 20px;
-        }
-
-        .Users {
-            background: #FAFAFA;
-            border: 1px solid #e1e8ed;
-            border-radius: 8px;
-            padding: 15px;
-        }
-
-        .Users h3 {
-            margin-bottom: 15px;
-        }
-
-        .Users .user {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .Users .user img {
-            width: 60px;
-            border-radius: 50%;
-        }
-
-        .Users .user button {
-            background-color: #269126;
-            border: none;
-            padding: 10px;
-            border-radius: 3px;
-            color: #FAFAFA;
-        }
-
-        .tweet-btn {
-            background: #1da1f2;
-            color: #FAFAFA;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 9999px;
-            cursor: pointer;
-            margin-top: 20px;
-            width: 100%;
-            font-size: 16px;
-        }
-
-        .search-container {
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 12px 40px 12px 16px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 25px;
-            outline: none;
-            transition: border-color 0.3s ease;
-        }
-
-        .search-input:focus {
-            border-color: #269126;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 20px;
-            height: 20px;
-            fill: #9ca3af;
-            pointer-events: none;
-        }
-
-        #sair {
-            padding: 10px;
-            width: 70px;
-            border-radius: 3px;
-            border: none;
-            background-color: gray;
-            color: #000;
-        }
-
-        .button-container {
-            position: relative;
-            display: flex;
-            gap: 10px;
-            justify-content: flex-start;
-            align-items: center;
-        }
-
-        .button-container button {
-            background: #FAFAFA;
-            border: none;
-            font-size: 16px;
-            padding: 10px 20px;
-            cursor: pointer;
-            margin: auto;
-        }
-
-        #underline-indicator {
-            position: absolute;
-            bottom: 0;
-            height: 3px;
-            background-color: black;
-            width: 0;
-            left: 0;
-            transition: none;
-            /* Remover transição */
-        }
-
-        /* Adicionar a transição quando a underline for movida */
-        .button-container.transition #underline-indicator {
-            transition: all 0.3s ease;
-        }
-
-        iframe {
-            width: 100%;
-            height: 100vh;
-            border: 1px solid #ccc;
-        }
-
-        .Underline {
-            border-bottom: 3px solid black;
-        }
-
-        #nomeConta,
-        #tipoConta {
-            display: inline-block;
-        }
-
-        #nomeConta {
-            font-size: 2em;
-        }
-
-        .cover {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-            overflow: hidden;
-            border-radius: 8px;
-        }
-
-        .cover img {
-            width: 100%;
-            height: auto;
-            transition: filter 0.3s ease;
-            
-        }
-
-        .cover:hover #imgCover {
-            filter: brightness(0.5);
-        }
-
-        .cover .emoji {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 2rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .cover:hover .emoji {
-            opacity: 1;
-        }
-
-        .avatar {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-            overflow: hidden;
-            border-radius: 13px;
-        }
-
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: filter 0.3s ease;
-        }
-
-        .avatar:hover #imgAvatar {
-            filter: brightness(0.5);
-        }
-
-        .avatar .emoji {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 2rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .avatar:hover .emoji {
-            opacity: 1;
-        }
-
-        /* Estilo para o painel de mensagens */
-        .mensagens-panel {
-            position: fixed;
-            top: 0;
-            left: -500px;
-            /* Ajuste a posição inicial para a nova largura */
-            width: 500px;
-            /* Aumentei a largura do painel */
-            height: 100%;
-            background: #FAFAFA;
-            box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
-            transition: left 0.3s ease;
-            z-index: 1000;
-            padding: 20px;
-            border-right: 1px solid #e1e8ed;
-        }
-
-        .mensagens-panel.open {
-            left: 0;
-        }
-
-        .mensagens-panel h2 {
-            margin-bottom: 20px;
-        }
-
-        .mensagens-panel .message {
-            margin-bottom: 15px;
-            padding: 10px;
-            border-bottom: 1px solid #e1e8ed;
-        }
-
-        .mensagens-panel .message .sender {
-            font-weight: bold;
-        }
-
-        .mensagens-panel .message .text {
-            color: #657786;
-        }
-
-        /* Estilo para o botão de fechar */
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: #333;
-            cursor: pointer;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-
-        .close-btn:hover {
-            color: red;
-        }
-
-        #descricao {
-            width: 80%;
-            height: 200px;
-            /* Defina a altura desejada */
-            padding-top: 10px;
-            /* Adicione um padding superior para empurrar o texto para baixo */
-            /* Opcional: Remova o padding padrão para ter mais controle */
-            padding-left: 5px;
-            padding-right: 5px;
-            padding-bottom: 0;
-            /* Garante que o texto fique mais para cima */
-            box-sizing: border-box;
-            /* Garante que o padding seja incluído na altura total */
-        }
-
-        body.dark-mode {
-            background-color: #121212;
-            color: #f5f5f5;
-        }
-
-        .dark-mode .sidebar,
-        .dark-mode .profile,
-        .dark-mode .Users,
-        .dark-mode .mensagens-panel,
-        .dark-mode .modal-content {
-            background-color: #1e1e1e;
-            color: #FAFAFA;
-            border-color: #333;
-        }
-
-        .dark-mode .search-input {
-            background-color: #333;     
-            color: #FAFAFA;
-            border-color: #555;
-        }
-
-        .dark-mode .search-icon {
-            fill: #ccc;
-        }
-
-        .dark-mode .tweet-btn,
-        .dark-mode .Users .user button {
-            background-color: #2e7d32;
-        }
-
-        .dark-mode #sair {
-            background-color:#e3e3e3;
-            
-        }
-
-        .dark-mode #button3 {
-            background-color: #1e1e1e;
-            color: #FAFAFA;
-        }
-
-        .dark-mode #button2 {
-            background-color: #1e1e1e;
-            color: #FAFAFA;
-        }
-
-        .dark-mode #button1 {
-            background-color: #1e1e1e;
-            color: #FAFAFA;
-        }
-
-        .dark-mode #botaoBio {
-            background-color: #1c1c1c;
-            color: #FAFAFA;
-        }
-
-        .dark-mode #underline-indicator {
-            background-color: #FAFAFA;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    
 </head>
 
 <body>
     <div class="mensagens-panel" id="mensagens-panel">
-        <button class="close-btn" id="close-btn">X</button>
+        <button class="close-btn" id="close-mensagens-btn">X</button>
         <h2>Mensagens</h2>
         <div class="message">
-            <div class="sender">Luan Pinto</div>
-            <div class="text">Oi, como você está?</div>
+            <button class="messageButton" id="chat-btn">
+                <img src="imagem.jpg" alt="">
+                <div class="sender">Luan Pinto</div>
+                <div class="text">Oi, como você está?</div>
+            </button>
         </div>
+    </div>
+
+    <div class="personais-panel" id="personais-panel">
+        <button class="close-btn" id="close-mensagens-btn">X</button>
         <div class="message">
-            <div class="sender">Luizao</div>
-            <div class="text">Vamos treinar amanhã?</div>
+            <iframe src="personais/personais.php" frameborder="0"></iframe>
         </div>
-        <div class="message">
-            <div class="sender">Davi</div>
-            <div class="text">Te espero no horário combinado!</div>
+    </div>
+
+    <div class="chat-panel" id="chat-panel">
+        <button class="close-btn" id="close-chat-btn">X</button>
+        <h2>Chat</h2>
+        <div class="chat">
+            funcionando
         </div>
     </div>
     <div class="sidebar">
@@ -482,15 +54,14 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
 
                 if ($_SESSION['tipo_usuario'] == "admin") {
                     echo 'Alunos';
-                    echo '<li>Personais</li>';
-                }
-                else {
+                    echo "<li id='personais-btn'>Personais</li>";
+                } else {
 
-                     echo ($_SESSION['tipo'] == "aluno") ? 'Personais' : 'Alunos';
+                    echo ($_SESSION['tipo'] == "aluno") ? "<li id='personais-btn'>Personais</li>" : 'Alunos';
                 }
-               
+
                 ?>
-            </li>   
+            </li>
             <li id="mensagens-btn">Mensagens</li>
             <li>Suporte</li>
             <form method="post" action="../../app/controller/UsuarioController.php">
@@ -504,7 +75,8 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
 
     <div class="main">
         <div class="profile">
-            <form action="../../app/controller/imagem_usuarioController.php" method="post" enctype="multipart/form-data">
+            <form action="../../app/controller/imagem_usuarioController.php" method="post"
+                enctype="multipart/form-data">
                 <label for="fileUpload">
                     <div class="cover">
                         <img src="https://preview.redd.it/34mmdb3oo42d1.png?auto=webp&s=5b038c9df7e574ce5b88b9664471e7bd83fc94ca"
@@ -515,7 +87,8 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
                 <input type="file" id="fileUpload" name="foto" accept="image/*" style="display:none;"
                     onchange="this.form.submit();">
             </form>
-            <form action="../../app/controller/imagem_usuarioController.php" method="post" enctype="multipart/form-data">
+            <form action="../../app/controller/imagem_usuarioController.php" method="post"
+                enctype="multipart/form-data">
                 <label for="fileUpload">
                     <div class="avatar">
                         <img src="https://dimensaosete.com.br/static/7fc311549694666167a49cdb0fb1293c/2493a/gojo.webp"
@@ -543,7 +116,8 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
                     }
                     ?>
                 </p>
-                <button type="button" class="secondary btn-sm border-0" data-toggle="modal" data-target="#modalExemplo" id="botaoBio">
+                <button type="button" class="secondary btn-sm border-0" data-toggle="modal" data-target="#modalExemplo"
+                    id="botaoBio">
                     Modificar bio
                 </button>
 
@@ -608,7 +182,8 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
                     <form action="../../app/controller/UsuarioController.php" method="POST">
                         <label for="descricao">Descrição</label><br>
                         <textarea id="descricao" name="descricao" autofocus></textarea><br><br>
-                        <button type="submit" name="acao" value="ATUALIZAR" class="secondary btn-sm border-0">Atualizar</button>
+                        <button type="submit" name="acao" value="ATUALIZAR"
+                            class="secondary btn-sm border-0">Atualizar</button>
                     </form>
                 </div>
 
@@ -616,90 +191,11 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
         </div>
     </div>
 </body>
-<script>
-    // Função para movimentar a underline entre os botões
-    function loadPageAndHighlight(button, url) {
-        // Atualiza o conteúdo do iframe
-        document.getElementById('myIframe').src = url;
-
-        // Obtém a underline e os elementos do botão
-        const underline = document.getElementById('underline-indicator');
-        const rect = button.getBoundingClientRect();
-        const containerRect = button.parentElement.getBoundingClientRect();
-
-        // Aplica a posição e o tamanho da underline
-        underline.style.width = rect.width + "px";
-        underline.style.left = (rect.left - containerRect.left) + "px";
-
-        // Ativa a transição (apenas se não for o botão inicial)
-        setTimeout(() => {
-            button.parentElement.classList.add('transition');
-        }, 10); // Atrasar um pouco para garantir que a transição funcione
-
-        // Adiciona uma classe para que a transição ocorra depois de clicar em um botão
-        document.querySelectorAll('.button-container button').forEach(btn => {
-            btn.classList.remove('active'); // Remove a classe "active" dos outros botões
-        });
-        button.classList.add('active'); // Adiciona a classe "active" ao botão clicado
-    }
-
-    // Adiciona a underline no botão 1 ao carregar a página
-    window.onload = function() {
-        const firstButton = document.getElementById('button1');
-        loadPageAndHighlight(firstButton, 'informacoes/treinos.php'); // URL padrão ao carregar
-    };
-
-    // Controla a abertura e fechamento do painel de mensagens
-    document.getElementById('mensagens-btn').addEventListener('click', function() {
-        const panel = document.getElementById('mensagens-panel');
-        panel.classList.toggle('open');
-    });
-
-    // Fecha o painel de mensagens quando o botão "X" for clicado
-    document.getElementById('close-btn').addEventListener('click', function() {
-        const panel = document.getElementById('mensagens-panel');
-        panel.classList.remove('open');
-    });
-
-    document.getElementById("toggleDarkMode").addEventListener("click", function() {
-        document.body.classList.toggle("dark-mode");
-
-        const btn = document.getElementById("toggleDarkMode");
-
-        if (document.body.classList.contains("dark-mode")) {
-            localStorage.setItem("modo", "escuro");
-            btn.textContent = "Modo Claro ☀️";
-            document.getElementById("toggleDarkMode").style.backgroundColor = "#FAFAFA";
-            document.getElementById("toggleDarkMode").style.color = "#000";
-        } else {
-            localStorage.setItem("modo", "claro");
-            btn.textContent = "Modo Escuro 🌙";
-            document.getElementById("toggleDarkMode").style.backgroundColor = "#000";
-            document.getElementById("toggleDarkMode").style.color = "#FAFAFA";
-        }
-    });
-
-    // Ao carregar a página, aplica o modo salvo e ajusta o texto do botão
-    
-    window.addEventListener("load", function() {
-        const btn = document.getElementById("toggleDarkMode");
-        if (localStorage.getItem("modo") === "escuro") {
-            document.body.classList.add("dark-mode");
-            btn.textContent = "Modo Claro ☀️";
-            document.getElementById("toggleDarkMode").style.backgroundColor = "#FAFAFA";
-            document.getElementById("toggleDarkMode").style.color = "#000";
-        } else {
-            btn.textContent = "Modo Escuro 🌙";
-            document.getElementById("toggleDarkMode").style.backgroundColor = "#000";
-            document.getElementById("toggleDarkMode").style.color = "#FAFAFA";
-        }
-    });
-</script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
     crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
     crossorigin="anonymous"></script>
-
+    <script src="script.js"></script>
 </html>

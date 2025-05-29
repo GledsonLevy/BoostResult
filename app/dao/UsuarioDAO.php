@@ -60,6 +60,20 @@ class UsuarioDAO
 		}
 	}
 
+	//Buscar usuários de tipos específicos
+	public function buscarTipo($tipo)
+	{
+		try {
+            $sql = 'SELECT * FROM usuario WHERE tipo LIKE :tipo';
+            $consulta = Conexao::getConexao()->prepare($sql);
+            $consulta->bindValue(':tipo', '%' . $tipo . '%');
+            $consulta->execute();
+            return $consulta->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+             return ['error' => 'Erro ao acessar o banco de dados: ' . $e->getMessage()];
+        }
+	}
+
 	//Apaga um elemento da tabela
 	public function deletar(Usuario $usuario)
 	{
