@@ -15,7 +15,24 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 
+
+
 <body>
+
+<?php
+    session_start();
+    if (isset($_SESSION['erro_cadastro'])):
+    ?>
+        <div class="container mt-4">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?php echo $_SESSION['erro_cadastro']; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    <?php
+    unset($_SESSION['erro_cadastro']);
+    endif;
+?>
 
     <div id="particles-js"></div>
 
@@ -48,6 +65,7 @@
     <div class="page-content">
 
         <div class="wizard-v2-content">
+
             <div id="autoCarousel" class="carousel slide col-md-6 d-none d-md-block" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active wizard-image" data-bs-interval="10000"
@@ -133,80 +151,93 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="form-holder position-relative">
-                                        <input type="password" placeholder="Senha" name="senha" class="form-control"
-                                            id="senha">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary toggle-password"
-                                            data-target="senha"
-                                            style="position:absolute; right:10px; top:50%; transform:translateY(-50%);">👁</button>
+                                        <div class="input-group-container" style="position: relative;">
+                                            <input type="password" name="senha" id="senha" class="form-control" style="padding-right: 40px;" placeholder="Senha">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary toggle-password"
+                                                data-target="senha"
+                                                style="position:absolute; right:10px; top:50%; transform:translateY(-50%);">👁</button>
+                                        </div>
+                                        
                                     </div>
                                     <div class="form-holder position-relative">
-                                        <input type="password" placeholder="Confirmar Senha" class="form-control"
-                                            id="confirmar-senha">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary toggle-password"
-                                            data-target="confirmar-senha"
-                                            style="position:absolute; right:10px; top:50%; transform:translateY(-50%);">👁</button>
+                                        <div class="input-group-container" style="position: relative;">
+                                            <input type="password" placeholder="Confirmar Senha" class="form-control" id="confirmar-senha" style="padding-right: 40px;">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary toggle-password"
+                                                data-target="confirmar-senha"
+                                                style="position:absolute; right:10px; top:50%; transform:translateY(-50%); z-index: 2;">👁</button>
+                                        </div>
+                                        
                                     </div>
                                 </div>
 
                             </div>
                         </section>
 
-                        <!-- SECTION 3 -->
-                        <section id="session3" class="session">
-                            <div class="inner">
-                                <div class="form-row">
-                                    <div class="form-holder option-select">
-                                        <label class="option" id="aluno-option">
-                                            <input type="radio" name="tipo" value="aluno" />
-                                            Aluno
-                                        </label>
-                                        <label class="option" id="personal-option">
-                                            <input type="radio" name="tipo" value="personal" />
-                                            Personal
-                                        </label>
-                                    </div>
+                <div class="session-wrapper">
+                    
+                    <section id="session3" class="session session-inner">
+                        <div class="inner">
+                            <div class="form-row">
+                                <div class="form-holder option-select">
+                                    <label class="option active" id="aluno-option">
+                                        <input type="radio" name="tipo" value="aluno" />
+                                        Aluno
+                                    </label>
+                                </div>
+                                <div class="form-holder option-select">
+                                    <label class="option" id="personal-option">
+                                        <input type="radio" name="tipo" value="personal" />
+                                        Personal
+                                    </label>
                                 </div>
                             </div>
-                        </section>
+                        </div>
+                    </section>
 
-                        <!-- SECTION 4 - Aparece só para "personal" -->
-                        <section id="session4" class="session" style="display:none;">
-                            <div class="inner">
-                                <div class="form-row">
-                                    <div class="form-holder">
-                                        <input type="text" placeholder="Certificação" name="certificacao"
-                                            class="form-control" id="certificacao">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="form-holder">
-                                        <input type="text" placeholder="Especialidade" name="especialidade"
-                                            class="form-control" id="especialidade">
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
+                </div>
+                
+                <section id="session4" class="session session-inner">
+                    <div class="inner">
+                        <span class="modal-close" id="modal-close">&times;</span>
+                        <div class="drag-handle">Dados necessários</div>
+                        <hr>
                         
-                        <div class="actions clearfix form-row">
-
-                            <ul role="menu" aria-label="Pagination" class="form-holder">
-                                <li id="botaoNext" aria-hidden="false" aria-disabled="false"><a href="#next"
-                                        role="menuitem">Next</a></li>
-                                <li id="botaoFinish" class="buttonaction" aria-hidden="true" style="display: none;"><a
-                                        href="#finish" role="menuitem">Finish</a></li>
-                                <input type="hidden" name="acao" value="CADASTRAR">
-                            </ul>
+                            <div class="form-row">
+                                <div class="form-holder form-holder-2">
+                                    <input type="text" placeholder="Certificação(CREF) 000000-G/UF " name="certificacao" class="form-control" id="certificacao">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-holder">
+                                    <input type="text" placeholder="Especialidade(Opcional)" name="especialidade" class="form-control" id="especialidade">
+                                </div>
+                                <li id="modal-btn" class="form-holder button-model buttonaction btn d-flex" aria-hidden="false" aria-disabled="false"><a href="#next"
+                                role="menuitem">Avançar <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/></svg></a></li>
+                            </div>
 
                         </div>
-                    </div>
+                        
+                    </div>          
+            </section>
 
-                </form>
-                <br>
-                <a href="../login/index.html" id="EntrarConta">Já possui uma conta? Entre já.</a>
-            </div>
-        </div>
+                        
+            <div class="actions clearfix form-row">
 
+                    <ul role="menu" aria-label="Pagination" class="form-holder">
+                        <li id="botaoNext" aria-hidden="false" aria-disabled="false"><a href="#next"role="menuitem">Next</a></li>
+                        <li id="botaoFinish" class="buttonaction" aria-hidden="true" style="display: none;"><a href="#finish" role="menuitem">Finish</a></li>
+                        <input type="hidden" name="acao" value="CADASTRAR">
+                    </ul>
+                    <a href="../login/index.html" id="EntrarConta" class="form-holder">Já possui uma conta? Entre já.</a>
+                </div>
+            </div>                        
+
+    </form>
     </div>
+</div>
+    
+</div>
 
     <!-- SCRIPTS -->
 
@@ -219,9 +250,14 @@
         $(document).ready(function () {
 
             const telefone = document.getElementById('telefone');
+            const session4 = document.getElementById('session4');
+            const modalClose = document.getElementById('modal-close');
+            const modalBtn = document.getElementById('modal-btn');
+            $('#session4').hide();
+
 
             telefone.addEventListener('input', function (e) {
-                let v = e.target.value.replace(/\D/g, ''); // Remove tudo que não for número
+                let v = e.target.value.replace(/\D/g, '');
 
                 if (v.length > 11) v = v.slice(0, 11);
 
@@ -234,6 +270,19 @@
                 }
             });
 
+            modalClose.addEventListener('click', () => {
+                $('#session4').hide();
+                $('input[value="aluno"]').prop('checked', true).closest('label').addClass('active');
+                $('input[value="personal"]').closest('label').removeClass('active');
+                
+            });
+
+            modalBtn.addEventListener('click', () => {
+                if (validarCamposEtapa4()) {
+                   $('#session4').hide();
+                };
+            });
+            
             var itemAtual = 1;
 
             function mudarPaginacao() {
@@ -267,13 +316,11 @@
                         $('#num1, #num2').removeClass('current');
 
                         if ($('input[name="tipo"]:checked').val() === 'personal') {
-                            $('#session4').show();
-                            $('#session3').hide();
+                            $('#session4').css('display', 'flex');
                         } else {
-                            $('#session3').show();
                             $('#session4').hide();
                         }
-
+                        $('#session3').show();
                         $('#session1, #session2').hide();
                         $('#botaoFinish').show();
                         $('#botaoNext').hide();
@@ -284,29 +331,28 @@
             mudarPaginacao();
 
             $('#botaoFinish').click(function () {
-                // Antes de enviar, valida a etapa 3 (escolha aluno/personal)
+                $('#session3').show();
+                
                 if (validarCamposEtapa3()) {
                     $('#formCadastro').submit();
                 }
             });
 
             $('.option').on('click', function () {
-                $('.option').removeClass('active');
-                $(this).addClass('active');
-                $(this).find('input').prop('checked', true);
+            $('.option').removeClass('active');
+            $(this).addClass('active');
+            $(this).find('input').prop('checked', true);
 
-                // Se escolher aluno, esconder session4
-                if ($(this).find('input').val() === 'aluno') {
-                    $('#session4').hide();
-                    $('#session3').show();
-                } else if ($(this).find('input').val() === 'personal') {
-                    // Se estiver na etapa 3, mostrar session4
-                    if (itemAtual === 3) {
-                        $('#session4').show();
-                        $('#session3').hide();
-                    }
+            const tipoSelecionado = $(this).find('input').val();
+
+            if (tipoSelecionado === 'aluno') {
+                $('#session4').hide(); 
+            } else if (tipoSelecionado === 'personal') {
+                if (itemAtual === 3) {
+                    $('#session4').css('display', 'flex');
                 }
-            });
+            }
+        });
 
             $('#botaoNext').on('click', function () {
                 itemAtual++;
@@ -325,16 +371,22 @@
                 input.attr('type', tipoAtual === 'password' ? 'text' : 'password');
             });
 
-            // Funções de validação (mantive seu código original)
             function showErrorMsg(input, message) {
                 clearErrorMsg(input);
-                input.addClass('is-invalid');
-                input.after('<span class="error-message" style="color:#dc3545; position: position relative; font-size:15px;">' + message + '</span>');
+
+                const error = $('<div class="error-message text-danger" style="font-size: 15px; margin-top: 4px;">' + message + '</div>');
+
+                input.closest('.form-holder').append(error);
             }
 
             function clearErrorMsg(input) {
+                
                 input.removeClass('is-invalid');
-                input.siblings('.error-message').remove();
+
+                const formHolder = input.closest('.form-holder');
+                formHolder.find('.error-message').remove();
+
+                formHolder.css('margin-bottom', '');
             }
 
             function calculateAge(dateString) {
@@ -387,6 +439,7 @@
                 const email = $('#email');
                 const telefone = $('#telefone');
                 const senha = $('#senha');
+
                 const confirmarSenha = $('#confirmar-senha');
 
                 clearErrorMsg(email);
@@ -425,11 +478,33 @@
 
             function validarCamposEtapa3() {
                 const tipoSelecionado = $('input[name="tipo"]:checked').val();
-                if (!tipoSelecionado) {
-                    alert("Selecione se você é aluno ou personal.");
-                    return false;
+                if (tipoSelecionado == "personal") {
+                    if(!validarCamposEtapa4()){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                    
                 }
                 return true;
+            }
+            function validarCamposEtapa4() {
+                let valido = true;
+                const certificacao = $('#certificacao');
+            
+                clearErrorMsg(certificacao);
+
+                const regexCREF = /^\d{4,6}-[A-Z]\/[A-Z]{2}$/;
+
+                if (!certificacao.val().trim()) {
+                    showErrorMsg(certificacao, 'Certificação (CREF) é obrigatória');
+                    valido = false;
+                } else if (!regexCREF.test(certificacao.val().trim())) {
+                    showErrorMsg(certificacao, 'Formato inválido. Exemplo: 123456-G/SP');
+                    valido = false;
+                }
+
+                return valido;
             }
 
         });

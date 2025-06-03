@@ -86,37 +86,49 @@ class UsuarioDAO
 			print "Erro ao deletar Usuario <br>" . $e . '<br>';
 		}
 	}
+	public function verificarDuplicado($email, $telefone) {
+		$sql = "SELECT COUNT(*) FROM usuario WHERE email = :email OR telefone = :telefone";
+		$consulta = Conexao::getConexao()->prepare($sql);
+		$consulta->bindValue(':email', $email);
+		$consulta->bindValue(':telefone', $telefone);
+		$consulta->execute();
+		$quantidade = $consulta->fetchColumn();
 
+		return $quantidade > 0; 
+	}
 	//Insere um elemento na tabela
 	public function inserir(Usuario $usuario)
 	{
 		try {
-			// Verificar se a tabela 'usuario' está vazia
+			$conexao = Conexao::getConexao();
+
 			$sqlVerificar = 'SELECT COUNT(*) FROM usuario';
-			$consultaVerificar = Conexao::getConexao()->prepare($sqlVerificar);
+			$consultaVerificar = $conexao->prepare($sqlVerificar);
 			$consultaVerificar->execute();
 			$numUsuarios = $consultaVerificar->fetchColumn();
 
-			// Definir o tipo de usuário com base no número de registros
-			$tipoUsuario = ($numUsuarios == 0) ? 'admin' : 'normal';
+			$tipoUsuario = ($numUsuarios == 0) ? 'admin' : 'cliente';
 
-			// Inserir novo usuário na tabela
+			
 			$sql = 'INSERT INTO usuario (nome, idade, telefone, email, senha, sexo, tipo, tipo_usuario) 
-            VALUES (:nome, :idade, :telefone, :email, :senha, :sexo, :tipo, :tipo_usuario)';
-			$consulta = Conexao::getConexao()->prepare($sql);
+					VALUES (:nome, :idade, :telefone, :email, :senha, :sexo, :tipo, :tipo_usuario)';
+			$consulta = $conexao->prepare($sql);
 
-			// Vincular os parâmetros
+			
 			$consulta->bindValue(':nome', $usuario->getNome());
 			$consulta->bindValue(':idade', $usuario->getIdade());
 			$consulta->bindValue(':telefone', $usuario->getTelefone());
 			$consulta->bindValue(':email', $usuario->getEmail());
-			$consulta->bindValue(':senha', sha1(md5($usuario->getSenha()))); // criptografando a senha
+			$consulta->bindValue(':senha', sha1(md5($usuario->getSenha())));
 			$consulta->bindValue(':sexo', $usuario->getSexo());
 			$consulta->bindValue(':tipo', $usuario->getTipo());
-			$consulta->bindValue(':tipo_usuario', $tipoUsuario); // Coluna 'tipo_usuario' recebendo o valor adequado
+			$consulta->bindValue(':tipo_usuario', $tipoUsuario);
 
 			// Executar a consulta
 			$consulta->execute();
+
+			// Retornar o ID inserido
+			return $conexao->lastInsertId();
 
 		} catch (Exception $e) {
 			// Caso ocorra algum erro

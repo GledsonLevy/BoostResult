@@ -5,7 +5,12 @@ Classe Controller */
 
 include_once "../conexao/Conexao.php";
 include_once "../model/Usuario.php";
+include_once "../model/Aluno.php";
+include_once "../dao/AlunoDAO.php";
+include_once "../model/Personal.php";
+include_once "../dao/PersonalDAO.php";
 include_once "../dao/UsuarioDAO.php";
+
 
 
 $usuario = new Usuario();
@@ -25,6 +30,11 @@ if (isset($_GET['pesquisa']) && !empty($_GET['pesquisa'])) {
 //se a operação for gravar entra nessa condição
 if (isset($_POST['acao']) && ($_POST['acao'] == "CADASTRAR")) {
 
+    if ($usuarioDAO->verificarDuplicado($u['email'], $u['telefone'])) {
+        $_SESSION['erro_cadastro'] = "Já existe um usuário com este e-mail ou telefone.";
+        header("Location: ../../view/cadastro/index.php?=Usuario%existente");
+        exit;
+    } else {
     $usuario->setNome($u['nome']);
 
     $usuario->setIdade($u['idade']);
@@ -38,9 +48,26 @@ if (isset($_POST['acao']) && ($_POST['acao'] == "CADASTRAR")) {
     $usuario->setSexo($u['sexo']);
 
     $usuario->setTipo($u['tipo']);
-    $usuarioDAO->inserir($usuario);
+    $idUsuario = $usuarioDAO->inserir($usuario);
+
+    if ($u['tipo'] === 'aluno') {
+        $aluno = new Aluno();
+        $aluno->setId_user($idUsuario);
+        $alunoDAO = new AlunoDAO();
+        $alunoDAO->inserir($aluno);
+
+    } elseif ($u['tipo'] === 'personal') {
+        $personal = new Personal();
+        $personal->setId_user($idUsuario);
+        $personal->setCertf($u['certificacao']);
+        $personal->setEspecialidade($u['especialidade']);
+        $personalDAO = new PersonalDAO();
+        $personalDAO->inserir($personal);
+        
+    }
 
     header("Location: ../../view/login/index.html");
+}
 } else if (isset($_POST['acao']) && ($_POST['acao'] == "LOGAR")) {
 
     $usuario->setEmail($u['email']);
