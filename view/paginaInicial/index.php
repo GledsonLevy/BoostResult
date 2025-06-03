@@ -4,6 +4,8 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
     header("Location: ../../index.php");
     exit();
 }
+
+$destinatario = 22;
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +17,7 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
     <title>BoostResult</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    
+
 </head>
 
 <body>
@@ -32,17 +34,35 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
     </div>
 
     <div class="personais-panel" id="personais-panel">
-        <button class="close-btn" id="close-mensagens-btn">X</button>
+        <button class="close-btn" id="close-personais-btn">X</button>
         <div class="message">
-            <iframe src="personais/personais.php" frameborder="0"></iframe>
+            <iframe src="listaUsuario/personais.php" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <div class="alunos-panel" id="alunos-panel">
+        <button class="close-btn" id="close-alunos-btn">X</button>
+        <div class="message">
+            <iframe src="listaUsuario/alunos.php" frameborder="0"></iframe>
         </div>
     </div>
 
     <div class="chat-panel" id="chat-panel">
         <button class="close-btn" id="close-chat-btn">X</button>
-        <h2>Chat</h2>
+        <h2>Luan pinto</h2>
         <div class="chat">
-            funcionando
+            <div class="interacao-panel" id="interacao-panel">
+                <div class="interacao-conteudo" id="interacao-conteudo">
+
+                </div>
+                <div class="interacao-input">
+                    <input type="text" id="mensagem" placeholder="Digite sua mensagem...">
+                    <button id="enviar-msg">Enviar</button>
+                </div>
+
+                <input type="hidden" id="destinatario-id-hidden" value="<?php echo $destinatario; ?>">
+            </div>
+
         </div>
     </div>
     <div class="sidebar">
@@ -53,7 +73,7 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
                 <?php
 
                 if ($_SESSION['tipo_usuario'] == "admin") {
-                    echo 'Alunos';
+                    echo "<li id='alunos-btn'>Alunos</li>";
                     echo "<li id='personais-btn'>Personais</li>";
                 } else {
 
@@ -197,5 +217,6 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
     crossorigin="anonymous"></script>
-    <script src="script.js"></script>
+<script src="script.js"></script>
+
 </html>

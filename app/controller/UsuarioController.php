@@ -121,7 +121,7 @@ else if (isset($_POST['acao']) && ($_POST['acao'] == "ATUALIZAR")) {
         header("Location: ../../view/paginaInicial/index.php");
     }
 
-    //header("Location: ../../view/paginaInicial/index.php");
+
 }
 // se a requisição for deletar
 else if (isset($_GET['deletar'])) {

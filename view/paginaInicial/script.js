@@ -40,8 +40,16 @@ document.getElementById('personais-btn').addEventListener('click', function () {
     document.getElementById('personais-panel').classList.add('open');
 });
 
-document.getElementById('close-mensagens-btn').addEventListener('click', function () {
+document.getElementById('close-personais-btn').addEventListener('click', function () {
     document.getElementById('personais-panel').classList.remove('open');
+});
+
+document.getElementById('alunos-btn').addEventListener('click', function () {
+    document.getElementById('alunos-panel').classList.add('open');
+});
+
+document.getElementById('close-alunos-btn').addEventListener('click', function () {
+    document.getElementById('alunos-panel').classList.remove('open');
 });
 
 // Fechar painel de mensagens
@@ -94,3 +102,65 @@ window.addEventListener("load", function () {
         document.getElementById("toggleDarkMode").style.color = "#FAFAFA";
     }
 });
+
+ document.addEventListener('DOMContentLoaded', function() {
+        const sendMessageButton = document.getElementById('enviar-msg');
+        const messageInput = document.getElementById('mensagem');
+        
+        // Obtenha o elemento do campo oculto do destinatário
+        const destinatarioIdHidden = document.getElementById('destinatario-id-hidden');
+
+        sendMessageButton.addEventListener('click', function() {
+            const messageText = messageInput.value.trim();
+
+            if (messageText === '') {
+                alert('Por favor, digite uma mensagem antes de enviar.');
+                return;
+            }
+            
+            // Pegue o ID do destinatário do campo oculto
+            const destinatarioId = destinatarioIdHidden.value;
+
+            // Verificação básica para garantir que o ID não está vazio
+            if (!destinatarioId) {
+                console.error('Erro: ID do destinatário não encontrado no campo oculto.');
+                alert('Não foi possível enviar a mensagem. Tente novamente mais tarde.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('acao', 'INSERIR');
+            formData.append('texto', messageText);
+            formData.append('destinatario', destinatarioId); // Adicionando o ID do destinatário ao POST
+
+            // Certifique-se de que o 'id_chat' também seja enviado se for necessário para a lógica do chat
+            // Se o id_chat também for um campo oculto, você faria o mesmo processo:
+            // const chatIdHidden = document.getElementById('chat-id-hidden');
+            // const chatId = chatIdHidden.value;
+            // formData.append('id_chat', chatId);
+
+            // Ajuste esta URL para o caminho correto do seu MensagemController.php
+            fetch('../../app/controller/MensagemController.php', { // Ex: './backend/controllers/MensagemController.php'
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text()) // Ou .json() se o PHP retornar JSON
+            .then(data => {
+                console.log(data); // Exibe a resposta do script PHP no console
+                messageInput.value = ''; // Limpa o campo de entrada
+                // Lógica para atualizar a interface do usuário após o envio da mensagem
+            })
+            .catch(error => {
+                console.error('Erro ao enviar mensagem:', error);
+                alert('Falha ao enviar mensagem.');
+            });
+        });
+
+        // Opcional: Enviar mensagem com a tecla Enter
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault(); // Evita que o Enter quebre linha ou submeta o formulário
+                sendMessageButton.click(); // Simula o clique no botão
+            }
+        });
+    });

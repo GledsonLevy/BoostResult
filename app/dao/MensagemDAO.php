@@ -71,14 +71,19 @@ class MensagemDAO{
 	//Insere um elemento na tabela
 	public function inserir(Mensagem $mensagem){
         try {
-			$sql = 'INSERT INTO mensagem (id_msg, id_chat, remetente, texto, data) VALUES (:id_msg, :id_chat, :remetente, :texto, :data)';
+			$sql = 'INSERT INTO mensagem (id_msg, remetente, destinatario, texto, data_msg) VALUES (:id_msg, :remetente, :destinatario, :texto, :data_msg)';
 			$consulta = Conexao::getConexao()->prepare($sql);
 			$consulta->bindValue(':id_msg',$mensagem->getId_msg()); 
-			$consulta->bindValue(':id_chat',$mensagem->getId_chat()); 
-			$consulta->bindValue(':remetente',$mensagem->getRemetente()); 
-			$consulta->bindValue(':texto',$mensagem->getTexto()); 
-			$consulta->bindValue(':data',$mensagem->getData());
+
+			$consulta->bindValue(':remetente',$mensagem->getRemetente()); 
+
+			$consulta->bindValue(':destinatario',$mensagem->getDestinatario()); 
+
+			$consulta->bindValue(':texto',$mensagem->getTexto()); 
+
+			$consulta->bindValue(':data_msg',$mensagem->getData());
 			$consulta->execute();
+			return true;
         } catch (Exception $e) {
             print "Erro ao inserir Mensagem <br>" . $e . '<br>';
         }
@@ -90,10 +95,14 @@ class MensagemDAO{
 			$sql = 'UPDATE mensagem SET id_msg = :id_msg, id_chat = :id_chat, remetente = :remetente, texto = :texto, data = :data WHERE id_msg = :id_msg';
 			$consulta = Conexao::getConexao()->prepare($sql);
 			$consulta->bindValue(':id_msg',$mensagem->getId_msg()); 
-			$consulta->bindValue(':id_chat',$mensagem->getId_chat()); 
-			$consulta->bindValue(':remetente',$mensagem->getRemetente()); 
-			$consulta->bindValue(':texto',$mensagem->getTexto()); 
-			$consulta->bindValue(':data',$mensagem->getData());
+
+			$consulta->bindValue(':id_chat',$mensagem->getId_chat()); 
+
+			$consulta->bindValue(':remetente',$mensagem->getRemetente()); 
+
+			$consulta->bindValue(':texto',$mensagem->getTexto()); 
+
+			$consulta->bindValue(':data',$mensagem->getData());
 			$consulta->execute();			
         } catch (Exception $e) {
             print "Erro ao atualizar Mensagem <br>" . $e . '<br>';
