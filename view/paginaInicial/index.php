@@ -69,7 +69,7 @@ $destinatario = 22;
         <ul>
 
             <li>Minha Conta</li>
-            <li>
+            
                 <?php
 
                 if ($_SESSION['tipo_usuario'] == "admin") {
@@ -81,7 +81,7 @@ $destinatario = 22;
                 }
 
                 ?>
-            </li>
+            
             <li id="mensagens-btn">Mensagens</li>
             <li>Suporte</li>
             <form method="post" action="../../app/controller/UsuarioController.php">

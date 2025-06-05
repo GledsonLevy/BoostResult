@@ -19,20 +19,20 @@
 
 <body>
 
-<?php
+    <?php
     session_start();
     if (isset($_SESSION['erro_cadastro'])):
-    ?>
+        ?>
         <div class="container mt-4">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <?php echo $_SESSION['erro_cadastro']; ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
-    <?php
-    unset($_SESSION['erro_cadastro']);
+        <?php
+        unset($_SESSION['erro_cadastro']);
     endif;
-?>
+    ?>
 
     <div id="particles-js"></div>
 
@@ -152,92 +152,107 @@
                                 <div class="form-row">
                                     <div class="form-holder position-relative">
                                         <div class="input-group-container" style="position: relative;">
-                                            <input type="password" name="senha" id="senha" class="form-control" style="padding-right: 40px;" placeholder="Senha">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary toggle-password"
+                                            <input type="password" name="senha" id="senha" class="form-control"
+                                                style="padding-right: 40px;" placeholder="Senha">
+                                            <button type="button"
+                                                class="btn btn-sm btn-outline-secondary toggle-password"
                                                 data-target="senha"
                                                 style="position:absolute; right:10px; top:50%; transform:translateY(-50%);">👁</button>
                                         </div>
-                                        
+
                                     </div>
                                     <div class="form-holder position-relative">
                                         <div class="input-group-container" style="position: relative;">
-                                            <input type="password" placeholder="Confirmar Senha" class="form-control" id="confirmar-senha" style="padding-right: 40px;">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary toggle-password"
+                                            <input type="password" placeholder="Confirmar Senha" class="form-control"
+                                                id="confirmar-senha" style="padding-right: 40px;">
+                                            <button type="button"
+                                                class="btn btn-sm btn-outline-secondary toggle-password"
                                                 data-target="confirmar-senha"
                                                 style="position:absolute; right:10px; top:50%; transform:translateY(-50%); z-index: 2;">👁</button>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
 
                             </div>
                         </section>
 
-                <div class="session-wrapper">
-                    
-                    <section id="session3" class="session session-inner">
-                        <div class="inner">
-                            <div class="form-row">
-                                <div class="form-holder option-select">
-                                    <label class="option active" id="aluno-option">
-                                        <input type="radio" name="tipo" value="aluno" />
-                                        Aluno
-                                    </label>
+                        <div class="session-wrapper">
+
+                            <section id="session3" class="session session-inner">
+                                <div class="inner">
+                                    <div class="form-row">
+                                        <div class="form-holder option-select">
+                                            <label class="option" id="aluno-option">
+                                                <input type="radio" name="tipo" value="aluno" />
+                                                Aluno
+                                            </label>
+                                        </div>
+                                        <div class="form-holder option-select">
+                                            <label class="option" id="personal-option">
+                                                <input type="radio" name="tipo" value="personal" />
+                                                Personal
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-holder option-select">
-                                    <label class="option" id="personal-option">
-                                        <input type="radio" name="tipo" value="personal" />
-                                        Personal
-                                    </label>
-                                </div>
-                            </div>
+                            </section>
+
                         </div>
+
+
+                    </div>
                     </section>
 
-                </div>
-                
-                <section id="session4" class="session session-inner">
-                    <div class="inner">
-                        <span class="modal-close" id="modal-close">&times;</span>
-                        <div class="drag-handle">Dados necessários</div>
-                        <hr>
-                        
+                    <section id="session4" class="session session-inner">
+                        <div class="inner">
+                            <span class="modal-close" id="modal-close">&times;</span>
+                            <div class="drag-handle">Dados necessários</div>
+                            <hr>
+
                             <div class="form-row">
                                 <div class="form-holder form-holder-2">
-                                    <input type="text" placeholder="Certificação(CREF) 000000-G/UF " name="certificacao" class="form-control" id="certificacao">
+                                    <input type="text" placeholder="Certificação(CREF) 000000-G/UF " name="certificacao"
+                                        class="form-control" id="certificacao">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-holder">
-                                    <input type="text" placeholder="Especialidade(Opcional)" name="especialidade" class="form-control" id="especialidade">
+                                    <input type="text" placeholder="Especialidade(Opcional)" name="especialidade"
+                                        class="form-control" id="especialidade">
                                 </div>
-                                <li id="modal-btn" class="form-holder button-model buttonaction btn d-flex" aria-hidden="false" aria-disabled="false"><a href="#next"
-                                role="menuitem">Avançar <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/></svg></a></li>
+                                <li id="modal-btn" class="form-holder button-model buttonaction btn d-flex"
+                                    aria-hidden="false" aria-disabled="false"><a href="#next" role="menuitem">Avançar
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                            fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd"
+                                                d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
+                                        </svg></a></li>
                             </div>
 
                         </div>
-                        
-                    </div>          
-            </section>
+                    </section>
+                    <div class="actions clearfix form-row">
 
-                        
-            <div class="actions clearfix form-row">
+                        <ul role="menu" aria-label="Pagination" class="form-holder">
+                            <li id="botaoNext" aria-hidden="false" aria-disabled="false"><a href="#next"
+                                    role="menuitem">Next</a></li>
+                            <li id="botaoFinish" class="buttonaction" aria-hidden="true" style="display: none;"><a
+                                    href="#finish" role="menuitem">Finish</a></li>
+                            <input type="hidden" name="acao" value="CADASTRAR">
+                        </ul>
+                        <a href="../login/index.html" id="EntrarConta" class="form-holder">Já possui uma conta? Entre
+                            já.</a>
+                    </div>
+            </div>
 
-                    <ul role="menu" aria-label="Pagination" class="form-holder">
-                        <li id="botaoNext" aria-hidden="false" aria-disabled="false"><a href="#next"role="menuitem">Next</a></li>
-                        <li id="botaoFinish" class="buttonaction" aria-hidden="true" style="display: none;"><a href="#finish" role="menuitem">Finish</a></li>
-                        <input type="hidden" name="acao" value="CADASTRAR">
-                    </ul>
-                    <a href="../login/index.html" id="EntrarConta" class="form-holder">Já possui uma conta? Entre já.</a>
-                </div>
-            </div>                        
-
-    </form>
+            </form>
+        </div>
     </div>
-</div>
-    
-</div>
+
+    </div>
+
+
 
     <!-- SCRIPTS -->
 
@@ -274,15 +289,15 @@
                 $('#session4').hide();
                 $('input[value="aluno"]').prop('checked', true).closest('label').addClass('active');
                 $('input[value="personal"]').closest('label').removeClass('active');
-                
+
             });
 
             modalBtn.addEventListener('click', () => {
                 if (validarCamposEtapa4()) {
-                   $('#session4').hide();
+                    $('#session4').hide();
                 };
             });
-            
+
             var itemAtual = 1;
 
             function mudarPaginacao() {
@@ -332,27 +347,27 @@
 
             $('#botaoFinish').click(function () {
                 $('#session3').show();
-                
+
                 if (validarCamposEtapa3()) {
                     $('#formCadastro').submit();
                 }
             });
 
             $('.option').on('click', function () {
-            $('.option').removeClass('active');
-            $(this).addClass('active');
-            $(this).find('input').prop('checked', true);
+                $('.option').removeClass('active');
+                $(this).addClass('active');
+                $(this).find('input').prop('checked', true);
 
-            const tipoSelecionado = $(this).find('input').val();
+                const tipoSelecionado = $(this).find('input').val();
 
-            if (tipoSelecionado === 'aluno') {
-                $('#session4').hide(); 
-            } else if (tipoSelecionado === 'personal') {
-                if (itemAtual === 3) {
-                    $('#session4').css('display', 'flex');
+                if (tipoSelecionado === 'aluno') {
+                    $('#session4').hide();
+                } else if (tipoSelecionado === 'personal') {
+                    if (itemAtual === 3) {
+                        $('#session4').css('display', 'flex');
+                    }
                 }
-            }
-        });
+            });
 
             $('#botaoNext').on('click', function () {
                 itemAtual++;
@@ -380,7 +395,7 @@
             }
 
             function clearErrorMsg(input) {
-                
+
                 input.removeClass('is-invalid');
 
                 const formHolder = input.closest('.form-holder');
@@ -468,6 +483,11 @@
                     valido = false;
                 }
 
+                if (!confirmarSenha.val()) {
+                    showErrorMsg(senha, 'Senha é obrigatória')
+                }
+
+
                 if (senha.val() !== confirmarSenha.val()) {
                     showErrorMsg(confirmarSenha, 'As senhas não coincidem');
                     valido = false;
@@ -479,19 +499,19 @@
             function validarCamposEtapa3() {
                 const tipoSelecionado = $('input[name="tipo"]:checked').val();
                 if (tipoSelecionado == "personal") {
-                    if(!validarCamposEtapa4()){
+                    if (!validarCamposEtapa4()) {
                         return false;
-                    }else{
+                    } else {
                         return true;
                     }
-                    
+
                 }
                 return true;
             }
             function validarCamposEtapa4() {
                 let valido = true;
                 const certificacao = $('#certificacao');
-            
+
                 clearErrorMsg(certificacao);
 
                 const regexCREF = /^\d{4,6}-[A-Z]\/[A-Z]{2}$/;
