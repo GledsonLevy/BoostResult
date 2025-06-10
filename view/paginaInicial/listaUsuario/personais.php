@@ -99,6 +99,7 @@
                 item.innerHTML = `
                     <img src="https://via.placeholder.com/50" alt="Foto do personal">
                     <div class="nome">${usuario.nome}</div>
+                    
                 `;
 
                 container.appendChild(item);

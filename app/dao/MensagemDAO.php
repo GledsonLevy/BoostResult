@@ -71,21 +71,19 @@ class MensagemDAO{
 	//Insere um elemento na tabela
 	public function inserir(Mensagem $mensagem){
         try {
-			$sql = 'INSERT INTO mensagem (id_msg, remetente, destinatario, texto, data_msg) VALUES (:id_msg, :remetente, :destinatario, :texto, :data_msg)';
-			$consulta = Conexao::getConexao()->prepare($sql);
-			$consulta->bindValue(':id_msg',$mensagem->getId_msg()); 
+            // Remova 'id_msg' do INSERT se ele for AUTO_INCREMENT no seu banco de dados
+            $sql = 'INSERT INTO mensagem (remetente, destinatario, texto, data_msg) VALUES (:remetente, :destinatario, :texto, :data_msg)';
+            $consulta = Conexao::getConexao()->prepare($sql);
 
-			$consulta->bindValue(':remetente',$mensagem->getRemetente()); 
-
-			$consulta->bindValue(':destinatario',$mensagem->getDestinatario()); 
-
-			$consulta->bindValue(':texto',$mensagem->getTexto()); 
-
-			$consulta->bindValue(':data_msg',$mensagem->getData());
-			$consulta->execute();
-			return true;
-        } catch (Exception $e) {
-            print "Erro ao inserir Mensagem <br>" . $e . '<br>';
+            $consulta->bindValue(':remetente',$mensagem->getRemetente());
+            $consulta->bindValue(':destinatario',$mensagem->getDestinatario());
+            $consulta->bindValue(':texto',$mensagem->getTexto());
+            $consulta->bindValue(':data_msg',$mensagem->getData());
+            $consulta->execute();
+            return true;
+        } catch (PDOException $e) { // Use PDOException para erros de PDO
+            error_log("Erro ao inserir Mensagem: " . $e->getMessage()); // Registra o erro no log
+            return false;
         }
 	}
 	

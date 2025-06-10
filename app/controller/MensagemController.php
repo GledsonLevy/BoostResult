@@ -9,9 +9,9 @@
     $mensagem = new Mensagem();
     $mensagemDAO	= new MensagemDAO();
 
-
+    header('Content-Type: application/json');
     $m= filter_input_array(INPUT_POST);
-
+    
     // Verifica se pesquisaram alguma coisa.
     if(isset($_GET['pesquisa'])&&!empty($_GET['pesquisa'])){
       $mensagems = $mensagemDAO->buscar("id_msg",$_GET['pesquisa']);  
@@ -25,21 +25,19 @@
     if (isset($_POST['acao']) && $_POST['acao'] == "INSERIR") {
     // Pegando o texto da mensagem (do POST via JS)
     $textoMensagem = filter_var($_POST['texto'] ?? '', FILTER_SANITIZE_STRING);
-
+    // Pegando o ID do remetente
+    $remetente = $_SESSION['id_user'] ?? null;
     // Pegando o ID do destinatário (do POST via JS)
     $destinatario = filter_var($_POST['destinatario'] ?? '', FILTER_SANITIZE_NUMBER_INT);
 
-    // Pegando o ID do chat (se ele também for enviado via POST pelo JS ou de outra fonte)
-    // Se o id_chat for de um campo oculto, pegue ele do $_POST também.
-    // Ex: <input type="hidden" id="chat-id-hidden" value="<?php echo $id_chat_php;
-
-    // Pegando o remetente da sessão (usuário logado)
-    $remetente = $_SESSION['id_user'] ?? '';
+    // Pegando o remetente da sessão (usuário logado) - Já definido acima
+    // $remetente = $_SESSION['id_user'] ?? ''; // Esta linha se torna redundante aqui
 
     // Validações básicas:
-    if (empty($remetente) || empty($destinatario) || empty($textoMensagem)) {
-        // Redireciona com erro se algum dado essencial estiver faltando
-        header("Location: ../../mensagem.php?msg=erro_dados_faltando");
+    // A validação de $remetente já foi feita no início do script.
+    if (empty($destinatario) || empty($textoMensagem)) {
+        // Retorna JSON para o JS em vez de redirecionar
+        echo json_encode(['status' => 'error', 'message' => 'Dados essenciais faltando para inserir a mensagem.']);
         exit();
     }
 
@@ -47,19 +45,19 @@
     // id_msg: Se for auto-incrementável no BD, não precisa setar.
     // $mensagem->setId_msg(null); // Ou um ID gerado
 
-    $mensagem->setRemetente($remetente);
+    $mensagem->setRemetente($remetente); // Usa o $remetente obtido da sessão
     $mensagem->setDestinatario($destinatario);
     $mensagem->setTexto($textoMensagem);
     $mensagem->setData(date('Y-m-d H:i:s')); // Data e hora atuais (definida no PHP)
 
     // Chamando o DAO para inserir
     if ($mensagemDAO->inserir($mensagem)) {
-        // Sucesso na inserção
-        header("Location: ../../mensagem.php?msg=adicionado");
+        // Sucesso na inserção - Retorna JSON
+        echo json_encode(['status' => 'success', 'message' => 'Mensagem enviada com sucesso!']);
         exit();
     } else {
-        // Erro na inserção
-        header("Location: ../../mensagem.php?msg=erro_insercao");
+        // Erro na inserção - Retorna JSON
+        echo json_encode(['status' => 'error', 'message' => 'Erro ao inserir mensagem no banco de dados.']);
         exit();
     }
 }

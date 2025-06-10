@@ -1,10 +1,5 @@
 <?php
 session_start();
-if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
-    header("Location: ../../index.php");
-    exit();
-}
-
 $destinatario = 22;
 ?>
 
@@ -53,18 +48,16 @@ $destinatario = 22;
         <div class="chat">
             <div class="interacao-panel" id="interacao-panel">
                 <div class="interacao-conteudo" id="interacao-conteudo">
-
-                </div>
+                    </div>
                 <div class="interacao-input">
                     <input type="text" id="mensagem" placeholder="Digite sua mensagem...">
                     <button id="enviar-msg">Enviar</button>
                 </div>
-
-                <input type="hidden" id="destinatario-id-hidden" value="<?php echo $destinatario; ?>">
-            </div>
-
+                <input type="hidden" id="destinatario-id-hidden" value="22">
+                </div>
         </div>
     </div>
+
     <div class="sidebar">
         <ul>
 
@@ -152,7 +145,6 @@ $destinatario = 22;
                 <div id="underline-indicator"></div>
             </div>
 
-            <iframe id="myIframe" src="https://www.example.com"></iframe>
         </div>
     </div>
 
