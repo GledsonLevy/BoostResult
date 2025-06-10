@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/style.css" />
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
 </head>
 
 
@@ -61,6 +62,10 @@
         };
         requestAnimationFrame(update);
     </script>
+
+    <div class="alert alert-danger alert-dismissible position-fixed start-50 translate-middle-x" style="top: 10%; z-index: 1055;" role="alert" id="alert-error">
+        <strong></strong><span class="alert-msg"></span>
+    </div>
 
     <div class="page-content">
 
@@ -116,13 +121,14 @@
                             <div class="inner">
                                 <div class="form-row">
                                     <div class="form-holder form-holder-2">
-                                        <input type="text" placeholder="Nome" name="nome" class="form-control"
-                                            id="nome">
+                                        <input type="text" placeholder="Nome" name="nome" class="form-control" id="nome">
+                                        <div class="error-message text-danger error-input" style="font-size: 15px; margin-top: 4px;"></div>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-holder">
                                         <input type="date" placeholder="Data de Nascimento" name="idade" id="data">
+                                        <div class="error-message text-danger error-input" style="font-size: 15px; margin-top: 4px;"></div>
                                     </div>
                                     <div class="form-holder">
                                         <select name="sexo" id="sexo" class="form-control">
@@ -131,6 +137,7 @@
                                             <option value="feminino">Feminino</option>
                                             <option value="pnd">Prefiro não dizer</option>
                                         </select>
+                                        <div class="error-message text-danger error-input" style="font-size: 15px; margin-top: 4px;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -141,8 +148,8 @@
                             <div class="inner">
                                 <div class="form-row">
                                     <div class="form-holder">
-                                        <input type="email" placeholder="Email" name="email" class="form-control"
-                                            id="email">
+                                        <input type="email" placeholder="Email" name="email" class="form-control" id="email">
+                                        <div class="error-message text-danger error-input" style="font-size: 15px; margin-top: 4px;"></div>
                                     </div>
                                     <div class="form-holder">
                                         <input type="tel" placeholder="Telefone" name="telefone" class="form-control"
@@ -153,6 +160,7 @@
                                     <div class="form-holder position-relative">
                                         <div class="input-group-container" style="position: relative;">
                                             <input type="password" name="senha" id="senha" class="form-control" style="padding-right: 40px;" placeholder="Senha">
+                                            <div class="error-message text-danger error-input" style="font-size: 15px; margin-top: 4px;"></div>
                                             <button type="button" class="btn btn-sm btn-outline-secondary toggle-password"
                                                 data-target="senha"
                                                 style="position:absolute; right:10px; top:50%; transform:translateY(-50%);">👁</button>
@@ -162,6 +170,7 @@
                                     <div class="form-holder position-relative">
                                         <div class="input-group-container" style="position: relative;">
                                             <input type="password" placeholder="Confirmar Senha" class="form-control" id="confirmar-senha" style="padding-right: 40px;">
+                                            <div class="error-message text-danger error-input" style="font-size: 15px; margin-top: 4px;"></div>
                                             <button type="button" class="btn btn-sm btn-outline-secondary toggle-password"
                                                 data-target="confirmar-senha"
                                                 style="position:absolute; right:10px; top:50%; transform:translateY(-50%); z-index: 2;">👁</button>
@@ -190,36 +199,16 @@
                                         Personal
                                     </label>
                                 </div>
+                                <input type="hidden" name="certificacao" id="certificacao">
+                                <input type="hidden" name="especialidade" id="especialidade">
                             </div>
                         </div>
                     </section>
 
                 </div>
                 
-                <section id="session4" class="session session-inner">
-                    <div class="inner">
-                        <span class="modal-close" id="modal-close">&times;</span>
-                        <div class="drag-handle">Dados necessários</div>
-                        <hr>
-                        
-                            <div class="form-row">
-                                <div class="form-holder form-holder-2">
-                                    <input type="text" placeholder="Certificação(CREF) 000000-G/UF " name="certificacao" class="form-control" id="certificacao">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-holder">
-                                    <input type="text" placeholder="Especialidade(Opcional)" name="especialidade" class="form-control" id="especialidade">
-                                </div>
-                                <li id="modal-btn" class="form-holder button-model buttonaction btn d-flex" aria-hidden="false" aria-disabled="false"><a href="#next"
-                                role="menuitem">Avançar <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/></svg></a></li>
-                            </div>
-
-                        </div>
-                        
-                    </div>          
-            </section>
+                
+                
 
                         
             <div class="actions clearfix form-row">
@@ -235,11 +224,33 @@
 
     </form>
     </div>
-</div>
     
 </div>
+</div>
+        <section id="session4" class="session session-inner">
+                    <div class="inner">
+                        <span class="modal-close" id="modal-close">&times;</span>
+                        <div class="drag-handle">Dados necessários</div>
+                        <hr>
+                        
+                            <div class="form-row">
+                                <div class="form-holder form-holder-2">
+                                    <input type="text" placeholder="Certificação(CREF) 000000-G/UF " name="certificacao" class="form-control" id="certSession4">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-holder">
+                                    <input type="text" placeholder="Especialidade(Opcional)" name="especialidade" class="form-control" id="espSession4">
+                                </div>
+                                <li id="modal-btn" class="form-holder button-model buttonaction btn d-flex" aria-hidden="false" aria-disabled="false"><a href="#next"
+                                role="menuitem">Avançar <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/></svg></a></li>
+                            </div>
 
-    <!-- SCRIPTS -->
+                        </div>
+                        
+                    </div>          
+            </section>   
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
@@ -248,14 +259,27 @@
 
     <script>
         $(document).ready(function () {
-
+            var contError  = new Array();
             const telefone = document.getElementById('telefone');
             const session4 = document.getElementById('session4');
             const modalClose = document.getElementById('modal-close');
             const modalBtn = document.getElementById('modal-btn');
+            const alert = $("#alert-error");
+            alert.hide();
             $('#session4').hide();
+            
+            
 
+            modalBtn.addEventListener('click', function() {
+                
+                const certfic = document.getElementById('certSession4').value;
+                const especial = document.getElementById('espSession4').value;
 
+                
+                document.getElementById('certificacao').value = certfic;
+                document.getElementById('especialidade').value = especial;
+            });
+            
             telefone.addEventListener('input', function (e) {
                 let v = e.target.value.replace(/\D/g, '');
 
@@ -279,7 +303,7 @@
 
             modalBtn.addEventListener('click', () => {
                 if (validarCamposEtapa4()) {
-                   $('#session4').hide();
+                   $('#session4').fadeOut();
                 };
             });
             
@@ -318,7 +342,7 @@
                         if ($('input[name="tipo"]:checked').val() === 'personal') {
                             $('#session4').css('display', 'flex');
                         } else {
-                            $('#session4').hide();
+                            $('#session4').fadeIn();
                         }
                         $('#session3').show();
                         $('#session1, #session2').hide();
@@ -339,20 +363,20 @@
             });
 
             $('.option').on('click', function () {
-            $('.option').removeClass('active');
-            $(this).addClass('active');
-            $(this).find('input').prop('checked', true);
+                $('.option').removeClass('active');
+                $(this).addClass('active');
+                $(this).find('input').prop('checked', true);
 
-            const tipoSelecionado = $(this).find('input').val();
+                const tipoSelecionado = $(this).find('input').val();
 
-            if (tipoSelecionado === 'aluno') {
-                $('#session4').hide(); 
-            } else if (tipoSelecionado === 'personal') {
-                if (itemAtual === 3) {
-                    $('#session4').css('display', 'flex');
+                if (tipoSelecionado === 'aluno') {
+                    $('#session4').hide(); 
+                } else if (tipoSelecionado === 'personal') {
+                    if (itemAtual === 3) {
+                        $('#session4').css('display', 'flex');
+                    }
                 }
-            }
-        });
+            });
 
             $('#botaoNext').on('click', function () {
                 itemAtual++;
@@ -371,22 +395,29 @@
                 input.attr('type', tipoAtual === 'password' ? 'text' : 'password');
             });
 
+
             function showErrorMsg(input, message) {
-                clearErrorMsg(input);
-
-                const error = $('<div class="error-message text-danger" style="font-size: 15px; margin-top: 4px;">' + message + '</div>');
-
-                input.closest('.form-holder').append(error);
+                contError.push(message);
+                if (contError.length >= 1) {
+                    console.log(contError);
+                    alert.find('strong').text('Erro! ');
+                    alert.find('.alert-msg').text('Verifique os campos para continuar!');
+                    alert.show();
+                    clearMsg(contError);
+                }else{
+                    alert.find('strong').text('Erro! ');
+                    alert.find('.alert-msg').text(message);
+                    alert.show();
+                    clearMsg(contError);
+                }
+                
             }
 
-            function clearErrorMsg(input) {
-                
-                input.removeClass('is-invalid');
-
-                const formHolder = input.closest('.form-holder');
-                formHolder.find('.error-message').remove();
-
-                formHolder.css('margin-bottom', '');
+            function clearMsg(array){
+                array.length = 0;
+                setTimeout(function() {
+                    alert.fadeOut();
+                }, 3000);
             }
 
             function calculateAge(dateString) {
@@ -405,10 +436,6 @@
                 const nome = $('#nome');
                 const data_nasc = $('#data');
                 const sexo = $('#sexo');
-
-                clearErrorMsg(nome);
-                clearErrorMsg(data_nasc);
-                clearErrorMsg(sexo);
 
                 if (!nome.val().trim()) {
                     showErrorMsg(nome, 'Nome é obrigatório');
@@ -442,10 +469,6 @@
 
                 const confirmarSenha = $('#confirmar-senha');
 
-                clearErrorMsg(email);
-                clearErrorMsg(telefone);
-                clearErrorMsg(senha);
-                clearErrorMsg(confirmarSenha);
 
                 if (!email.val().trim()) {
                     showErrorMsg(email, 'Email é obrigatório');
@@ -491,8 +514,6 @@
             function validarCamposEtapa4() {
                 let valido = true;
                 const certificacao = $('#certificacao');
-            
-                clearErrorMsg(certificacao);
 
                 const regexCREF = /^\d{4,6}-[A-Z]\/[A-Z]{2}$/;
 
@@ -507,7 +528,7 @@
                 return valido;
             }
 
-        });
+    });
 
     </script>
 

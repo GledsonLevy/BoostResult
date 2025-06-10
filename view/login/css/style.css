@@ -241,8 +241,11 @@ a.tabletitle span{
 	width: 100%;
 	position: relative;
 }
+
 .inner .form-row .form-holder input,
 .inner .form-row .form-holder select {
+    position: absolute;
+    top: 0%;
     width: 100%;
     background-color: #ffff !important;
     padding: 14px 15px;
