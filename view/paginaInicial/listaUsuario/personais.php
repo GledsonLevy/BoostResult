@@ -67,7 +67,7 @@
 
     <script>
     window.addEventListener('DOMContentLoaded', () => {
-        fetch('../../../app/controller/UsuarioController.php', {
+        fetch('../../app/controller/UsuarioController.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -97,9 +97,10 @@
                 item.classList.add('personal');
 
                 item.innerHTML = `
+                <div onclick='abrirModal(this.id)' id='${usuario.id_user}'>
                     <img src="https://via.placeholder.com/50" alt="Foto do personal">
                     <div class="nome">${usuario.nome}</div>
-                    
+                </div>
                 `;
 
                 container.appendChild(item);
@@ -112,6 +113,6 @@
         });
     });
     </script>
-
+    <script src="../script.js"></script>
 </body>
 </html>

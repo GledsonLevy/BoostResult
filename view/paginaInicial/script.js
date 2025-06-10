@@ -103,3 +103,7 @@ window.addEventListener("load", function () {
     }
 });
 
+function abrirModal(id) {
+    document.getElementById('chat-panel').classList.add('open');
+ 
+}

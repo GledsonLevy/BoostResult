@@ -67,7 +67,7 @@
 
     <script>
     window.addEventListener('DOMContentLoaded', () => {
-        fetch('../../../app/controller/UsuarioController.php', {
+        fetch('../../app/controller/UsuarioController.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -97,7 +97,7 @@
                 item.classList.add('alunos');
 
                 item.innerHTML = `
-                    <img src="https://via.placeholder.com/50" alt="Foto do alunos">
+                    
                     <div class="nome">${usuario.nome}</div>
                 `;
 

@@ -1,6 +1,15 @@
 <?php
 session_start();
 $destinatario = 22;
+include("../../app/conexao/Conexao.php");
+include("../../app/dao/UsuarioDAO.php");
+include("../../app/model/Usuario.php");
+
+$usuarioDAO = new UsuarioDAO();
+$alunos = $usuarioDAO->buscarTipo('aluno');
+$personais = $usuarioDAO->buscarTipo('personal');
+
+
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +21,77 @@ $destinatario = 22;
     <title>BoostResult</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+         body {
+            font-family: sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+            margin: 0;
+        }
 
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .lista-personais {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .personal {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .alunos {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .alunos:last-child {
+            border-bottom: none;
+        }
+
+        .alunos img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .personal:last-child {
+            border-bottom: none;
+        }
+
+        .personal img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .nome {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .mensagem {
+            text-align: center;
+            color: #888;
+            padding: 20px;
+        }
+    </style>
 </head>
 
 <body>
@@ -31,14 +110,24 @@ $destinatario = 22;
     <div class="personais-panel" id="personais-panel">
         <button class="close-btn" id="close-personais-btn">X</button>
         <div class="message">
-            <iframe src="listaUsuario/personais.php" frameborder="0"></iframe>
+            <?php foreach($personais as $personal){ ?>
+                <div class="personal" onclick="abrirModal(this.id)" id="<?=$personal['id_user']?>">
+                    <div class="nome"><?=$personal['nome']?></div>
+                </div>
+
+            <?php } ?>
         </div>
     </div>
 
     <div class="alunos-panel" id="alunos-panel">
         <button class="close-btn" id="close-alunos-btn">X</button>
         <div class="message">
-            <iframe src="listaUsuario/alunos.php" frameborder="0"></iframe>
+            <?php foreach($alunos as $aluno){ ?>
+                <div class="alunos" onclick="abrirModal(this.id)" id="<?=$aluno['id_user']?>">
+                    <div class="nome"><?=$aluno['nome']?></div>
+                </div>
+
+            <?php } ?>
         </div>
     </div>
 
@@ -49,11 +138,11 @@ $destinatario = 22;
             <div class="interacao-panel" id="interacao-panel">
                 <div class="interacao-conteudo" id="interacao-conteudo">
                     </div>
-                <div class="interacao-input">
+                <form class="interacao-input">
                     <input type="text" id="mensagem" placeholder="Digite sua mensagem...">
+                    <input type="hidden" id="destinatario-id-hidden" value="">
                     <button id="enviar-msg">Enviar</button>
-                </div>
-                <input type="hidden" id="destinatario-id-hidden" value="22">
+                </form>
                 </div>
         </div>
     </div>
