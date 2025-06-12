@@ -13,6 +13,15 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
+    <?php
+        session_start();
+        $mensagem = '';
+
+        if (!empty($_SESSION['erro_login'])) {
+            $mensagem = $_SESSION['erro_login'];
+            unset($_SESSION['erro_login']);
+        }
+    ?>
 
     <div id="particles-js"></div>
 
@@ -43,6 +52,13 @@
     </script>
 
 <div class="page-content">
+
+    <div id="alert-msg" class="alert alert-warning alert-dismissible position-fixed start-50 translate-middle-x hidden" style="top: 10%; display: none; z-index: 1055;" role="alert">
+            <strong>Error!</strong> 
+            <button id="closeAlert" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
     
         <div class="wizard-v2-content">
             <div id="autoCarousel" class="carousel slide col-md-6 d-none d-md-block" data-bs-ride="carousel">
@@ -105,12 +121,23 @@
 <script>
     var itemAtual = 1;
     $(document).ready(function () {
-       
+            
+            const $alertMsg = $('#alert-msg');
+            let contError = 0;
 
-            $('#botaoFinish').click(function(){
-                $('#formCadastro').submit();
+            var mensagem = <?php echo json_encode($mensagem); ?>;
+            if (mensagem != '') {
+                showErrorMsg(null, mensagem, 'danger');
+            }
+
+            $alertMsg.hide();
+
+            $('#botaoFinish').on('click', function () {
+                if (validarCampos()) {
+                    $('#formCadastro').submit();
+                }
             });
-
+            
             $('#botaoFinish').show();
 
             $('.toggle-password').click(function () {
@@ -120,115 +147,70 @@
                 input.attr('type', tipoAtual === 'password' ? 'text' : 'password');
             });
 
+            function validarCampos() {
+                let valido = true;
+                const $email = $('#email');
+                const $senha = $('#senha');
+
+                clearErrorMsg($email);
+                clearErrorMsg($senha);
+
+                if (!$email.val().trim()) {
+                    contError++;
+                    showErrorMsg($email, 'Digite um valor válido', 'danger');
+                    valido = false;
+                } else if (!/^\S+@\S+\.\S+$/.test($email.val())) {
+                    contError++;
+                    showErrorMsg($email, 'Formato de email inválido', 'danger');
+                    valido = false;
+                }
+
+                if (!$senha.val()) {
+                    contError++;
+                    showErrorMsg($senha, 'Senha é obrigatória', 'danger');
+                    valido = false;
+                } else if ($senha.val().length < 6) {
+                    contError++;
+                    showErrorMsg($senha, 'Senha deve ter pelo menos 6 caracteres', 'danger');
+                    valido = false;
+                }
+
+                return valido;
+            }
+
+            function showErrorMsg($input, mensagem, tipo) {
+                if ($input != null) {
+                    clearErrorMsg($input);
+                    if (tipo === 'danger') {
+                    $input.addClass('error-input');
+                }}
+                let titulo;
+                $alertMsg.removeClass('alert-success alert-danger alert-warning alert-info');
+                $alertMsg.addClass(`alert alert-${tipo}`);
+
+                if (contError > 1) {
+                    $alertMsg.html(`<strong>Atenção:</strong> Verifique os dados do formulário!`);
+                }else{
+                    titulo = tipo === 'success' ? 'Sucesso!' : tipo === 'danger' ? 'Atenção!' : tipo === 'info' ? 'Informação:' : 'Atenção!';
+                    $alertMsg.html(`<strong>${titulo}</strong> ${mensagem}`);
+                }
+                
+                $alertMsg.fadeIn();
+                setTimeout(() => {
+                    $alertMsg.fadeOut();
+                    contError = 0;
+                }, 4000);
+
+            }
+
+            function clearErrorMsg($input) {
+                $input.removeClass('error-input');
+            }
    
     });
 
 
-function showErrorMsg(input, message) {
-    clearErrorMsg(input);
-    input.addClass('is-invalid');
-    input.after('<span class="error-message" style="color:#dc3545; position: position relative; font-size:15px;">' + message + '</span>');
-}
 
-function clearErrorMsg(input) {
-    input.removeClass('is-invalid');
-    input.siblings('.error-message').remove();
-}
-
-function calculateAge(dateString) {
-    const today = new Date();
-    const birthDate = new Date(dateString);
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-    }
-    return age;
-}
-
-function validarCamposEtapa1() {
-    let valido = true;
-    const nome = $('#nome');
-    const data_nasc = $('#data');
-    const sexo = $('#sexo');
-
-    clearErrorMsg(nome);
-    clearErrorMsg(data_nasc);
-    clearErrorMsg(sexo);
-
-    if (!nome.val().trim()) {
-        showErrorMsg(nome, 'Nome é obrigatório');
-        valido = false;
-    }
-
-    if (!data_nasc.val()) {
-        showErrorMsg(data_nasc, 'Data inválida');
-        valido = false;
-    } else {
-        const age = calculateAge(data_nasc.val());
-        if (age < 5 || age > 120) {
-            showErrorMsg(data_nasc, 'Idade inválida');
-            valido = false;
-        }
-    }
-
-    if (!sexo.val()) {
-        showErrorMsg(sexo, 'Selecione uma opção');
-        valido = false;
-    }
-
-    return valido;
-}
-
-function validarCamposEtapa2() {
-    let valido = true;
-    const email = $('#email');
-    const telefone = $('#telefone');
-    const senha = $('#senha');
-    const confirmarSenha = $('#confirmar-senha');
-
-    clearErrorMsg(email);
-    clearErrorMsg(telefone);
-    clearErrorMsg(senha);
-    clearErrorMsg(confirmarSenha);
-
-    if (!email.val().trim()) {
-        showErrorMsg(email, 'Email é obrigatório');
-        valido = false;
-    } else if (!/^\S+@\S+\.\S+$/.test(email.val())) {
-        showErrorMsg(email, 'Formato de email inválido');
-        valido = false;
-    }
-
-    if (!telefone.val().trim()) {
-        showErrorMsg(telefone, 'Telefone é obrigatório');
-        valido = false;
-    }
-
-    if (!senha.val()) {
-        showErrorMsg(senha, 'Senha é obrigatória');
-        valido = false;
-    } else if (senha.val().length < 6) {
-        showErrorMsg(senha, 'Senha deve ter pelo menos 6 caracteres');
-        valido = false;
-    }
-
-    if (senha.val() !== confirmarSenha.val()) {
-        showErrorMsg(confirmarSenha, 'As senhas não coincidem');
-        valido = false;
-    }
-
-    return valido;
-}
-
-function validarCamposEtapa3() {
-    const tipoSelecionado = $('input[name="tipo"]:checked').val();
-    if (!tipoSelecionado) {
-        alert("Selecione se você é aluno ou personal.");
-        return false;
-    }
-    return true;
-}
 
 </script>
 

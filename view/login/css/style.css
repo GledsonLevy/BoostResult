@@ -76,6 +76,24 @@ body {
     transition: ease-in-out 800ms;
 }
 
+.hidden {
+  display: none;
+}
+
+.error-input {
+  border: 2px solid var(--red-error) !important; /* vermelho Bootstrap */
+  border-radius: 4px;
+  background-color: #fff0f0; /* leve fundo rosado opcional */
+  box-shadow: 0 0 4px rgba(220, 53, 69, 0.5); /* sombra sutil */
+  transition: all 0.3s ease-in-out;
+}
+
+/* Para melhorar acessibilidade em foco */
+.error-input:focus {
+  outline: none;
+  box-shadow: 0 0 6px rgba(220, 53, 69, 0.7);
+}
+
 #autoCarousel {
     width: 40%;
 }

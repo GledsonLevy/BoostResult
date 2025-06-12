@@ -19,19 +19,14 @@
 
 <body>
 
-    <?php
-    session_start();
-    if (isset($_SESSION['erro_cadastro'])):
-        ?>
-        <div class="container mt-4">
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <?php echo $_SESSION['erro_cadastro']; ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        </div>
-        <?php
-        unset($_SESSION['erro_cadastro']);
-    endif;
+   <?php
+        session_start();
+        $mensagem = '';
+
+        if (!empty($_SESSION['erro_cadastro'])) {
+            $mensagem = $_SESSION['erro_cadastro'];
+            unset($_SESSION['erro_cadastro']);
+        }
     ?>
 
     <div id="particles-js"></div>
@@ -63,6 +58,13 @@
     </script>
 
     <div class="page-content">
+
+        <div id="alert-msg" class="alert alert-warning alert-dismissible position-fixed start-50 translate-middle-x hidden" style="top: 10%; display: none; z-index: 1055;" role="alert">
+            <strong>Error!</strong> 
+            <button id="closeAlert" type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
 
         <div class="wizard-v2-content">
 
@@ -182,9 +184,9 @@
                             <section id="session3" class="session session-inner">
                                 <div class="inner">
                                     <div class="form-row">
-                                        <div class="form-holder option-select">
-                                            <label class="option" id="aluno-option">
-                                                <input type="radio" name="tipo" value="aluno" />
+                                        <div class="form-holder option-select ">
+                                            <label class="option active" id="aluno-option">
+                                                <input type="radio" name="tipo" value="aluno" checked />
                                                 Aluno
                                             </label>
                                         </div>
@@ -204,11 +206,10 @@
                     </div>
                     </section>
 
-                    <section id="session4" class="session session-inner">
+                    <section id="session4" class="session session-inner hidden">
                         <div class="inner">
                             <span class="modal-close" id="modal-close">&times;</span>
                             <div class="drag-handle">Dados necessários</div>
-                            <hr>
 
                             <div class="form-row">
                                 <div class="form-holder form-holder-2">
@@ -260,45 +261,48 @@
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/jquery.steps.js"></script>
     <script src="js/jquery-ui.min.js"></script>
-
     <script>
         $(document).ready(function () {
+            const $telefone = $('#telefone');
+            const $alertMsg = $('#alert-msg');
+            const $modalClose = $('#modal-close');
+            const $modalBtn = $('#modal-btn');
+            let contError = 0;
 
-            const telefone = document.getElementById('telefone');
-            const session4 = document.getElementById('session4');
-            const modalClose = document.getElementById('modal-close');
-            const modalBtn = document.getElementById('modal-btn');
+            $alertMsg.hide();
             $('#session4').hide();
 
+            var mensagem = <?php echo json_encode($mensagem); ?>;
+            if (mensagem != '') {
+                showErrorMsg(null, mensagem, 'danger');
+            }
 
-            telefone.addEventListener('input', function (e) {
-                let v = e.target.value.replace(/\D/g, '');
+            let itemAtual = 1;
 
+            $telefone.on('input', function () {
+                let v = $(this).val().replace(/\D/g, '');
                 if (v.length > 11) v = v.slice(0, 11);
 
                 if (v.length > 6) {
-                    e.target.value = `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`;
+                    $(this).val(`(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`);
                 } else if (v.length > 2) {
-                    e.target.value = `(${v.slice(0, 2)}) ${v.slice(2)}`;
+                    $(this).val(`(${v.slice(0, 2)}) ${v.slice(2)}`);
                 } else if (v.length > 0) {
-                    e.target.value = `(${v}`;
+                    $(this).val(`(${v}`);
                 }
             });
 
-            modalClose.addEventListener('click', () => {
+            $modalClose.on('click', function () {
                 $('#session4').hide();
                 $('input[value="aluno"]').prop('checked', true).closest('label').addClass('active');
                 $('input[value="personal"]').closest('label').removeClass('active');
-
             });
 
-            modalBtn.addEventListener('click', () => {
+            $modalBtn.on('click', function () {
                 if (validarCamposEtapa4()) {
                     $('#session4').hide();
-                };
+                }
             });
-
-            var itemAtual = 1;
 
             function mudarPaginacao() {
                 switch (itemAtual) {
@@ -345,9 +349,8 @@
 
             mudarPaginacao();
 
-            $('#botaoFinish').click(function () {
+            $('#botaoFinish').on('click', function () {
                 $('#session3').show();
-
                 if (validarCamposEtapa3()) {
                     $('#formCadastro').submit();
                 }
@@ -362,10 +365,8 @@
 
                 if (tipoSelecionado === 'aluno') {
                     $('#session4').hide();
-                } else if (tipoSelecionado === 'personal') {
-                    if (itemAtual === 3) {
-                        $('#session4').css('display', 'flex');
-                    }
+                } else if (tipoSelecionado === 'personal' && itemAtual === 3) {
+                    $('#session4').css('display', 'flex');
                 }
             });
 
@@ -379,29 +380,40 @@
                 mudarPaginacao();
             });
 
-            $('.toggle-password').click(function () {
+            $('.toggle-password').on('click', function () {
                 const targetId = $(this).data('target');
-                const input = $('#' + targetId);
-                const tipoAtual = input.attr('type');
-                input.attr('type', tipoAtual === 'password' ? 'text' : 'password');
+                const $input = $('#' + targetId);
+                const tipoAtual = $input.attr('type');
+                $input.attr('type', tipoAtual === 'password' ? 'text' : 'password');
             });
 
-            function showErrorMsg(input, message) {
-                clearErrorMsg(input);
+            function showErrorMsg($input, mensagem, tipo) {
+                if ($input != null) {
+                    clearErrorMsg($input);
+                    if (tipo === 'danger') {
+                    $input.addClass('error-input');
+                }}
+                let titulo;
+                $alertMsg.removeClass('alert-success alert-danger alert-warning alert-info');
+                $alertMsg.addClass(`alert alert-${tipo}`);
 
-                const error = $('<div class="error-message text-danger" style="font-size: 15px; margin-top: 4px;">' + message + '</div>');
+                if (contError > 1) {
+                    $alertMsg.html(`<strong>Atenção:</strong> Verifique os dados do formulário!`);
+                }else{
+                    titulo = tipo === 'success' ? 'Sucesso!' : tipo === 'danger' ? 'Atenção!' : tipo === 'info' ? 'Informação:' : 'Atenção!';
+                    $alertMsg.html(`<strong>${titulo}</strong> ${mensagem}`);
+                }
+                
+                $alertMsg.fadeIn();
+                setTimeout(() => {
+                    $alertMsg.fadeOut();
+                    contError = 0;
+                }, 4000);
 
-                input.closest('.form-holder').append(error);
             }
 
-            function clearErrorMsg(input) {
-
-                input.removeClass('is-invalid');
-
-                const formHolder = input.closest('.form-holder');
-                formHolder.find('.error-message').remove();
-
-                formHolder.css('margin-bottom', '');
+            function clearErrorMsg($input) {
+                $input.removeClass('error-input');
             }
 
             function calculateAge(dateString) {
@@ -417,32 +429,36 @@
 
             function validarCamposEtapa1() {
                 let valido = true;
-                const nome = $('#nome');
-                const data_nasc = $('#data');
-                const sexo = $('#sexo');
+                const $nome = $('#nome');
+                const $data_nasc = $('#data');
+                const $sexo = $('#sexo');
 
-                clearErrorMsg(nome);
-                clearErrorMsg(data_nasc);
-                clearErrorMsg(sexo);
+                clearErrorMsg($nome);
+                clearErrorMsg($data_nasc);
+                clearErrorMsg($sexo);
 
-                if (!nome.val().trim()) {
-                    showErrorMsg(nome, 'Nome é obrigatório');
+                if (!$nome.val().trim()) {
+                    contError++;
+                    showErrorMsg($nome, 'Nome é obrigatório', 'danger');
                     valido = false;
                 }
 
-                if (!data_nasc.val()) {
-                    showErrorMsg(data_nasc, 'Data inválida');
+                if (!$data_nasc.val()) {
+                    contError++;
+                    showErrorMsg($data_nasc, 'Data inválida', 'danger');
                     valido = false;
                 } else {
-                    const age = calculateAge(data_nasc.val());
+                    const age = calculateAge($data_nasc.val());
                     if (age < 5 || age > 120) {
-                        showErrorMsg(data_nasc, 'Idade inválida');
+                        contError++;
+                        showErrorMsg($data_nasc, 'Idade inválida', 'danger');
                         valido = false;
                     }
                 }
 
-                if (!sexo.val()) {
-                    showErrorMsg(sexo, 'Selecione uma opção');
+                if (!$sexo.val()) {
+                    contError++;
+                    showErrorMsg($sexo, 'Selecione uma opção', 'danger');
                     valido = false;
                 }
 
@@ -451,45 +467,49 @@
 
             function validarCamposEtapa2() {
                 let valido = true;
-                const email = $('#email');
-                const telefone = $('#telefone');
-                const senha = $('#senha');
+                const $email = $('#email');
+                const $telefone = $('#telefone');
+                const $senha = $('#senha');
+                const $confirmarSenha = $('#confirmar-senha');
 
-                const confirmarSenha = $('#confirmar-senha');
+                clearErrorMsg($email);
+                clearErrorMsg($telefone);
+                clearErrorMsg($senha);
+                clearErrorMsg($confirmarSenha);
 
-                clearErrorMsg(email);
-                clearErrorMsg(telefone);
-                clearErrorMsg(senha);
-                clearErrorMsg(confirmarSenha);
-
-                if (!email.val().trim()) {
-                    showErrorMsg(email, 'Email é obrigatório');
+                if (!$email.val().trim()) {
+                    contError++;
+                    showErrorMsg($email, 'Email é obrigatório', 'danger');
                     valido = false;
-                } else if (!/^\S+@\S+\.\S+$/.test(email.val())) {
-                    showErrorMsg(email, 'Formato de email inválido');
-                    valido = false;
-                }
-
-                if (!telefone.val().trim()) {
-                    showErrorMsg(telefone, 'Telefone é obrigatório');
+                } else if (!/^\S+@\S+\.\S+$/.test($email.val())) {
+                    contError++;
+                    showErrorMsg($email, 'Formato de email inválido', 'danger');
                     valido = false;
                 }
 
-                if (!senha.val()) {
-                    showErrorMsg(senha, 'Senha é obrigatória');
-                    valido = false;
-                } else if (senha.val().length < 6) {
-                    showErrorMsg(senha, 'Senha deve ter pelo menos 6 caracteres');
+                if (!$telefone.val().trim()) {
+                    contError++;
+                    showErrorMsg($telefone, 'Telefone é obrigatório', 'danger');
                     valido = false;
                 }
 
-                if (!confirmarSenha.val()) {
-                    showErrorMsg(senha, 'Senha é obrigatória')
+                if (!$senha.val()) {
+                    contError++;
+                    showErrorMsg($senha, 'Senha é obrigatória', 'danger');
+                    valido = false;
+                } else if ($senha.val().length < 6) {
+                    contError++;
+                    showErrorMsg($senha, 'Senha deve ter pelo menos 6 caracteres', 'danger');
+                    valido = false;
                 }
 
-
-                if (senha.val() !== confirmarSenha.val()) {
-                    showErrorMsg(confirmarSenha, 'As senhas não coincidem');
+                if (!$confirmarSenha.val()) {
+                    contError++;
+                    showErrorMsg($confirmarSenha, 'Confirmação de senha é obrigatória', 'danger');
+                    valido = false;
+                } else if ($senha.val() !== $confirmarSenha.val()) {
+                    contError++;
+                    showErrorMsg($confirmarSenha, 'As senhas não coincidem', 'danger');
                     valido = false;
                 }
 
@@ -498,38 +518,35 @@
 
             function validarCamposEtapa3() {
                 const tipoSelecionado = $('input[name="tipo"]:checked').val();
-                if (tipoSelecionado == "personal") {
-                    if (!validarCamposEtapa4()) {
-                        return false;
-                    } else {
-                        return true;
-                    }
-
+                if (tipoSelecionado === 'personal') {
+                    return validarCamposEtapa4();
                 }
                 return true;
             }
+
             function validarCamposEtapa4() {
                 let valido = true;
-                const certificacao = $('#certificacao');
+                const $certificacao = $('#certificacao');
 
-                clearErrorMsg(certificacao);
+                clearErrorMsg($certificacao);
 
                 const regexCREF = /^\d{4,6}-[A-Z]\/[A-Z]{2}$/;
 
-                if (!certificacao.val().trim()) {
-                    showErrorMsg(certificacao, 'Certificação (CREF) é obrigatória');
+                if (!$certificacao.val().trim()) {
+                    contError++;
+                    showErrorMsg($certificacao, 'Certificação (CREF) é obrigatória', 'danger');
                     valido = false;
-                } else if (!regexCREF.test(certificacao.val().trim())) {
-                    showErrorMsg(certificacao, 'Formato inválido. Exemplo: 123456-G/SP');
+                } else if (!regexCREF.test($certificacao.val().trim())) {
+                    contError++;
+                    showErrorMsg($certificacao, 'Formato inválido. Exemplo: 123456-G/SP', 'danger');
                     valido = false;
                 }
 
                 return valido;
             }
-
         });
-
     </script>
+    
 
 
 
