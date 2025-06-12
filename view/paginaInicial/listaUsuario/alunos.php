@@ -26,18 +26,18 @@
             overflow: hidden;
         }
 
-        .personal {
+        .alunos {
             display: flex;
             align-items: center;
             padding: 15px;
             border-bottom: 1px solid #eee;
         }
 
-        .personal:last-child {
+        .alunos:last-child {
             border-bottom: none;
         }
 
-        .personal img {
+        .alunos img {
             width: 50px;
             height: 50px;
             border-radius: 50%;
@@ -59,7 +59,7 @@
 </head>
 <body>
 
-    <h1>Lista de Personais</h1>
+    <h1>Lista de Alunos</h1>
 
     <div class="lista-personais" id="listaPersonais">
         <div class="mensagem">Carregando...</div>
@@ -67,14 +67,14 @@
 
     <script>
     window.addEventListener('DOMContentLoaded', () => {
-        fetch('../../../app/controller/UsuarioController.php', {
+        fetch('../../app/controller/UsuarioController.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: new URLSearchParams({
                 acao: 'BuscarTipo',
-                tipo: 'personal'
+                tipo: 'aluno'
             })
         })
         .then(response => response.json())
@@ -88,16 +88,16 @@
             }
 
             if (!Array.isArray(data) || data.length === 0) {
-                container.innerHTML = `<div class="mensagem">Nenhum personal encontrado.</div>`;
+                container.innerHTML = `<div class="mensagem">Nenhum alunos encontrado.</div>`;
                 return;
             }
 
             data.forEach(usuario => {
                 const item = document.createElement('div');
-                item.classList.add('personal');
+                item.classList.add('alunos');
 
                 item.innerHTML = `
-                    <img src="https://via.placeholder.com/50" alt="Foto do personal">
+                    
                     <div class="nome">${usuario.nome}</div>
                 `;
 

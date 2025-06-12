@@ -40,8 +40,16 @@ document.getElementById('personais-btn').addEventListener('click', function () {
     document.getElementById('personais-panel').classList.add('open');
 });
 
-document.getElementById('close-mensagens-btn').addEventListener('click', function () {
+document.getElementById('close-personais-btn').addEventListener('click', function () {
     document.getElementById('personais-panel').classList.remove('open');
+});
+
+document.getElementById('alunos-btn').addEventListener('click', function () {
+    document.getElementById('alunos-panel').classList.add('open');
+});
+
+document.getElementById('close-alunos-btn').addEventListener('click', function () {
+    document.getElementById('alunos-panel').classList.remove('open');
 });
 
 // Fechar painel de mensagens
@@ -94,3 +102,8 @@ window.addEventListener("load", function () {
         document.getElementById("toggleDarkMode").style.color = "#FAFAFA";
     }
 });
+
+function abrirModal(id) {
+    document.getElementById('chat-panel').classList.add('open');
+ 
+}

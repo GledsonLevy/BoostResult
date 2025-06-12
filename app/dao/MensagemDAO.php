@@ -71,32 +71,41 @@ class MensagemDAO{
 	//Insere um elemento na tabela
 	public function inserir(Mensagem $mensagem){
         try {
-			$sql = 'INSERT INTO mensagem (id_msg, id_chat, remetente, texto, data) VALUES (:id_msg, :id_chat, :remetente, :texto, :data)';
-			$consulta = Conexao::getConexao()->prepare($sql);
-			$consulta->bindValue(':id_msg',$mensagem->getId_msg()); 
-			$consulta->bindValue(':id_chat',$mensagem->getId_chat()); 
-			$consulta->bindValue(':remetente',$mensagem->getRemetente()); 
-			$consulta->bindValue(':texto',$mensagem->getTexto()); 
-			$consulta->bindValue(':data',$mensagem->getData());
-			$consulta->execute();
-        } catch (Exception $e) {
-            print "Erro ao inserir Mensagem <br>" . $e . '<br>';
+            // Remova 'id_msg' do INSERT se ele for AUTO_INCREMENT no seu banco de dados
+            $sql = 'INSERT INTO mensagem (remetente, destinatario, texto, data_msg) VALUES (:remetente, :destinatario, :texto, :data_msg)';
+            $consulta = Conexao::getConexao()->prepare($sql);
+
+            $consulta->bindValue(':remetente',$mensagem->getRemetente());
+            $consulta->bindValue(':destinatario',$mensagem->getDestinatario());
+            $consulta->bindValue(':texto',$mensagem->getTexto());
+            $consulta->bindValue(':data_msg',$mensagem->getData());
+            $consulta->execute();
+            return true;
+        } catch (PDOException $e) { // Use PDOException para erros de PDO
+            error_log("Erro ao inserir Mensagem: " . $e->getMessage()); // Registra o erro no log
+            return false;
         }
 	}
 	
 	//Atualiza um elemento na tabela
-	public function atualizar(Mensagem $mensagem){
-        try {
-			$sql = 'UPDATE mensagem SET id_msg = :id_msg, id_chat = :id_chat, remetente = :remetente, texto = :texto, data = :data WHERE id_msg = :id_msg';
-			$consulta = Conexao::getConexao()->prepare($sql);
-			$consulta->bindValue(':id_msg',$mensagem->getId_msg()); 
-			$consulta->bindValue(':id_chat',$mensagem->getId_chat()); 
-			$consulta->bindValue(':remetente',$mensagem->getRemetente()); 
-			$consulta->bindValue(':texto',$mensagem->getTexto()); 
-			$consulta->bindValue(':data',$mensagem->getData());
-			$consulta->execute();			
-        } catch (Exception $e) {
-            print "Erro ao atualizar Mensagem <br>" . $e . '<br>';
-        }
-	}
+	//Atualiza um elemento na tabela
+public function atualizar(Mensagem $mensagem){
+    try {
+        // Removi id_chat (se não for para ser atualizado), usei data_msg e removi id_msg do SET
+        $sql = 'UPDATE mensagem SET remetente = :remetente, destinatario = :destinatario, texto = :texto, data_msg = :data_msg WHERE id_msg = :id_msg';
+        $consulta = Conexao::getConexao()->prepare($sql);
+        
+        $consulta->bindValue(':remetente',$mensagem->getRemetente()); 
+        $consulta->bindValue(':destinatario',$mensagem->getDestinatario()); // Adicionado destinatario, já que está no model
+        $consulta->bindValue(':texto',$mensagem->getTexto()); 
+        $consulta->bindValue(':data_msg',$mensagem->getData()); // Usando 'data_msg' para consistência
+        $consulta->bindValue(':id_msg',$mensagem->getId_msg()); // Usado apenas no WHERE
+
+        $consulta->execute();        
+        return true; // Retorne true em caso de sucesso, para ser consistente com o inserir
+    } catch (Exception $e) {
+        print "Erro ao atualizar Mensagem <br>" . $e . '<br>';
+        return false; // Retorne false em caso de erro
+    }
+}
 }

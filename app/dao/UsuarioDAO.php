@@ -86,17 +86,7 @@ class UsuarioDAO
 			print "Erro ao deletar Usuario <br>" . $e . '<br>';
 		}
 	}
-	public function verificarDuplicado($email, $telefone) {
-		$sql = "SELECT COUNT(*) FROM usuario WHERE email = :email OR telefone = :telefone";
-		$consulta = Conexao::getConexao()->prepare($sql);
-		$consulta->bindValue(':email', $email);
-		$consulta->bindValue(':telefone', $telefone);
-		$consulta->execute();
-		$quantidade = $consulta->fetchColumn();
-
-		return $quantidade > 0; 
-	}
-	//Insere um elemento na tabela
+	
 	public function inserir(Usuario $usuario)
 	{
 		try {
@@ -189,5 +179,37 @@ class UsuarioDAO
 		} catch (Exception $e) {
 			print "Erro ao atualizar Usuario <br>" . $e . '<br>';
 		}
+	}
+
+	public function verificarDuplicado($email, $telefone) {
+		$sql = "SELECT COUNT(*) FROM usuario WHERE email = :email OR telefone = :telefone";
+		$consulta = Conexao::getConexao()->prepare($sql);
+		$consulta->bindValue(':email', $email);
+		$consulta->bindValue(':telefone', $telefone);
+		$consulta->execute();
+		$quantidade = $consulta->fetchColumn();
+
+		return $quantidade > 0; 
+	}
+
+	public function verificarCredenciais($email, $senha) {
+		$sql = "SELECT COUNT(*) FROM usuario WHERE email = :email AND senha = :senha";
+		$consulta = Conexao::getConexao()->prepare($sql);
+		$consulta->bindValue(':email', $email);
+		$consulta->bindValue(':senha', sha1(md5($senha)));
+		$consulta->execute();
+		$quantidade = $consulta->fetchColumn();
+
+		return $quantidade == 0; 
+	}
+
+	public function verificarEmail($email) {
+		$sql = "SELECT COUNT(*) FROM usuario WHERE email = :email";
+		$consulta = Conexao::getConexao()->prepare($sql);
+		$consulta->bindValue(':email', $email);
+		$consulta->execute();
+		$quantidade = $consulta->fetchColumn();
+
+		return $quantidade == 0; 
 	}
 }

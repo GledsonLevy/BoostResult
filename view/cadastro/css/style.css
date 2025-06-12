@@ -4,6 +4,7 @@
     --green-hover-color:#269126;
     --green-complement-color:#269126;
     --gray-main:#ffffff;
+    --red-error:#dc3545;
 }
 
 *{
@@ -153,18 +154,21 @@ body {
 
 /* Agora session4 vira modal */
 #session4 {
+    display: flex; /* ESSENCIAL para centralizar com justify-content e align-items */
     position: fixed;
     top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0,0,0,0.5); /* fundo escuro transparente */
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
+    left: 15%;
+    width: 700px;
+    height: 500px;
+    background-color: rgba(0, 0, 0, 0); /* fundo escuro transparente */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    z-index: 9999; /* Garante que ele apareça acima de tudo */
     animation: fadeIn 0.3s ease-in-out;
+    /* O modal inicia oculto, você o mostra com JS */
 }
 
+/* Opcional: Para que os elementos internos do .inner também usem flexbox e o 'gap' funcione */
 #session4 .inner {
     background: white;
     padding: 2rem;
@@ -173,8 +177,9 @@ body {
     max-width: 500px;
     box-sizing: border-box;
     position: relative;
-    gap: 2rem;
-    
+    display: flex; /* Adicione esta linha */
+    flex-direction: column; /* Para os elementos internos ficarem em coluna */
+    gap: 2rem; /* Este 'gap' agora funcionará entre os elementos internos */
 }
 
 #session4 .drag-handle {
@@ -224,8 +229,23 @@ body {
     margin-bottom: 1rem;
 }
 
+.hidden {
+  display: none;
+}
 
+.error-input {
+  border: 2px solid var(--red-error) !important; /* vermelho Bootstrap */
+  border-radius: 4px;
+  background-color: #fff0f0; /* leve fundo rosado opcional */
+  box-shadow: 0 0 4px rgba(220, 53, 69, 0.5); /* sombra sutil */
+  transition: all 0.3s ease-in-out;
+}
 
+/* Para melhorar acessibilidade em foco */
+.error-input:focus {
+  outline: none;
+  box-shadow: 0 0 6px rgba(220, 53, 69, 0.7);
+}
 /* Inputs */
 .form-holder input {
     padding: 10px;
