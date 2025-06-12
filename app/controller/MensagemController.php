@@ -23,34 +23,22 @@
 
 
     if (isset($_POST['acao']) && $_POST['acao'] == "INSERIR") {
-  
-    $textoMensagem = filter_var($_POST['texto'] ?? '', FILTER_SANITIZE_STRING);
-  
-    $remetente = $_SESSION['id_user'] ?? null;
 
-    $destinatario = filter_var($_POST['destinatario'] ?? '', FILTER_SANITIZE_NUMBER_INT);
+		$dataHoraAtual = date('Y-m-d H:i:s');
 
-    if (empty($destinatario) || empty($textoMensagem)) {
-        echo json_encode(['status' => 'error', 'message' => 'Dados essenciais faltando para inserir a mensagem.']);
-        exit();
-    }
+		$mensagem->setId_chat(20); 
 
+		$mensagem->setRemetente($_SESSION['id_user']); 
 
-    $mensagem->setRemetente($remetente); 
-    $mensagem->setDestinatario($destinatario);
-    $mensagem->setTexto($textoMensagem);
-    $mensagem->setData(date('Y-m-d H:i:s')); 
-
-    
-    if ($mensagemDAO->inserir($mensagem)) {
+		$mensagem->setTexto($m['mensagem']); 
         
-        echo json_encode(['status' => 'success', 'message' => 'Mensagem enviada com sucesso!']);
-        exit();
-    } else {
-     
-        echo json_encode(['status' => 'error', 'message' => 'Erro ao inserir mensagem no banco de dados.']);
-        exit();
-    }
+		$mensagem->setData( $dataHoraAtual);
+
+        $mensagem->setDestinatario($m['destinatario_id']); 
+
+        var_dump($mensagem);
+        $mensagemDAO->inserir($mensagem);
+    
 }
     // se a requisição for editar
     else if(isset($_POST['editar'])){

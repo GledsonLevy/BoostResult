@@ -135,10 +135,11 @@ $personais = $usuarioDAO->buscarTipo('personal');
             <div class="interacao-panel" id="interacao-panel">
                 <div class="interacao-conteudo" id="interacao-conteudo">
                     </div>
-                <form class="interacao-input">
-                    <input type="text" id="mensagem" placeholder="Digite sua mensagem...">
-                    <input type="hidden" id="destinatario-id-hidden" value="">
-                    <button id="enviar-msg">Enviar</button>
+                <form class="interacao-input" action="../../app/controller/MensagemController.php"
+                    method="POST">
+                    <input type="text" id="mensagem" name="mensagem" placeholder="Digite sua mensagem...">
+                    <input type="hidden" id="destinatario_id" name="destinatario_id" value="<?=$aluno['id_user']?>">
+                    <button id="enviar-msg" name="acao" value="INSERIR">Enviar</button>
                 </form>
                 </div>
         </div>
