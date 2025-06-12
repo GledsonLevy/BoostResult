@@ -105,5 +105,11 @@ window.addEventListener("load", function () {
 
 function abrirModal(id) {
     document.getElementById('chat-panel').classList.add('open');
- 
+    const panel = document.getElementById('mensagens-panel');
+    panel.classList.toggle('open');
+    document.getElementById('alunos-panel').classList.remove('open');
+    document.getElementById('personais-panel').classList.remove('open');
+    const elementoAluno = document.getElementById(id);
+    const nomeDoUsuario = elementoAluno.getAttribute('value');
+    const recebeNome = document.getElementById("receberNomeUsuario").innerHTML = nomeDoUsuario;
 }
