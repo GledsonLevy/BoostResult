@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/style.css" />
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
 </head>
 
 
@@ -56,6 +57,10 @@
         };
         requestAnimationFrame(update);
     </script>
+
+    <div class="alert alert-danger alert-dismissible position-fixed start-50 translate-middle-x" style="top: 10%; z-index: 1055;" role="alert" id="alert-error">
+        <strong></strong><span class="alert-msg"></span>
+    </div>
 
     <div class="page-content">
 
@@ -118,13 +123,14 @@
                             <div class="inner">
                                 <div class="form-row">
                                     <div class="form-holder form-holder-2">
-                                        <input type="text" placeholder="Nome" name="nome" class="form-control"
-                                            id="nome">
+                                        <input type="text" placeholder="Nome" name="nome" class="form-control" id="nome">
+                                        <div class="error-message text-danger error-input" style="font-size: 15px; margin-top: 4px;"></div>
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-holder">
                                         <input type="date" placeholder="Data de Nascimento" name="idade" id="data">
+                                        <div class="error-message text-danger error-input" style="font-size: 15px; margin-top: 4px;"></div>
                                     </div>
                                     <div class="form-holder">
                                         <select name="sexo" id="sexo" class="form-control">
@@ -133,6 +139,7 @@
                                             <option value="feminino">Feminino</option>
                                             <option value="pnd">Prefiro não dizer</option>
                                         </select>
+                                        <div class="error-message text-danger error-input" style="font-size: 15px; margin-top: 4px;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -143,8 +150,8 @@
                             <div class="inner">
                                 <div class="form-row">
                                     <div class="form-holder">
-                                        <input type="email" placeholder="Email" name="email" class="form-control"
-                                            id="email">
+                                        <input type="email" placeholder="Email" name="email" class="form-control" id="email">
+                                        <div class="error-message text-danger error-input" style="font-size: 15px; margin-top: 4px;"></div>
                                     </div>
                                     <div class="form-holder">
                                         <input type="tel" placeholder="Telefone" name="telefone" class="form-control"
@@ -154,10 +161,9 @@
                                 <div class="form-row">
                                     <div class="form-holder position-relative">
                                         <div class="input-group-container" style="position: relative;">
-                                            <input type="password" name="senha" id="senha" class="form-control"
-                                                style="padding-right: 40px;" placeholder="Senha">
-                                            <button type="button"
-                                                class="btn btn-sm btn-outline-secondary toggle-password"
+                                            <input type="password" name="senha" id="senha" class="form-control" style="padding-right: 40px;" placeholder="Senha">
+                                            <div class="error-message text-danger error-input" style="font-size: 15px; margin-top: 4px;"></div>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary toggle-password"
                                                 data-target="senha"
                                                 style="position:absolute; right:10px; top:50%; transform:translateY(-50%);">👁</button>
                                         </div>
@@ -165,10 +171,9 @@
                                     </div>
                                     <div class="form-holder position-relative">
                                         <div class="input-group-container" style="position: relative;">
-                                            <input type="password" placeholder="Confirmar Senha" class="form-control"
-                                                id="confirmar-senha" style="padding-right: 40px;">
-                                            <button type="button"
-                                                class="btn btn-sm btn-outline-secondary toggle-password"
+                                            <input type="password" placeholder="Confirmar Senha" class="form-control" id="confirmar-senha" style="padding-right: 40px;">
+                                            <div class="error-message text-danger error-input" style="font-size: 15px; margin-top: 4px;"></div>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary toggle-password"
                                                 data-target="confirmar-senha"
                                                 style="position:absolute; right:10px; top:50%; transform:translateY(-50%); z-index: 2;">👁</button>
                                         </div>
@@ -198,42 +203,25 @@
                                         </div>
                                     </div>
                                 </div>
-                            </section>
-
+                                <div class="form-holder option-select">
+                                    <label class="option" id="personal-option">
+                                        <input type="radio" name="tipo" value="personal" />
+                                        Personal
+                                    </label>
+                                </div>
+                                <input type="hidden" name="certificacao" id="certificacao">
+                                <input type="hidden" name="especialidade" id="especialidade">
+                            </div>
                         </div>
 
 
                     </div>
                     </section>
 
-                    <section id="session4" class="session session-inner hidden">
-                        <div class="inner">
-                            <span class="modal-close" id="modal-close">&times;</span>
-                            <div class="drag-handle">Dados necessários</div>
-
-                            <div class="form-row">
-                                <div class="form-holder form-holder-2">
-                                    <input type="text" placeholder="Certificação(CREF) 000000-G/UF " name="certificacao"
-                                        class="form-control" id="certificacao">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-holder">
-                                    <input type="text" placeholder="Especialidade(Opcional)" name="especialidade"
-                                        class="form-control" id="especialidade">
-                                </div>
-                                <li id="modal-btn" class="form-holder button-model buttonaction btn d-flex"
-                                    aria-hidden="false" aria-disabled="false"><a href="#next" role="menuitem">Avançar
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                            fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
-                                            <path fill-rule="evenodd"
-                                                d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
-                                        </svg></a></li>
-                            </div>
-
-                        </div>
-                    </section>
-                    <div class="actions clearfix form-row">
+                </div>
+                
+                
+                
 
                         <ul role="menu" aria-label="Pagination" class="form-holder">
                             <li id="botaoNext" aria-hidden="false" aria-disabled="false"><a href="#next"
@@ -250,12 +238,33 @@
             </form>
         </div>
     </div>
+    
+</div>
+</div>
+        <section id="session4" class="session session-inner">
+                    <div class="inner">
+                        <span class="modal-close" id="modal-close">&times;</span>
+                        <div class="drag-handle">Dados necessários</div>
+                        <hr>
+                        
+                            <div class="form-row">
+                                <div class="form-holder form-holder-2">
+                                    <input type="text" placeholder="Certificação(CREF) 000000-G/UF " name="certificacao" class="form-control" id="certSession4">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-holder">
+                                    <input type="text" placeholder="Especialidade(Opcional)" name="especialidade" class="form-control" id="espSession4">
+                                </div>
+                                <li id="modal-btn" class="form-holder button-model buttonaction btn d-flex" aria-hidden="false" aria-disabled="false"><a href="#next"
+                                role="menuitem">Avançar <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/></svg></a></li>
+                            </div>
 
-    </div>
-
-
-
-    <!-- SCRIPTS -->
+                        </div>
+                        
+                    </div>          
+            </section>   
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/jquery-3.3.1.min.js"></script>
@@ -263,21 +272,29 @@
     <script src="js/jquery-ui.min.js"></script>
     <script>
         $(document).ready(function () {
-            const $telefone = $('#telefone');
-            const $alertMsg = $('#alert-msg');
-            const $modalClose = $('#modal-close');
-            const $modalBtn = $('#modal-btn');
-            let contError = 0;
-
-            $alertMsg.hide();
+            var contError  = new Array();
+            const telefone = document.getElementById('telefone');
+            const session4 = document.getElementById('session4');
+            const modalClose = document.getElementById('modal-close');
+            const modalBtn = document.getElementById('modal-btn');
+            const alert = $("#alert-error");
+            alert.hide();
             $('#session4').hide();
+            
+            
 
-            var mensagem = <?php echo json_encode($mensagem); ?>;
-            if (mensagem != '') {
-                showErrorMsg(null, mensagem, 'danger');
-            }
+            modalBtn.addEventListener('click', function() {
+                
+                const certfic = document.getElementById('certSession4').value;
+                const especial = document.getElementById('espSession4').value;
 
-            let itemAtual = 1;
+                
+                document.getElementById('certificacao').value = certfic;
+                document.getElementById('especialidade').value = especial;
+            });
+            
+            telefone.addEventListener('input', function (e) {
+                let v = e.target.value.replace(/\D/g, '');
 
             $telefone.on('input', function () {
                 let v = $(this).val().replace(/\D/g, '');
@@ -300,8 +317,8 @@
 
             $modalBtn.on('click', function () {
                 if (validarCamposEtapa4()) {
-                    $('#session4').hide();
-                }
+                   $('#session4').fadeOut();
+                };
             });
 
             function mudarPaginacao() {
@@ -337,7 +354,7 @@
                         if ($('input[name="tipo"]:checked').val() === 'personal') {
                             $('#session4').css('display', 'flex');
                         } else {
-                            $('#session4').hide();
+                            $('#session4').fadeIn();
                         }
                         $('#session3').show();
                         $('#session1, #session2').hide();
@@ -364,9 +381,11 @@
                 const tipoSelecionado = $(this).find('input').val();
 
                 if (tipoSelecionado === 'aluno') {
-                    $('#session4').hide();
-                } else if (tipoSelecionado === 'personal' && itemAtual === 3) {
-                    $('#session4').css('display', 'flex');
+                    $('#session4').hide(); 
+                } else if (tipoSelecionado === 'personal') {
+                    if (itemAtual === 3) {
+                        $('#session4').css('display', 'flex');
+                    }
                 }
             });
 
@@ -387,33 +406,29 @@
                 $input.attr('type', tipoAtual === 'password' ? 'text' : 'password');
             });
 
-            function showErrorMsg($input, mensagem, tipo) {
-                if ($input != null) {
-                    clearErrorMsg($input);
-                    if (tipo === 'danger') {
-                    $input.addClass('error-input');
-                }}
-                let titulo;
-                $alertMsg.removeClass('alert-success alert-danger alert-warning alert-info');
-                $alertMsg.addClass(`alert alert-${tipo}`);
 
-                if (contError > 1) {
-                    $alertMsg.html(`<strong>Atenção:</strong> Verifique os dados do formulário!`);
+            function showErrorMsg(input, message) {
+                contError.push(message);
+                if (contError.length >= 1) {
+                    console.log(contError);
+                    alert.find('strong').text('Erro! ');
+                    alert.find('.alert-msg').text('Verifique os campos para continuar!');
+                    alert.show();
+                    clearMsg(contError);
                 }else{
-                    titulo = tipo === 'success' ? 'Sucesso!' : tipo === 'danger' ? 'Atenção!' : tipo === 'info' ? 'Informação:' : 'Atenção!';
-                    $alertMsg.html(`<strong>${titulo}</strong> ${mensagem}`);
+                    alert.find('strong').text('Erro! ');
+                    alert.find('.alert-msg').text(message);
+                    alert.show();
+                    clearMsg(contError);
                 }
                 
-                $alertMsg.fadeIn();
-                setTimeout(() => {
-                    $alertMsg.fadeOut();
-                    contError = 0;
-                }, 4000);
-
             }
 
-            function clearErrorMsg($input) {
-                $input.removeClass('error-input');
+            function clearMsg(array){
+                array.length = 0;
+                setTimeout(function() {
+                    alert.fadeOut();
+                }, 3000);
             }
 
             function calculateAge(dateString) {
@@ -433,13 +448,8 @@
                 const $data_nasc = $('#data');
                 const $sexo = $('#sexo');
 
-                clearErrorMsg($nome);
-                clearErrorMsg($data_nasc);
-                clearErrorMsg($sexo);
-
-                if (!$nome.val().trim()) {
-                    contError++;
-                    showErrorMsg($nome, 'Nome é obrigatório', 'danger');
+                if (!nome.val().trim()) {
+                    showErrorMsg(nome, 'Nome é obrigatório');
                     valido = false;
                 }
 
@@ -477,9 +487,9 @@
                 clearErrorMsg($senha);
                 clearErrorMsg($confirmarSenha);
 
-                if (!$email.val().trim()) {
-                    contError++;
-                    showErrorMsg($email, 'Email é obrigatório', 'danger');
+
+                if (!email.val().trim()) {
+                    showErrorMsg(email, 'Email é obrigatório');
                     valido = false;
                 } else if (!/^\S+@\S+\.\S+$/.test($email.val())) {
                     contError++;
@@ -526,9 +536,7 @@
 
             function validarCamposEtapa4() {
                 let valido = true;
-                const $certificacao = $('#certificacao');
-
-                clearErrorMsg($certificacao);
+                const certificacao = $('#certificacao');
 
                 const regexCREF = /^\d{4,6}-[A-Z]\/[A-Z]{2}$/;
 
@@ -544,7 +552,9 @@
 
                 return valido;
             }
-        });
+
+    });
+
     </script>
     
 
