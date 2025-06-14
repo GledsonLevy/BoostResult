@@ -71,16 +71,13 @@ class SolicitacaoDAO{
 	//Insere um elemento na tabela
 	public function inserir(Solicitacao $solicitacao){
         try {
-			$sql = 'INSERT INTO solicitacao (id_aluno, id_personal, data, status) VALUES (:id_aluno, :id_personal, :data, :status)';
+			$sql = 'INSERT INTO solicitacao (id_solicitacao, id_aluno, id_personal, data, status) VALUES (:id_solicitacao, :id_aluno, :id_personal, :data, :status)';
 			$consulta = Conexao::getConexao()->prepare($sql);
-
-			$consulta->bindValue(':id_aluno',$solicitacao->getId_aluno()); 
-
-			$consulta->bindValue(':id_personal',$solicitacao->getId_personal()); 
-
-			$consulta->bindValue(':data',$solicitacao->getData()); 
-
-			$consulta->bindValue(':status',$solicitacao->getStatus());
+			$consulta->bindValue(':id_solicitacao',$solicitacao->getId_solicitacao()); 
+			$consulta->bindValue(':id_aluno',$solicitacao->getId_aluno()); 
+			$consulta->bindValue(':id_personal',$solicitacao->getId_personal()); 
+			$consulta->bindValue(':data',$solicitacao->getData()); 
+			$consulta->bindValue(':status',$solicitacao->getStatus());
 			$consulta->execute();
         } catch (Exception $e) {
             print "Erro ao inserir Solicitacao <br>" . $e . '<br>';
@@ -93,14 +90,10 @@ class SolicitacaoDAO{
 			$sql = 'UPDATE solicitacao SET id_solicitacao = :id_solicitacao, id_aluno = :id_aluno, id_personal = :id_personal, data = :data, status = :status WHERE id_solicitacao = :id_solicitacao';
 			$consulta = Conexao::getConexao()->prepare($sql);
 			$consulta->bindValue(':id_solicitacao',$solicitacao->getId_solicitacao()); 
-
-			$consulta->bindValue(':id_aluno',$solicitacao->getId_aluno()); 
-
-			$consulta->bindValue(':id_personal',$solicitacao->getId_personal()); 
-
-			$consulta->bindValue(':data',$solicitacao->getData()); 
-
-			$consulta->bindValue(':status',$solicitacao->getStatus());
+			$consulta->bindValue(':id_aluno',$solicitacao->getId_aluno()); 
+			$consulta->bindValue(':id_personal',$solicitacao->getId_personal()); 
+			$consulta->bindValue(':data',$solicitacao->getData()); 
+			$consulta->bindValue(':status',$solicitacao->getStatus());
 			$consulta->execute();			
         } catch (Exception $e) {
             print "Erro ao atualizar Solicitacao <br>" . $e . '<br>';

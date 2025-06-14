@@ -32,7 +32,7 @@ if (isset($_POST['acao']) && ($_POST['acao'] == "CADASTRAR")) {
 
     if ($usuarioDAO->verificarDuplicado($u['email'], $u['telefone'])) {
         $_SESSION['erro_cadastro'] = "Já existe um usuário com este e-mail ou telefone.";
-        header("Location: ../../view/cadastro/index.php?erro=usuario%existente");
+        header("Location: ../../view/cadastro/index.php?=Usuario%existente");
         exit;
     } else {
     $usuario->setNome($u['nome']);
@@ -70,17 +70,10 @@ if (isset($_POST['acao']) && ($_POST['acao'] == "CADASTRAR")) {
 }
 } else if (isset($_POST['acao']) && ($_POST['acao'] == "LOGAR")) {
 
-    if ($usuarioDAO->verificarEmail($u['email'])) {
-        $_SESSION['erro_login'] = "Não existe usuário com esse email";
-        header("Location: ../../view/login/index.php?erro=usuario%inexistente");
-        exit;
-    } else if($usuarioDAO->verificarCredenciais($u['email'], $u['senha'])){
-        $_SESSION['erro_login'] = "Não existe usuário com esses dados";
-        header("Location: ../../view/login/index.php?erro=usuario%inexistente");
-        exit;
-    }
     $usuario->setEmail($u['email']);
+
     $usuario->setSenha($u['senha']);
+
     $usuarioDAO->logar($usuario);
 
     header("Location: ../../view/paginaInicial/index.php");
@@ -128,7 +121,7 @@ else if (isset($_POST['acao']) && ($_POST['acao'] == "ATUALIZAR")) {
         header("Location: ../../view/paginaInicial/index.php");
     }
 
-
+    //header("Location: ../../view/paginaInicial/index.php");
 }
 // se a requisição for deletar
 else if (isset($_GET['deletar'])) {

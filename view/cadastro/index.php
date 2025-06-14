@@ -20,15 +20,20 @@
 
 <body>
 
-   <?php
-        session_start();
-        $mensagem = '';
-
-        if (!empty($_SESSION['erro_cadastro'])) {
-            $mensagem = $_SESSION['erro_cadastro'];
-            unset($_SESSION['erro_cadastro']);
-        }
+<?php
+    session_start();
+    if (isset($_SESSION['erro_cadastro'])):
     ?>
+        <div class="container mt-4">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?php echo $_SESSION['erro_cadastro']; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    <?php
+    unset($_SESSION['erro_cadastro']);
+    endif;
+?>
 
     <div id="particles-js"></div>
 
@@ -63,13 +68,6 @@
     </div>
 
     <div class="page-content">
-
-        <div id="alert-msg" class="alert alert-warning alert-dismissible position-fixed start-50 translate-middle-x hidden" style="top: 10%; display: none; z-index: 1055;" role="alert">
-            <strong>Error!</strong> 
-            <button id="closeAlert" type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
 
         <div class="wizard-v2-content">
 
@@ -167,7 +165,7 @@
                                                 data-target="senha"
                                                 style="position:absolute; right:10px; top:50%; transform:translateY(-50%);">👁</button>
                                         </div>
-
+                                        
                                     </div>
                                     <div class="form-holder position-relative">
                                         <div class="input-group-container" style="position: relative;">
@@ -177,31 +175,23 @@
                                                 data-target="confirmar-senha"
                                                 style="position:absolute; right:10px; top:50%; transform:translateY(-50%); z-index: 2;">👁</button>
                                         </div>
-
+                                        
                                     </div>
                                 </div>
 
                             </div>
                         </section>
 
-                        <div class="session-wrapper">
-
-                            <section id="session3" class="session session-inner">
-                                <div class="inner">
-                                    <div class="form-row">
-                                        <div class="form-holder option-select ">
-                                            <label class="option active" id="aluno-option">
-                                                <input type="radio" name="tipo" value="aluno" checked />
-                                                Aluno
-                                            </label>
-                                        </div>
-                                        <div class="form-holder option-select">
-                                            <label class="option" id="personal-option">
-                                                <input type="radio" name="tipo" value="personal" />
-                                                Personal
-                                            </label>
-                                        </div>
-                                    </div>
+                <div class="session-wrapper">
+                    
+                    <section id="session3" class="session session-inner">
+                        <div class="inner">
+                            <div class="form-row">
+                                <div class="form-holder option-select">
+                                    <label class="option active" id="aluno-option">
+                                        <input type="radio" name="tipo" value="aluno" />
+                                        Aluno
+                                    </label>
                                 </div>
                                 <div class="form-holder option-select">
                                     <label class="option" id="personal-option">
@@ -213,9 +203,6 @@
                                 <input type="hidden" name="especialidade" id="especialidade">
                             </div>
                         </div>
-
-
-                    </div>
                     </section>
 
                 </div>
@@ -223,20 +210,19 @@
                 
                 
 
-                        <ul role="menu" aria-label="Pagination" class="form-holder">
-                            <li id="botaoNext" aria-hidden="false" aria-disabled="false"><a href="#next"
-                                    role="menuitem">Next</a></li>
-                            <li id="botaoFinish" class="buttonaction" aria-hidden="true" style="display: none;"><a
-                                    href="#finish" role="menuitem">Finish</a></li>
-                            <input type="hidden" name="acao" value="CADASTRAR">
-                        </ul>
-                        <a href="../login/index.html" id="EntrarConta" class="form-holder">Já possui uma conta? Entre
-                            já.</a>
-                    </div>
-            </div>
+                        
+            <div class="actions clearfix form-row">
 
-            </form>
-        </div>
+                    <ul role="menu" aria-label="Pagination" class="form-holder">
+                        <li id="botaoNext" aria-hidden="false" aria-disabled="false"><a href="#next"role="menuitem">Next</a></li>
+                        <li id="botaoFinish" class="buttonaction" aria-hidden="true" style="display: none;"><a href="#finish" role="menuitem">Finish</a></li>
+                        <input type="hidden" name="acao" value="CADASTRAR">
+                    </ul>
+                    <a href="../login/index.html" id="EntrarConta" class="form-holder">Já possui uma conta? Entre já.</a>
+                </div>
+            </div>                        
+
+    </form>
     </div>
     
 </div>
@@ -270,6 +256,7 @@
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/jquery.steps.js"></script>
     <script src="js/jquery-ui.min.js"></script>
+
     <script>
         $(document).ready(function () {
             var contError  = new Array();
@@ -296,30 +283,31 @@
             telefone.addEventListener('input', function (e) {
                 let v = e.target.value.replace(/\D/g, '');
 
-            $telefone.on('input', function () {
-                let v = $(this).val().replace(/\D/g, '');
                 if (v.length > 11) v = v.slice(0, 11);
 
                 if (v.length > 6) {
-                    $(this).val(`(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`);
+                    e.target.value = `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`;
                 } else if (v.length > 2) {
-                    $(this).val(`(${v.slice(0, 2)}) ${v.slice(2)}`);
+                    e.target.value = `(${v.slice(0, 2)}) ${v.slice(2)}`;
                 } else if (v.length > 0) {
-                    $(this).val(`(${v}`);
+                    e.target.value = `(${v}`;
                 }
             });
 
-            $modalClose.on('click', function () {
+            modalClose.addEventListener('click', () => {
                 $('#session4').hide();
                 $('input[value="aluno"]').prop('checked', true).closest('label').addClass('active');
                 $('input[value="personal"]').closest('label').removeClass('active');
+                
             });
 
-            $modalBtn.on('click', function () {
+            modalBtn.addEventListener('click', () => {
                 if (validarCamposEtapa4()) {
                    $('#session4').fadeOut();
                 };
             });
+            
+            var itemAtual = 1;
 
             function mudarPaginacao() {
                 switch (itemAtual) {
@@ -366,8 +354,9 @@
 
             mudarPaginacao();
 
-            $('#botaoFinish').on('click', function () {
+            $('#botaoFinish').click(function () {
                 $('#session3').show();
+                
                 if (validarCamposEtapa3()) {
                     $('#formCadastro').submit();
                 }
@@ -399,11 +388,11 @@
                 mudarPaginacao();
             });
 
-            $('.toggle-password').on('click', function () {
+            $('.toggle-password').click(function () {
                 const targetId = $(this).data('target');
-                const $input = $('#' + targetId);
-                const tipoAtual = $input.attr('type');
-                $input.attr('type', tipoAtual === 'password' ? 'text' : 'password');
+                const input = $('#' + targetId);
+                const tipoAtual = input.attr('type');
+                input.attr('type', tipoAtual === 'password' ? 'text' : 'password');
             });
 
 
@@ -444,31 +433,28 @@
 
             function validarCamposEtapa1() {
                 let valido = true;
-                const $nome = $('#nome');
-                const $data_nasc = $('#data');
-                const $sexo = $('#sexo');
+                const nome = $('#nome');
+                const data_nasc = $('#data');
+                const sexo = $('#sexo');
 
                 if (!nome.val().trim()) {
                     showErrorMsg(nome, 'Nome é obrigatório');
                     valido = false;
                 }
 
-                if (!$data_nasc.val()) {
-                    contError++;
-                    showErrorMsg($data_nasc, 'Data inválida', 'danger');
+                if (!data_nasc.val()) {
+                    showErrorMsg(data_nasc, 'Data inválida');
                     valido = false;
                 } else {
-                    const age = calculateAge($data_nasc.val());
+                    const age = calculateAge(data_nasc.val());
                     if (age < 5 || age > 120) {
-                        contError++;
-                        showErrorMsg($data_nasc, 'Idade inválida', 'danger');
+                        showErrorMsg(data_nasc, 'Idade inválida');
                         valido = false;
                     }
                 }
 
-                if (!$sexo.val()) {
-                    contError++;
-                    showErrorMsg($sexo, 'Selecione uma opção', 'danger');
+                if (!sexo.val()) {
+                    showErrorMsg(sexo, 'Selecione uma opção');
                     valido = false;
                 }
 
@@ -477,49 +463,36 @@
 
             function validarCamposEtapa2() {
                 let valido = true;
-                const $email = $('#email');
-                const $telefone = $('#telefone');
-                const $senha = $('#senha');
-                const $confirmarSenha = $('#confirmar-senha');
+                const email = $('#email');
+                const telefone = $('#telefone');
+                const senha = $('#senha');
 
-                clearErrorMsg($email);
-                clearErrorMsg($telefone);
-                clearErrorMsg($senha);
-                clearErrorMsg($confirmarSenha);
+                const confirmarSenha = $('#confirmar-senha');
 
 
                 if (!email.val().trim()) {
                     showErrorMsg(email, 'Email é obrigatório');
                     valido = false;
-                } else if (!/^\S+@\S+\.\S+$/.test($email.val())) {
-                    contError++;
-                    showErrorMsg($email, 'Formato de email inválido', 'danger');
+                } else if (!/^\S+@\S+\.\S+$/.test(email.val())) {
+                    showErrorMsg(email, 'Formato de email inválido');
                     valido = false;
                 }
 
-                if (!$telefone.val().trim()) {
-                    contError++;
-                    showErrorMsg($telefone, 'Telefone é obrigatório', 'danger');
+                if (!telefone.val().trim()) {
+                    showErrorMsg(telefone, 'Telefone é obrigatório');
                     valido = false;
                 }
 
-                if (!$senha.val()) {
-                    contError++;
-                    showErrorMsg($senha, 'Senha é obrigatória', 'danger');
+                if (!senha.val()) {
+                    showErrorMsg(senha, 'Senha é obrigatória');
                     valido = false;
-                } else if ($senha.val().length < 6) {
-                    contError++;
-                    showErrorMsg($senha, 'Senha deve ter pelo menos 6 caracteres', 'danger');
+                } else if (senha.val().length < 6) {
+                    showErrorMsg(senha, 'Senha deve ter pelo menos 6 caracteres');
                     valido = false;
                 }
 
-                if (!$confirmarSenha.val()) {
-                    contError++;
-                    showErrorMsg($confirmarSenha, 'Confirmação de senha é obrigatória', 'danger');
-                    valido = false;
-                } else if ($senha.val() !== $confirmarSenha.val()) {
-                    contError++;
-                    showErrorMsg($confirmarSenha, 'As senhas não coincidem', 'danger');
+                if (senha.val() !== confirmarSenha.val()) {
+                    showErrorMsg(confirmarSenha, 'As senhas não coincidem');
                     valido = false;
                 }
 
@@ -528,25 +501,27 @@
 
             function validarCamposEtapa3() {
                 const tipoSelecionado = $('input[name="tipo"]:checked').val();
-                if (tipoSelecionado === 'personal') {
-                    return validarCamposEtapa4();
+                if (tipoSelecionado == "personal") {
+                    if(!validarCamposEtapa4()){
+                        return false;
+                    }else{
+                        return true;
+                    }
+                    
                 }
                 return true;
             }
-
             function validarCamposEtapa4() {
                 let valido = true;
                 const certificacao = $('#certificacao');
 
                 const regexCREF = /^\d{4,6}-[A-Z]\/[A-Z]{2}$/;
 
-                if (!$certificacao.val().trim()) {
-                    contError++;
-                    showErrorMsg($certificacao, 'Certificação (CREF) é obrigatória', 'danger');
+                if (!certificacao.val().trim()) {
+                    showErrorMsg(certificacao, 'Certificação (CREF) é obrigatória');
                     valido = false;
-                } else if (!regexCREF.test($certificacao.val().trim())) {
-                    contError++;
-                    showErrorMsg($certificacao, 'Formato inválido. Exemplo: 123456-G/SP', 'danger');
+                } else if (!regexCREF.test(certificacao.val().trim())) {
+                    showErrorMsg(certificacao, 'Formato inválido. Exemplo: 123456-G/SP');
                     valido = false;
                 }
 
@@ -556,7 +531,6 @@
     });
 
     </script>
-    
 
 
 

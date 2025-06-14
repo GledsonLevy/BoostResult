@@ -40,16 +40,8 @@ document.getElementById('personais-btn').addEventListener('click', function () {
     document.getElementById('personais-panel').classList.add('open');
 });
 
-document.getElementById('close-personais-btn').addEventListener('click', function () {
+document.getElementById('close-mensagens-btn').addEventListener('click', function () {
     document.getElementById('personais-panel').classList.remove('open');
-});
-
-document.getElementById('alunos-btn').addEventListener('click', function () {
-    document.getElementById('alunos-panel').classList.add('open');
-});
-
-document.getElementById('close-alunos-btn').addEventListener('click', function () {
-    document.getElementById('alunos-panel').classList.remove('open');
 });
 
 // Fechar painel de mensagens
@@ -101,6 +93,7 @@ window.addEventListener("load", function () {
         document.getElementById("toggleDarkMode").style.backgroundColor = "#000";
         document.getElementById("toggleDarkMode").style.color = "#FAFAFA";
     }
+<<<<<<< HEAD
 });
 
 function abrirModal(id) {
@@ -113,3 +106,6 @@ function abrirModal(id) {
     const nomeDoUsuario = elementoAluno.getAttribute('value');
     const recebeNome = document.getElementById("receberNomeUsuario").innerHTML = nomeDoUsuario;
 }
+=======
+});
+>>>>>>> parent of 272164f (Merge branch 'main' of https://github.com/GledsonLevy/BoostResult)
