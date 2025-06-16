@@ -105,7 +105,7 @@
                                         href="#finish" role="menuitem">Logar</a></li>
                                 <input type="hidden" name="acao" value="LOGAR">
                                 </ul>
-                                <a href="../cadastro/index.php" class="form-holder link-redir">Não possui uma conta?</a>
+                                <a href="../cadastro/index.php" id="CriarConta">Não possui uma conta?</a>
                         </div>
                     </div>
                 </form>

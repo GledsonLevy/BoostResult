@@ -503,12 +503,12 @@ a.tabletitle span{
    padding: 0px 0px 0px 0px;
 }
 
-a.link-redir{
+#CriarConta{
     text-decoration: none;
     color: #ffffff;
 }
 
-a.link-redir:hover {
+#CriarConta:hover {
     text-decoration: none;
     color: #269126;
 }
