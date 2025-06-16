@@ -1,9 +1,16 @@
+index.php
 <?php
 session_start();
-if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
-    header("Location: ../../index.php");
-    exit();
-}
+$destinatario = 22;
+include("../../app/conexao/Conexao.php");
+include("../../app/dao/UsuarioDAO.php");
+include("../../app/model/Usuario.php");
+
+$usuarioDAO = new UsuarioDAO();
+$alunos = $usuarioDAO->buscarTipo('aluno');
+$personais = $usuarioDAO->buscarTipo('personal');
+
+
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +22,77 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
     <title>BoostResult</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    
+    <style>
+         body {
+            font-family: sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .lista-personais {
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .personal {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .alunos {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .alunos:last-child {
+            border-bottom: none;
+        }
+
+        .alunos img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .personal:last-child {
+            border-bottom: none;
+        }
+
+        .personal img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .nome {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .mensagem {
+            text-align: center;
+            color: #888;
+            padding: 20px;
+        }
+    </style>
 </head>
 
 <body>
@@ -24,16 +101,18 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
         <h2>Mensagens</h2>
         <div class="message">
             <button class="messageButton" id="chat-btn">
+                <img src="imagem.jpg" alt="">
+                <div class="sender">Luan Pinto</div>
+                <div class="text">Oi, como você está?</div>
             </button>
         </div>
     </div>
 
     <div class="personais-panel" id="personais-panel">
-        <button class="close-btn" id="close-mensagens-btn">X</button>
+        <button class="close-btn" id="close-personais-btn">X</button>
         <div class="message">
-<<<<<<< HEAD
             <?php foreach($personais as $personal){ ?>
-                <div class="personal" onclick="abrirModal(this.id)" id="<?=$personal['id_user']?>" value="<?=$personal['nome']?>">
+                <div class="personal" onclick="abrirModal(this.id)" id="<?=$personal['id_user']?>">
                     <div class="nome"><?=$personal['nome']?></div>
                 </div>
 
@@ -45,48 +124,39 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
         <button class="close-btn" id="close-alunos-btn">X</button>
         <div class="message">
             <?php foreach($alunos as $aluno){ ?>
-                <div class="alunos" onclick="abrirModal(this.id)" id="<?=$aluno['id_user']?>" value="<?=$aluno['nome']?>">
+                <div class="alunos" onclick="abrirModal(this.id)" id="<?=$aluno['id_user']?>">
                     <div class="nome"><?=$aluno['nome']?></div>
                 </div>
 
             <?php } ?>
-=======
-            <iframe src="personais/personais.php" frameborder="0"></iframe>
->>>>>>> parent of 272164f (Merge branch 'main' of https://github.com/GledsonLevy/BoostResult)
         </div>
     </div>
 
     <div class="chat-panel" id="chat-panel">
         <button class="close-btn" id="close-chat-btn">X</button>
-<<<<<<< HEAD
-        <h2 id="receberNomeUsuario"></h2>
+        <h2>Luan pinto</h2>
         <div class="chat">
             <div class="interacao-panel" id="interacao-panel">
                 <div class="interacao-conteudo" id="interacao-conteudo">
                     </div>
-                <form class="interacao-input" action="../../app/controller/MensagemController.php"
-                    method="POST">
-                    <input type="text" id="mensagem" name="mensagem" placeholder="Digite sua mensagem...">
-                    <input type="hidden" id="destinatario_id" name="destinatario_id" value="<?=$aluno['id_user']?>">
-                    <button id="enviar-msg" name="acao" value="INSERIR">Enviar</button>
+                <form class="interacao-input">
+                    <input type="text" id="mensagem" placeholder="Digite sua mensagem...">
+                    <input type="hidden" id="destinatario-id-hidden" value="">
+                    <button id="enviar-msg">Enviar</button>
                 </form>
                 </div>
-=======
-        <h2>Chat</h2>
-        <div class="chat">
-            funcionando
->>>>>>> parent of 272164f (Merge branch 'main' of https://github.com/GledsonLevy/BoostResult)
         </div>
     </div>
+
     <div class="sidebar">
         <ul>
 
             <li>Minha Conta</li>
-            <li>
+            
                 <?php
 
                 if ($_SESSION['tipo_usuario'] == "admin") {
-                    echo 'Alunos';
+                    echo "<li id='alunos-btn'>Alunos</li>";
                     echo "<li id='personais-btn'>Personais</li>";
                 } else {
 
@@ -94,7 +164,7 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
                 }
 
                 ?>
-            </li>
+            
             <li id="mensagens-btn">Mensagens</li>
             <li>Suporte</li>
             <form method="post" action="../../app/controller/UsuarioController.php">
@@ -165,7 +235,6 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
                 <div id="underline-indicator"></div>
             </div>
 
-            <iframe id="myIframe" src="https://www.example.com"></iframe>
         </div>
     </div>
 
@@ -200,7 +269,7 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
         </div>
     </div>
 
-    <!-- Modal -->
+
     <div class="modal fade" id="modalExemplo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -230,5 +299,6 @@ if (!isset($_SESSION['nome']) || !isset($_SESSION['tipo'])) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
     crossorigin="anonymous"></script>
-    <script src="script.js"></script>
+<script src="script.js"></script>
+
 </html>

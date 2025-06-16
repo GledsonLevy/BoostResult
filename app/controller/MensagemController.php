@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+MensagemController.php
 <?php   
     session_start();
     
@@ -24,73 +24,47 @@
 
 
     if (isset($_POST['acao']) && $_POST['acao'] == "INSERIR") {
+  
+    $textoMensagem = filter_var($_POST['texto'] ?? '', FILTER_SANITIZE_STRING);
+  
+    $remetente = $_SESSION['id_user'] ?? null;
 
-		$dataHoraAtual = date('Y-m-d H:i:s');
+    $destinatario = filter_var($_POST['destinatario'] ?? '', FILTER_SANITIZE_NUMBER_INT);
 
-		$mensagem->setId_chat(20); 
+    if (empty($destinatario) || empty($textoMensagem)) {
+        echo json_encode(['status' => 'error', 'message' => 'Dados essenciais faltando para inserir a mensagem.']);
+        exit();
+    }
 
-		$mensagem->setRemetente($_SESSION['id_user']); 
 
-		$mensagem->setTexto($m['mensagem']); 
-        
-		$mensagem->setData( $dataHoraAtual);
+    $mensagem->setRemetente($remetente); 
+    $mensagem->setDestinatario($destinatario);
+    $mensagem->setTexto($textoMensagem);
+    $mensagem->setData(date('Y-m-d H:i:s')); 
 
-        $mensagem->setDestinatario($m['destinatario_id']); 
-
-        var_dump($mensagem);
-        $mensagemDAO->inserir($mensagem);
     
+    if ($mensagemDAO->inserir($mensagem)) {
+        
+        echo json_encode(['status' => 'success', 'message' => 'Mensagem enviada com sucesso!']);
+        exit();
+    } else {
+     
+        echo json_encode(['status' => 'error', 'message' => 'Erro ao inserir mensagem no banco de dados.']);
+        exit();
+    }
 }
     // se a requisição for editar
     else if(isset($_POST['editar'])){
 
-=======
-<?php   
-
-    /* @Autor: Dalker Pinheiro
-    Classe Controller */
-    
-    include_once "../conexao/Conexao.php";
-    include_once "../model/Mensagem.php";
-    include_once "../dao/MensagemDAO.php";
-
-
-    $mensagem = new Mensagem();
-    $mensagemDAO	= new MensagemDAO();
-
-
-    $m= filter_input_array(INPUT_POST);
-
-    // Verifica se pesquisaram alguma coisa.
-    if(isset($_GET['pesquisa'])&&!empty($_GET['pesquisa'])){
-      $mensagems = $mensagemDAO->buscar("id_msg",$_GET['pesquisa']);  
-    }
-    else{
-      $mensagems = $mensagemDAO->listarTodos(); 
-    }
-
-
-    //se a operação for gravar entra nessa condição
-    if(isset($_POST['cadastrar'])){
-
->>>>>>> parent of 272164f (Merge branch 'main' of https://github.com/GledsonLevy/BoostResult)
         $mensagem->setId_msg($m['id_msg']); 
-		$mensagem->setId_chat($m['id_chat']); 
-		$mensagem->setRemetente($m['remetente']); 
-		$mensagem->setTexto($m['texto']); 
-		$mensagem->setData($m['data']);
-        $mensagemDAO->inserir($mensagem);
 
-        header("Location: ../../mensagem.php?msg=adicionado");
-    } 
-    // se a requisição for editar
-    else if(isset($_POST['editar'])){
+		$mensagem->setId_chat($m['id_chat']); 
 
-        $mensagem->setId_msg($m['id_msg']); 
-		$mensagem->setId_chat($m['id_chat']); 
-		$mensagem->setRemetente($m['remetente']); 
-		$mensagem->setTexto($m['texto']); 
-		$mensagem->setData($m['data']);
+		$mensagem->setRemetente($m['remetente']); 
+
+		$mensagem->setTexto($m['texto']); 
+
+		$mensagem->setData($m['data']);
         $mensagemDAO->atualizar($mensagem);
 
         header("Location: ../../mensagem.php?msg=editado");
