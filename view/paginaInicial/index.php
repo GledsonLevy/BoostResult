@@ -237,14 +237,6 @@ $personais = $usuarioDAO->buscarTipo('personal');
 
     <div class="right-sidebar">
         <div class="Users">
-            <div class="search-container">
-                <input type="text" class="search-input" placeholder="Pesquisar..." />
-                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z" />
-                </svg>
-            </div>
             <br>
             <h3>Personais Em Destaque</h3>
             <br>
@@ -299,9 +291,3 @@ $personais = $usuarioDAO->buscarTipo('personal');
 <script src="script.js"></script>
 
 </html>
-
-
-
-
-
-
