@@ -24,11 +24,11 @@
 
     if (isset($_POST['acao']) && $_POST['acao'] == "INSERIR") {
   
-    $textoMensagem = filter_var($_POST['texto'] ?? '', FILTER_SANITIZE_STRING);
+    $textoMensagem = filter_var($_POST['mensagem'] ?? '', FILTER_SANITIZE_STRING);
   
     $remetente = $_SESSION['id_user'] ?? null;
 
-    $destinatario = filter_var($_POST['destinatario'] ?? '', FILTER_SANITIZE_NUMBER_INT);
+    $destinatario = filter_var($_POST['destinatario_id'] ?? '', FILTER_SANITIZE_NUMBER_INT);
 
     if (empty($destinatario) || empty($textoMensagem)) {
         echo json_encode(['status' => 'error', 'message' => 'Dados essenciais faltando para inserir a mensagem.']);

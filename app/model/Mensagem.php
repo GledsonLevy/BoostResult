@@ -66,7 +66,7 @@ Mensagem.php
 		}
 
 		public function setDestinatario($destinatario){
-			$this->data=$destinatario;
+			$this->destinatario=$destinatario;
 		}
 
 		
