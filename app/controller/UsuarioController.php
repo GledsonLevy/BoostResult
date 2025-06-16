@@ -66,17 +66,17 @@ if (isset($_POST['acao']) && ($_POST['acao'] == "CADASTRAR")) {
         
     }
 
-    header("Location: ../../view/login/index.html");
+    header("Location: ../../view/login/index.php");
 }
 } else if (isset($_POST['acao']) && ($_POST['acao'] == "LOGAR")) {
 
     if ($usuarioDAO->verificarEmail($u['email'])) {
         $_SESSION['erro_login'] = "Não existe usuário com esse email";
-        header("Location: ../../view/login/index.php?erro=usuario%inexistente");
+        header("Location: ../../view/login/index.php?erro=usuarioinexistente");
         exit;
     } else if($usuarioDAO->verificarCredenciais($u['email'], $u['senha'])){
         $_SESSION['erro_login'] = "Não existe usuário com esses dados";
-        header("Location: ../../view/login/index.php?erro=usuario%inexistente");
+        header("Location: ../../view/login/index.php?erro=dadosincorretos");
         exit;
     }
     $usuario->setEmail($u['email']);
@@ -143,7 +143,7 @@ else if (isset($_GET['deletar'])) {
 
     $tipo = $_POST['tipo'];
 
-    require_once '../dao/UsuarioDAO.php'; // ajuste o caminho conforme
+    require_once '../dao/UsuarioDAO.php'; 
 
     $usuarioDAO = new UsuarioDAO();
     $usuarios = $usuarioDAO->buscarTipo($tipo);

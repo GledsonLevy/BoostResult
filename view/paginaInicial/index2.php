@@ -95,86 +95,7 @@ $personais = $usuarioDAO->buscarTipo('personal');
 </head>
 
 <body>
-    <div class="mensagens-panel" id="mensagens-panel">
-        <button class="close-btn" id="close-mensagens-btn">X</button>
-        <h2>Mensagens</h2>
-        <div class="message">
-            <button class="messageButton" id="chat-btn">
-                <img src="imagem.jpg" alt="">
-                <div class="sender">Luan Pinto</div>
-                <div class="text">Oi, como você está?</div>
-            </button>
-        </div>
-    </div>
-
-    <div class="personais-panel" id="personais-panel">
-        <button class="close-btn" id="close-personais-btn">X</button>
-        <div class="message">
-            <?php foreach($personais as $personal){ ?>
-                <div class="personal" onclick="abrirModal(this.id)" id="<?=$personal['id_user']?>">
-                    <div class="nome"><?=$personal['nome']?></div>
-                </div>
-
-            <?php } ?>
-        </div>
-    </div>
-
-    <div class="alunos-panel" id="alunos-panel">
-        <button class="close-btn" id="close-alunos-btn">X</button>
-        <div class="message">
-            <?php foreach($alunos as $aluno){ ?>
-                <div class="alunos" onclick="abrirModal(this.id)" id="<?=$aluno['id_user']?>">
-                    <div class="nome"><?=$aluno['nome']?></div>
-                </div>
-
-            <?php } ?>
-        </div>
-    </div>
-
-    <div class="chat-panel" id="chat-panel">
-        <button class="close-btn" id="close-chat-btn">X</button>
-        <h2>Luan pinto</h2>
-        <div class="chat">
-            <div class="interacao-panel" id="interacao-panel">
-                <div class="interacao-conteudo" id="interacao-conteudo">
-                    </div>
-                <form class="interacao-input">
-                    <input type="text" id="mensagem" placeholder="Digite sua mensagem...">
-                    <input type="hidden" id="destinatario-id-hidden" value="">
-                    <button id="enviar-msg">Enviar</button>
-                </form>
-                </div>
-        </div>
-    </div>
-
-    <div class="sidebar">
-        <ul>
-
-            <li>Minha Conta</li>
-            
-                <?php
-
-                if ($_SESSION['tipo_usuario'] == "admin") {
-                    echo "<li id='alunos-btn'>Alunos</li>";
-                    echo "<li id='personais-btn'>Personais</li>";
-                } else {
-
-                    echo ($_SESSION['tipo'] == "aluno") ? "<li id='personais-btn'>Personais</li>" : 'Alunos';
-                }
-
-                ?>
-            
-            <li id="mensagens-btn">Mensagens</li>
-            <li>Suporte</li>
-            <form method="post" action="../../app/controller/UsuarioController.php">
-                <button type="submit" name="acao" value="DESLOGAR" id="sair">Sair</button>
-            </form>
-            <li>
-                <button id="toggleDarkMode" class="btn btn-sm btn-dark">Modo Escuro</button>
-            </li>
-        </ul>
-    </div>
-
+    
     <div class="main">
         <div class="profile">
             <form action="../../app/controller/imagem_usuarioController.php" method="post"
@@ -226,48 +147,29 @@ $personais = $usuarioDAO->buscarTipo('personal');
             </div>
 
             <div class="button-container">
-                <button onclick="loadPageAndHighlight(this, 'informacoes/treinos.php')" id="button1">Meus
-                    Treinos</button>
-                <button onclick="loadPageAndHighlight(this, 'informacoes/medidas.php')" id="button2">Medidas</button>
-                <button onclick="loadPageAndHighlight(this, 'informacoes/dados.php')" id="button3">Dados
-                    Pessoais</button>
+                <button class="btn-content" data-target="#treinos">Meus Treinos</button>
+                <button class="btn-content" data-target="#medidas">Medidas</button>
+                <button class="btn-content" data-target="#dados">Dados Pessoais</button>
                 <div id="underline-indicator"></div>
             </div>
 
+            <div id="conteudo-principal" style="margin-top:20px;">
+                <div id="treinos" class="content-tab">
+                    <h3>Meus Treinos</h3>
+                    <p>Aqui vão as informações de treinos...</p>
+                </div>
+                <div id="medidas" class="content-tab" style="display:none;">
+                    <h3>Medidas</h3>
+                    <p>Aqui vão as informações de medidas...</p>
+                </div>
+                <div id="dados" class="content-tab" style="display:none;">
+                    <h3>Dados Pessoais</h3>
+                    <p>Aqui vão os dados pessoais do usuário...</p>
+                </div>
+            </div>
+
         </div>
     </div>
-
-    <div class="right-sidebar">
-        <div class="Users">
-            <div class="search-container">
-                <input type="text" class="search-input" placeholder="Pesquisar..." />
-                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z" />
-                </svg>
-            </div>
-            <br>
-            <h3>Personais Em Destaque</h3>
-            <br>
-            <div class="user">
-                <img src="https://pbs.twimg.com/profile_images/875391618634977280/-UYcaL0-_400x400.jpg" alt="">
-                <span>LUAN PINTO</span>
-                <button>Perfil</button>
-            </div>
-            <div class="user">
-                <img src="https://pbs.twimg.com/profile_images/875391618634977280/-UYcaL0-_400x400.jpg" alt="">
-                <span>LUISAO</span>
-                <button>Perfil</button>
-            </div>
-            <div class="user">
-                <img src="https://pbs.twimg.com/profile_images/875391618634977280/-UYcaL0-_400x400.jpg" alt="">
-                <span>DAVI</span>
-                <button>Perfil</button>
-            </div>
-        </div>
-    </div>
-
 
     <div class="modal fade" id="modalExemplo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -299,5 +201,28 @@ $personais = $usuarioDAO->buscarTipo('personal');
     integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
     crossorigin="anonymous"></script>
 <script src="script.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $('.btn-content').click(function(){
+            var target = $(this).data('target');
+    
+            
+            $('.content-tab').hide();
+    
+           
+            $(target).show();
+    
+
+            $('.btn-content').removeClass('active');
+            $(this).addClass('active');
+    
+            var pos = $(this).position();
+            $('#underline-indicator').css({left: pos.left, width: $(this).outerWidth()});
+        });
+    
+        $('.btn-content').first().click();
+    });
+</script>
 
 </html>

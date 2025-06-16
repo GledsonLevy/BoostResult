@@ -97,14 +97,27 @@ class UsuarioDAO
 			$consultaVerificar->execute();
 			$numUsuarios = $consultaVerificar->fetchColumn();
 
-			$tipoUsuario = ($numUsuarios == 0) ? 'admin' : 'cliente';
-
-			
+		
 			$sql = 'INSERT INTO usuario (nome, idade, telefone, email, senha, sexo, tipo, tipo_usuario) 
 					VALUES (:nome, :idade, :telefone, :email, :senha, :sexo, :tipo, :tipo_usuario)';
-			$consulta = $conexao->prepare($sql);
 
 			
+			if ($numUsuarios == 0) {
+				$consultaAdmin = $conexao->prepare($sql);
+				$consultaAdmin->bindValue(':nome', 'Admin');
+				$consultaAdmin->bindValue(':idade', date('Y-m-d')); 
+				$consultaAdmin->bindValue(':telefone', '(00)00000-0000');
+				$consultaAdmin->bindValue(':email', 'admin@admin.com');
+				$consultaAdmin->bindValue(':senha', sha1(md5('admin123')));
+				$consultaAdmin->bindValue(':sexo', 'n');
+				$consultaAdmin->bindValue(':tipo', 'admin');
+				$consultaAdmin->bindValue(':tipo_usuario', 'sistema');
+				$consultaAdmin->execute();
+			}
+
+			$tipoUsuario = 'cliente';
+
+			$consulta = $conexao->prepare($sql);
 			$consulta->bindValue(':nome', $usuario->getNome());
 			$consulta->bindValue(':idade', $usuario->getIdade());
 			$consulta->bindValue(':telefone', $usuario->getTelefone());
@@ -113,15 +126,11 @@ class UsuarioDAO
 			$consulta->bindValue(':sexo', $usuario->getSexo());
 			$consulta->bindValue(':tipo', $usuario->getTipo());
 			$consulta->bindValue(':tipo_usuario', $tipoUsuario);
-
-			// Executar a consulta
 			$consulta->execute();
 
-			// Retornar o ID inserido
 			return $conexao->lastInsertId();
 
 		} catch (Exception $e) {
-			// Caso ocorra algum erro
 			print "Erro ao inserir Usuario <br>" . $e->getMessage() . '<br>';
 		}
 	}
@@ -150,7 +159,6 @@ class UsuarioDAO
 		}
 	}
 
-	//Atualiza um elemento na tabela
 	public function atualizar(Usuario $usuario)
 	{
 		try {
