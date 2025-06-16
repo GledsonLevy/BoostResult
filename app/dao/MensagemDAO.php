@@ -72,13 +72,14 @@ class MensagemDAO{
 	public function inserir(Mensagem $mensagem){
         try {
             // Remova 'id_msg' do INSERT se ele for AUTO_INCREMENT no seu banco de dados
-            $sql = 'INSERT INTO mensagem (remetente, destinatario, texto, data_msg) VALUES (:remetente, :destinatario, :texto, :data_msg)';
+            $sql = 'INSERT INTO mensagem (remetente, destinatario, texto, data_msg, id_chat) VALUES (:remetente, :destinatario, :texto, :data_msg, :id_chat)';
             $consulta = Conexao::getConexao()->prepare($sql);
 
             $consulta->bindValue(':remetente',$mensagem->getRemetente());
             $consulta->bindValue(':destinatario',$mensagem->getDestinatario());
             $consulta->bindValue(':texto',$mensagem->getTexto());
             $consulta->bindValue(':data_msg',$mensagem->getData());
+            $consulta->bindValue(':id_chat',$mensagem->getId_chat());
             $consulta->execute();
             return true;
         } catch (PDOException $e) { // Use PDOException para erros de PDO

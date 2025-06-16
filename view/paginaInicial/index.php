@@ -1,6 +1,5 @@
 <?php
 session_start();
-$destinatario = 22;
 include("../../app/conexao/Conexao.php");
 include("../../app/dao/UsuarioDAO.php");
 include("../../app/model/Usuario.php");
@@ -138,7 +137,7 @@ $personais = $usuarioDAO->buscarTipo('personal');
                 <form class="interacao-input" action="../../app/controller/MensagemController.php"
                     method="POST">
                     <input type="text" id="mensagem" name="mensagem" placeholder="Digite sua mensagem...">
-                    <input type="hidden" id="destinatario_id" name="destinatario_id" value="<?=$aluno['id_user']?>">
+                    <input type="text" id="destinatario_id" name="destinatario_id" value="<?=$aluno['id_user']?>">
                     <button id="enviar-msg" name="acao" value="INSERIR">Enviar</button>
                 </form>
                 </div>
