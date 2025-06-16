@@ -444,6 +444,50 @@ iframe {
     height: 100vh;
 }
 
+/* Estilo para o painel de alunos */
+.alunos-panel {
+    position: fixed;
+    top: 0;
+    left: -30%;
+    /* escondido à esquerda */
+    width: 30%;
+    height: 100%;
+    background: #FAFAFA;
+    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
+    z-index: 1000;
+    padding: 20px;
+    border-right: 1px solid #e1e8ed;
+}
+
+.alunos-panel.open {
+    left: 0;
+}
+
+.alunos-panel h2 {
+    margin-bottom: 20px;
+}
+
+.alunos-panel .message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-bottom: 1px solid #e1e8ed;
+}
+
+.alunos-panel .message .sender {
+    font-weight: bold;
+}
+
+.alunos-panel .message .text {
+    color: #657786;
+}
+
+.alunos-panel iframe {
+    border: none;
+    width: 100%;
+    height: 100vh;
+}
+
 .messageButton {
     background-color: transparent;
     border: none;
@@ -542,4 +586,66 @@ body.dark-mode {
 
 .dark-mode #underline-indicator {
     background-color: #FAFAFA;
+}
+
+.interacao-panel {
+    position: fixed;
+    width: 48%;
+    height: 90%;
+    background-color: #fff;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+.interacao-header {
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #e1e8ed;
+    font-weight: bold;
+    text-align: center;
+}
+
+.interacao-conteudo {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.interacao-conteudo .mensagem {
+    background-color: #e1f5fe;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.interacao-input {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #e1e8ed;
+    background-color: #fafafa;
+}
+
+.interacao-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+}
+
+.interacao-input button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.interacao-input button:hover {
+    background-color: #1565c0;
 }

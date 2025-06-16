@@ -24,12 +24,6 @@ function loadPageAndHighlight(button, url) {
     button.classList.add('active'); // Adiciona a classe "active" ao botão clicado
 }
 
-// Adiciona a underline no botão 1 ao carregar a página
-window.onload = function () {
-    const firstButton = document.getElementById('button1');
-    loadPageAndHighlight(firstButton, 'informacoes/treinos.php'); // URL padrão ao carregar
-};
-
 // Abrir painel de mensagens
 document.getElementById('mensagens-btn').addEventListener('click', function () {
     const panel = document.getElementById('mensagens-panel');
@@ -40,8 +34,16 @@ document.getElementById('personais-btn').addEventListener('click', function () {
     document.getElementById('personais-panel').classList.add('open');
 });
 
-document.getElementById('close-mensagens-btn').addEventListener('click', function () {
+document.getElementById('close-personais-btn').addEventListener('click', function () {
     document.getElementById('personais-panel').classList.remove('open');
+});
+
+document.getElementById('alunos-btn').addEventListener('click', function () {
+    document.getElementById('alunos-panel').classList.add('open');
+});
+
+document.getElementById('close-alunos-btn').addEventListener('click', function () {
+    document.getElementById('alunos-panel').classList.remove('open');
 });
 
 // Fechar painel de mensagens
@@ -93,7 +95,6 @@ window.addEventListener("load", function () {
         document.getElementById("toggleDarkMode").style.backgroundColor = "#000";
         document.getElementById("toggleDarkMode").style.color = "#FAFAFA";
     }
-
 });
 
 function abrirModal(id) {
@@ -105,5 +106,4 @@ function abrirModal(id) {
     const elementoAluno = document.getElementById(id);
     const nomeDoUsuario = elementoAluno.getAttribute('value');
     const recebeNome = document.getElementById("receberNomeUsuario").innerHTML = nomeDoUsuario;
-};
-
+}

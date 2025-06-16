@@ -1,4 +1,3 @@
-index.php
 <?php
 session_start();
 $destinatario = 22;
@@ -101,9 +100,6 @@ $personais = $usuarioDAO->buscarTipo('personal');
         <h2>Mensagens</h2>
         <div class="message">
             <button class="messageButton" id="chat-btn">
-                <img src="imagem.jpg" alt="">
-                <div class="sender">Luan Pinto</div>
-                <div class="text">Oi, como você está?</div>
             </button>
         </div>
     </div>
@@ -112,7 +108,7 @@ $personais = $usuarioDAO->buscarTipo('personal');
         <button class="close-btn" id="close-personais-btn">X</button>
         <div class="message">
             <?php foreach($personais as $personal){ ?>
-                <div class="personal" onclick="abrirModal(this.id)" id="<?=$personal['id_user']?>">
+                <div class="personal" onclick="abrirModal(this.id)" id="<?=$personal['id_user']?>" value="<?=$personal['nome']?>">
                     <div class="nome"><?=$personal['nome']?></div>
                 </div>
 
@@ -124,7 +120,7 @@ $personais = $usuarioDAO->buscarTipo('personal');
         <button class="close-btn" id="close-alunos-btn">X</button>
         <div class="message">
             <?php foreach($alunos as $aluno){ ?>
-                <div class="alunos" onclick="abrirModal(this.id)" id="<?=$aluno['id_user']?>">
+                <div class="alunos" onclick="abrirModal(this.id)" id="<?=$aluno['id_user']?>" value="<?=$aluno['nome']?>">
                     <div class="nome"><?=$aluno['nome']?></div>
                 </div>
 
@@ -134,15 +130,16 @@ $personais = $usuarioDAO->buscarTipo('personal');
 
     <div class="chat-panel" id="chat-panel">
         <button class="close-btn" id="close-chat-btn">X</button>
-        <h2>Luan pinto</h2>
+        <h2 id="receberNomeUsuario"></h2>
         <div class="chat">
             <div class="interacao-panel" id="interacao-panel">
                 <div class="interacao-conteudo" id="interacao-conteudo">
                     </div>
-                <form class="interacao-input">
-                    <input type="text" id="mensagem" placeholder="Digite sua mensagem...">
-                    <input type="hidden" id="destinatario-id-hidden" value="">
-                    <button id="enviar-msg">Enviar</button>
+                <form class="interacao-input" action="../../app/controller/MensagemController.php"
+                    method="POST">
+                    <input type="text" id="mensagem" name="mensagem" placeholder="Digite sua mensagem...">
+                    <input type="hidden" id="destinatario_id" name="destinatario_id" value="<?=$aluno['id_user']?>">
+                    <button id="enviar-msg" name="acao" value="INSERIR">Enviar</button>
                 </form>
                 </div>
         </div>
@@ -269,7 +266,7 @@ $personais = $usuarioDAO->buscarTipo('personal');
         </div>
     </div>
 
-
+    <!-- Modal -->
     <div class="modal fade" id="modalExemplo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -302,3 +299,9 @@ $personais = $usuarioDAO->buscarTipo('personal');
 <script src="script.js"></script>
 
 </html>
+
+
+
+
+
+

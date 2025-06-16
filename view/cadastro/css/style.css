@@ -4,6 +4,7 @@
     --green-hover-color:#269126;
     --green-complement-color:#269126;
     --gray-main:#ffffff;
+    --red-error:#dc3545;
 }
 
 *{
@@ -151,19 +152,22 @@ body {
     max-width: 300px; 
 }
 
-/* Agora session4 vira modal */
+
 #session4 {
+    display: flex; 
     position: fixed;
     top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0,0,0,0.5); /* fundo escuro transparente */
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
+    left: 15%;
+    width: 700px;
+    height: 500px;
+    background-color: rgba(0, 0, 0, 0); 
+    justify-content: center; 
+    align-items: center; 
+    z-index: 9999; 
     animation: fadeIn 0.3s ease-in-out;
+    
 }
+
 
 #session4 .inner {
     background: white;
@@ -173,8 +177,9 @@ body {
     max-width: 500px;
     box-sizing: border-box;
     position: relative;
-    gap: 2rem;
-    
+    display: flex; 
+    flex-direction: column; 
+    gap: 2rem; 
 }
 
 #session4 .drag-handle {
@@ -224,9 +229,24 @@ body {
     margin-bottom: 1rem;
 }
 
+.hidden {
+  display: none;
+}
+
+.error-input {
+  border: 2px solid var(--red-error) !important; 
+  border-radius: 4px;
+  background-color: #fff0f0; 
+  box-shadow: 0 0 4px rgba(220, 53, 69, 0.5); 
+  transition: all 0.3s ease-in-out;
+}
 
 
-/* Inputs */
+.error-input:focus {
+  outline: none;
+  box-shadow: 0 0 6px rgba(220, 53, 69, 0.7);
+}
+
 .form-holder input {
     padding: 10px;
     position: relative;
@@ -565,12 +585,13 @@ a.tabletitle span{
    padding: 0px 0px 0px 0px;
 }
 
-a#EntrarConta {
+a.link-redir{
     text-decoration: none;
     color: #ffffff;
 }
 
-a#EntrarConta:hover {
+a.link-redir:hover {
     text-decoration: none;
     color: #269126;
 }
+
