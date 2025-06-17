@@ -74,8 +74,10 @@ class ChatDAO{
 			$sql = 'INSERT INTO chat (id_chat, id_solicitacao, data) VALUES (:id_chat, :id_solicitacao, :data)';
 			$consulta = Conexao::getConexao()->prepare($sql);
 			$consulta->bindValue(':id_chat',$chat->getId_chat()); 
-			$consulta->bindValue(':id_solicitacao',$chat->getId_solicitacao()); 
-			$consulta->bindValue(':data',$chat->getData());
+
+			$consulta->bindValue(':id_solicitacao',$chat->getId_solicitacao()); 
+
+			$consulta->bindValue(':data',$chat->getData());
 			$consulta->execute();
         } catch (Exception $e) {
             print "Erro ao inserir Chat <br>" . $e . '<br>';
@@ -88,8 +90,10 @@ class ChatDAO{
 			$sql = 'UPDATE chat SET id_chat = :id_chat, id_solicitacao = :id_solicitacao, data = :data WHERE id_chat = :id_chat';
 			$consulta = Conexao::getConexao()->prepare($sql);
 			$consulta->bindValue(':id_chat',$chat->getId_chat()); 
-			$consulta->bindValue(':id_solicitacao',$chat->getId_solicitacao()); 
-			$consulta->bindValue(':data',$chat->getData());
+
+			$consulta->bindValue(':id_solicitacao',$chat->getId_solicitacao()); 
+
+			$consulta->bindValue(':data',$chat->getData());
 			$consulta->execute();			
         } catch (Exception $e) {
             print "Erro ao atualizar Chat <br>" . $e . '<br>';

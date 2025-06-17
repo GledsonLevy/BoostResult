@@ -11,7 +11,7 @@
 
     header('Content-Type: application/json');
     $m= filter_input_array(INPUT_POST);
-    
+    var_dump($_POST);
     // Verifica se pesquisaram alguma coisa.
     if(isset($_GET['pesquisa'])&&!empty($_GET['pesquisa'])){
       $mensagems = $mensagemDAO->buscar("id_msg",$_GET['pesquisa']);  
@@ -30,17 +30,19 @@
 
     $destinatario = filter_var($_POST['destinatario_id'] ?? '', FILTER_SANITIZE_NUMBER_INT);
 
+    $id_chat = filter_var($_POST['id_chat'] ?? '', FILTER_SANITIZE_NUMBER_INT);
+
+
     if (empty($destinatario) || empty($textoMensagem)) {
         echo json_encode(['status' => 'error', 'message' => 'Dados essenciais faltando para inserir a mensagem.']);
         exit();
     }
 
-
     $mensagem->setRemetente($remetente); 
     $mensagem->setDestinatario($destinatario);
     $mensagem->setTexto($textoMensagem);
     $mensagem->setData(date('Y-m-d H:i:s')); 
-
+    $mensagem->setId_chat($id_chat);
     
     if ($mensagemDAO->inserir($mensagem)) {
         

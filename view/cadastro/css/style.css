@@ -585,12 +585,12 @@ a.tabletitle span{
    padding: 0px 0px 0px 0px;
 }
 
-a.link-redir{
+#logarConta{
     text-decoration: none;
     color: #ffffff;
 }
 
-a.link-redir:hover {
+#logarConta:hover {
     text-decoration: none;
     color: #269126;
 }
