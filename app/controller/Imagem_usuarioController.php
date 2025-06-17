@@ -22,27 +22,32 @@
       $imagem_usuarios = $imagem_usuarioDAO->listarTodos(); 
     }
 
-
-    //se a operação for gravar entra nessa condição
     if(isset($_POST['cadastrar'])){
 
-        $imagem_usuario->setId_img($i['id_img']); 
-		$imagem_usuario->setId_user($i['id_user']); 
-		$imagem_usuario->setNome_arquivo($i['nome_arquivo']); 
-		$imagem_usuario->setTipo($i['tipo']); 
-		$imagem_usuario->setImagem($i['imagem']);
-        $imagem_usuarioDAO->inserir($imagem_usuario);
-
-        header("Location: ../../imagem_usuario.php?msg=adicionado");
+        if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === 0) {
+            $imagem_usuario->setId_user($i['id_user']);
+            $imagem_usuario->setNome_arquivo($_FILES['imagem']['name']);
+            $imagem_usuario->setTipo($_FILES['imagem']['type']);
+            $imagem_usuario->setImagem($_FILES['imagem']['tmp_name']);
+            $imagem_usuarioDAO->inserir($imagem_usuario);
+            header("Location: ../../view/paginaInicial/index.php?msg=adicionado");
+        }else {
+            header("Location: ../../view/paginaInicial/index.php?msg=erro_imagem");
+        }
+            
     } 
     // se a requisição for editar
     else if(isset($_POST['editar'])){
 
         $imagem_usuario->setId_img($i['id_img']); 
-		$imagem_usuario->setId_user($i['id_user']); 
-		$imagem_usuario->setNome_arquivo($i['nome_arquivo']); 
-		$imagem_usuario->setTipo($i['tipo']); 
-		$imagem_usuario->setImagem($i['imagem']);
+
+		$imagem_usuario->setId_user($i['id_user']); 
+
+		$imagem_usuario->setNome_arquivo($i['nome_arquivo']); 
+
+		$imagem_usuario->setTipo($i['tipo']); 
+
+		$imagem_usuario->setImagem($i['imagem']);
         $imagem_usuarioDAO->atualizar($imagem_usuario);
 
         header("Location: ../../imagem_usuario.php?msg=editado");
@@ -55,8 +60,8 @@
         $imagem_usuarioDAO->deletar($imagem_usuario);
 
         header("Location: ../../imagem_usuario.php?msg=apagado");
-    }else{
-        header("Location: ../../imagem_usuario.php?msg=erro");
+    }
+    else{
+        header("Location: ../../view/paginaInicial/index.php?msg=erro");
     }
 
-   

@@ -3,6 +3,9 @@ session_start();
 include("../../app/conexao/Conexao.php");
 include("../../app/dao/UsuarioDAO.php");
 include("../../app/model/Usuario.php");
+include("../../app/dao/Imagem_usuarioDAO.php");
+include("../../app/model/Imagem_usuario.php");
+
 
 $usuarioDAO = new UsuarioDAO();
 $alunos = $usuarioDAO->buscarTipo('aluno');
@@ -94,6 +97,7 @@ $personais = $usuarioDAO->buscarTipo('personal');
 </head>
 
 <body>
+    
     <div class="mensagens-panel" id="mensagens-panel">
         <button class="close-btn" id="close-mensagens-btn">X</button>
         <h2>Mensagens</h2>
@@ -163,7 +167,7 @@ $personais = $usuarioDAO->buscarTipo('personal');
             
             <li id="mensagens-btn">Mensagens</li>
             <li>Suporte</li>
-            <form method="post" action="../../app/controller/UsuarioController.php">
+            <form method="POST" action="../../app/controller/UsuarioController.php">
                 <button type="submit" name="acao" value="DESLOGAR" id="sair">Sair</button>
             </form>
             <li>
@@ -174,8 +178,7 @@ $personais = $usuarioDAO->buscarTipo('personal');
 
     <div class="main">
         <div class="profile">
-            <form action="../../app/controller/imagem_usuarioController.php" method="post"
-                enctype="multipart/form-data">
+            <form action="../../app/controller/imagem_usuarioController.php" method="POST" enctype="multipart/form-data">
                 <label for="fileUpload">
                     <div class="cover">
                         <img src="https://preview.redd.it/34mmdb3oo42d1.png?auto=webp&s=5b038c9df7e574ce5b88b9664471e7bd83fc94ca"
@@ -183,21 +186,23 @@ $personais = $usuarioDAO->buscarTipo('personal');
                         <span class="emoji"><img src="../../imagens/icongaleria.png" alt=""></span>
                     </div>
                 </label>
-                <input type="file" id="fileUpload" name="foto" accept="image/*" style="display:none;"
+                <input type="file" name="foto" accept="image/*" style="display:none;"
                     onchange="this.form.submit();">
             </form>
-            <form action="../../app/controller/imagem_usuarioController.php" method="post"
-                enctype="multipart/form-data">
+            <form action="../../app/controller/imagem_usuarioController.php" method="POST" enctype="multipart/form-data">
                 <label for="fileUpload">
                     <div class="avatar">
-                        <img src="https://dimensaosete.com.br/static/7fc311549694666167a49cdb0fb1293c/2493a/gojo.webp"
+                        <img src="../../view/exibir_imagem.php?id_user=<?php echo $_SESSION['id_user']; ?>" alt="Clique para enviar uma imagem" width="150" id="imgAvatar">
                             alt="Clique para enviar uma imagem" width="150" id="imgAvatar">
                         <span class="emoji"><img src="../../imagens/icongaleria.png" alt=""></span>
                     </div>
                 </label>
-                <input type="file" id="fileUpload" name="foto" accept="image/*" style="display:none;"
-                    onchange="this.form.submit();">
+                <input type="hidden" name="cadastrar" value="Cadastrar">
+                <input type="hidden" name="id_user" value="<?php echo $_SESSION['id_user']; ?>">
+                <input type="file" id="fileUpload" name="imagem" accept="image/*" style="display:none;" onchange="this.form.submit();">
+                 
             </form>
+            
             <div class="profile-info">
                 <h1 id="nomeConta">
                     <?php echo $_SESSION['nome']; ?>

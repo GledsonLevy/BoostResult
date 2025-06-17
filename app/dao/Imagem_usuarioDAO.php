@@ -6,15 +6,16 @@
 class Imagem_usuarioDAO{
 
 	//Carrega um elemento pela chave primária
-	public function carregar($id_img){
+	public function carregar($id_user){
         try {
-			$sql = 'SELECT * FROM imagem_usuario WHERE id_img = :id_img';
+			$sql = 'SELECT * FROM imagem_usuario WHERE id_user = :id_user';
 			$consulta = Conexao::getConexao()->prepare($sql);
-			$consulta->bindValue(":id_img",$id_img);
+			$consulta->bindValue(":id_user",$id_user);
 			$consulta->execute();
-			return ($consulta->fetchAll(PDO::FETCH_ASSOC));
+			return ($consulta->fetch(PDO::FETCH_ASSOC));
         } catch (Exception $e) {
             print "Erro ao carregar Imagem_usuario <br>" . $e . '<br>';
+			return  null;
         }
 	}
 
@@ -74,10 +75,14 @@ class Imagem_usuarioDAO{
 			$sql = 'INSERT INTO imagem_usuario (id_img, id_user, nome_arquivo, tipo, imagem) VALUES (:id_img, :id_user, :nome_arquivo, :tipo, :imagem)';
 			$consulta = Conexao::getConexao()->prepare($sql);
 			$consulta->bindValue(':id_img',$imagem_usuario->getId_img()); 
-			$consulta->bindValue(':id_user',$imagem_usuario->getId_user()); 
-			$consulta->bindValue(':nome_arquivo',$imagem_usuario->getNome_arquivo()); 
-			$consulta->bindValue(':tipo',$imagem_usuario->getTipo()); 
-			$consulta->bindValue(':imagem',$imagem_usuario->getImagem());
+
+			$consulta->bindValue(':id_user',$imagem_usuario->getId_user()); 
+
+			$consulta->bindValue(':nome_arquivo',$imagem_usuario->getNome_arquivo()); 
+
+			$consulta->bindValue(':tipo',$imagem_usuario->getTipo()); 
+
+			$consulta->bindValue(':imagem',$imagem_usuario->getImagem());
 			$consulta->execute();
         } catch (Exception $e) {
             print "Erro ao inserir Imagem_usuario <br>" . $e . '<br>';
@@ -90,10 +95,14 @@ class Imagem_usuarioDAO{
 			$sql = 'UPDATE imagem_usuario SET id_img = :id_img, id_user = :id_user, nome_arquivo = :nome_arquivo, tipo = :tipo, imagem = :imagem WHERE id_img = :id_img';
 			$consulta = Conexao::getConexao()->prepare($sql);
 			$consulta->bindValue(':id_img',$imagem_usuario->getId_img()); 
-			$consulta->bindValue(':id_user',$imagem_usuario->getId_user()); 
-			$consulta->bindValue(':nome_arquivo',$imagem_usuario->getNome_arquivo()); 
-			$consulta->bindValue(':tipo',$imagem_usuario->getTipo()); 
-			$consulta->bindValue(':imagem',$imagem_usuario->getImagem());
+
+			$consulta->bindValue(':id_user',$imagem_usuario->getId_user()); 
+
+			$consulta->bindValue(':nome_arquivo',$imagem_usuario->getNome_arquivo()); 
+
+			$consulta->bindValue(':tipo',$imagem_usuario->getTipo()); 
+
+			$consulta->bindValue(':imagem',$imagem_usuario->getImagem());
 			$consulta->execute();			
         } catch (Exception $e) {
             print "Erro ao atualizar Imagem_usuario <br>" . $e . '<br>';
