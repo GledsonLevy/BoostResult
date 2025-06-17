@@ -83,7 +83,7 @@ class MensagemDAO{
             $consulta->execute();
             return true;
         } catch (PDOException $e) { // Use PDOException para erros de PDO
-            error_log("Erro ao inserir Mensagem: " . $e->getMessage()); // Registra o erro no log
+           die("Erro ao inserir Mensagem: " . $e->getMessage()); // Registra o erro no log
             return false;
         }
 	}

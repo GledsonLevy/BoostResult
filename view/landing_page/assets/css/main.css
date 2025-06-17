@@ -179,7 +179,7 @@ h6 {
   font-size: 14px;
   padding: 8px 30px;
   margin: 0 0 0 30px;
-  border-radius: 4px;
+  border-radius: 20px;
   transition: 0.3s;
   border: 2px solid var(--accent-color);
 }
@@ -188,6 +188,101 @@ h6 {
 .header .btn-getstarted:focus:hover {
   color: var(--default-color);
   background: var(--accent-color);
+}
+.card {
+  width: 220px; /* Largura aumentada */
+  height: 300px;
+  background: #000;
+  position: relative;
+  display: flex;
+  place-content: center;
+  overflow: hidden;
+  border-radius: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(82, 82, 82, 0.5);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  width: 100px;
+  height: 130%;
+  background-image: linear-gradient(180deg, rgb(38, 145, 38), rgb(0, 49, 0));
+  animation: rotBGimg 3s linear infinite;
+  transition: all 0.2s linear;
+}
+
+@keyframes rotBGimg {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  background: #000;
+  inset: 5px;
+  border-radius: 15px;
+  z-index: 1;
+}
+
+.card-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  height: 100%;
+  width: 100%;
+  border-radius: 15px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* IMAGEM AUMENTADA */
+.team-img {
+  width: 100%;
+  height: 160px; /* Aumentada de 140px */
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.member-info {
+  color: white;
+  margin-top: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.member-info span {
+  display: block;
+  word-wrap: break-word;
+  font-size: 13px;
+}
+
+.social-icons {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  z-index: 2;
+}
+
+.social-icons a {
+  color: #fff;
+  font-size: 1.2rem;
+  transition: color 0.3s;
+  text-decoration: none;
+}
+
+.social-icons a:hover {
+  color: #25D366;
 }
 
 @media (max-width: 1200px) {
@@ -467,7 +562,7 @@ h6 {
 }
 
 .footer .footer-top {
-  padding: 50px 0;
+  padding: 25px 0;
   background-color: color-mix(in srgb, var(--footer-background-color) 90%, white 10%);
 }
 
@@ -502,9 +597,9 @@ h6 {
   justify-content: center;
   width: 40px;
   height: 40px;
-  border-radius: 4px;
+  border-radius: 50%;
   font-size: 16px;
-  margin-right: 10px;
+  margin-right: 5px;
   transition: 0.3s;
 }
 
@@ -521,7 +616,7 @@ h6 {
 }
 
 .footer .footer-links {
-  margin-bottom: 30px;
+  margin-bottom: 5px;
 }
 
 .footer .footer-links ul {
@@ -558,9 +653,8 @@ h6 {
 }
 
 .footer .footer-contact p {
-  margin-bottom: 5px;
+  margin-bottom: 0px;
 }
-
 .footer .footer-newsletter .newsletter-form {
   margin-top: 30px;
   margin-bottom: 15px;
@@ -617,6 +711,7 @@ h6 {
   font-size: 13px;
 }
 
+
 /*--------------------------------------------------------------
 # Preloader
 --------------------------------------------------------------*/
@@ -665,7 +760,7 @@ h6 {
   background-color: var(--accent-color);
   width: 40px;
   height: 40px;
-  border-radius: 4px;
+  border-radius: 25px;
   transition: all 0.4s;
 }
 
@@ -1048,7 +1143,7 @@ section,
   padding: 12px 30px;
   background-color: var(--accent-color);
   color: var(--contrast-color);
-  border-radius: 4px;
+  border-radius: 25px;
   font-weight: 500;
   transition: all 0.3s ease;
 }
@@ -1387,7 +1482,7 @@ section,
   letter-spacing: 1px;
   display: inline-block;
   padding: 12px 40px;
-  border-radius: 5px;
+  border-radius: 25px;
   transition: 0.5s;
   margin: 10px;
   border: 2px solid var(--default-color);
@@ -1648,7 +1743,7 @@ section,
 
 @media (min-width: 992px) {
   .testimonials .testimonial-item p {
-    width: 80%;
+    width: 100%;
   }
 }
 

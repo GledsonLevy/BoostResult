@@ -91,7 +91,7 @@ if (isset($_POST['acao']) && ($_POST['acao'] == "CADASTRAR")) {
     session_unset();
     session_destroy();
 
-    header("Location: ../../view/login/index.html");
+    header("Location: ../../view/login/index.php");
     exit;
 
 }

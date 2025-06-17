@@ -156,7 +156,7 @@ $personais = $usuarioDAO->buscarTipo('personal');
                     echo "<li id='personais-btn'>Personais</li>";
                 } else {
 
-                    echo ($_SESSION['tipo'] == "aluno") ? "<li id='personais-btn'>Personais</li>" : 'Alunos';
+                    echo ($_SESSION['tipo'] == "aluno") ? "<li id='personais-btn'>Personais</li>" : "<li id='alunos-btn'>Alunos</li>";
                 }
 
                 ?>
