@@ -488,6 +488,50 @@ iframe {
     height: 100vh;
 }
 
+.solicitacao-panel {
+    position: fixed;
+    top: 0;
+    left: -30%;
+    /* escondido à esquerda */
+    width: 30%;
+    height: 100%;
+    background: #FAFAFA;
+    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
+    z-index: 1000;
+    padding: 20px;
+    border-right: 1px solid #e1e8ed;
+}
+
+.solicitacao-panel.open {
+    left: 0;
+}
+
+.solicitacao-panel h2 {
+    margin-bottom: 20px;
+}
+
+.solicitacao-panel .message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-bottom: 1px solid #e1e8ed;
+}
+
+.solicitacao-panel .message .sender {
+    font-weight: bold;
+}
+
+.solicitacao-panel .message .text {
+    color: #657786;
+}
+
+.solicitacao-panel iframe {
+    border: none;
+    width: 100%;
+    height: 100vh;
+}
+
+
 .messageButton {
     background-color: transparent;
     border: none;

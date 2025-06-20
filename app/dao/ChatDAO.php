@@ -69,20 +69,17 @@ class ChatDAO{
 	}
 	
 	//Insere um elemento na tabela
-	public function inserir(Chat $chat){
-        try {
-			$sql = 'INSERT INTO chat (id_chat, id_solicitacao, data) VALUES (:id_chat, :id_solicitacao, :data)';
-			$consulta = Conexao::getConexao()->prepare($sql);
-			$consulta->bindValue(':id_chat',$chat->getId_chat()); 
-
-			$consulta->bindValue(':id_solicitacao',$chat->getId_solicitacao()); 
-
-			$consulta->bindValue(':data',$chat->getData());
-			$consulta->execute();
-        } catch (Exception $e) {
-            print "Erro ao inserir Chat <br>" . $e . '<br>';
-        }
-	}
+	public function inserir($id_solicitacao) {
+    try {
+        $sql = 'INSERT INTO chat (id_solicitacao, data) VALUES (:id_solicitacao, :data)';
+        $consulta = Conexao::getConexao()->prepare($sql);
+        $consulta->bindValue(':id_solicitacao', $id_solicitacao);
+        $consulta->bindValue(':data', date('Y-m-d H:i:s'));
+        $consulta->execute();
+    } catch (Exception $e) {
+        print "Erro ao inserir Chat <br>" . $e->getMessage() . '<br>';
+    }
+}
 	
 	//Atualiza um elemento na tabela
 	public function atualizar(Chat $chat){

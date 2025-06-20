@@ -12,7 +12,7 @@ class AlunoDAO{
 			$consulta = Conexao::getConexao()->prepare($sql);
 			$consulta->bindValue(":id_aluno",$id_aluno);
 			$consulta->execute();
-			return ($consulta->fetchAll(PDO::FETCH_ASSOC));
+			return ($consulta->fetch(PDO::FETCH_ASSOC));
         } catch (Exception $e) {
             print "Erro ao carregar Aluno <br>" . $e . '<br>';
         }
@@ -46,15 +46,28 @@ class AlunoDAO{
 	//Busca elementos da tabela
 	public function buscar($coluna, $valor){
         try {
-			$sql = 'SELECT * FROM aluno WHERE id_aluno LIKE :valor';
+			$sql = "SELECT * FROM aluno WHERE $coluna = :valor";
 			$consulta = Conexao::getConexao()->prepare($sql);
 			$consulta->bindValue(":valor",$valor);
 			$consulta->execute();
-			return ($consulta->fetchAll(PDO::FETCH_ASSOC));
+			return ($consulta->fetch(PDO::FETCH_ASSOC));
         } catch (Exception $e) {
             print "Erro ao listar Alunos <br>" . $e . '<br>';
         }
 	}
+
+	public function carregarIdAluno($id_aluno){
+        try {
+			$sql = 'SELECT * FROM aluno WHERE id_aluno = :id_aluno';
+			$consulta = Conexao::getConexao()->prepare($sql);
+			$consulta->bindValue(":id_aluno",$id_aluno);
+			$consulta->execute();
+			return ($consulta->fetch(PDO::FETCH_ASSOC));
+        } catch (Exception $e) {
+            print "Erro ao carregar Solicitacao <br>" . $e . '<br>';
+        }
+	}
+
 	
 	//Apaga um elemento da tabela
 	public function deletar(Aluno $aluno){

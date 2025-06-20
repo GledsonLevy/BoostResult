@@ -50,11 +50,11 @@ class UsuarioDAO
 	public function buscar($coluna, $valor)
 	{
 		try {
-			$sql = 'SELECT * FROM usuario WHERE id_user LIKE :valor';
+			$sql = "SELECT * FROM usuario WHERE id_user = :valor";
 			$consulta = Conexao::getConexao()->prepare($sql);
 			$consulta->bindValue(":valor", $valor);
 			$consulta->execute();
-			return ($consulta->fetchAll(PDO::FETCH_ASSOC));
+			return ($consulta->fetch(PDO::FETCH_ASSOC));
 		} catch (Exception $e) {
 			print "Erro ao listar Usuarios <br>" . $e . '<br>';
 		}

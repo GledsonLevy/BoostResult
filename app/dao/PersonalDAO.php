@@ -6,13 +6,13 @@
 class PersonalDAO{
 
 	//Carrega um elemento pela chave primária
-	public function carregar($id_personal){
+	public function carregar($id_user){
         try {
-			$sql = 'SELECT * FROM personal WHERE id_personal = :id_personal';
+			$sql = 'SELECT * FROM personal WHERE id_user = :id_user';
 			$consulta = Conexao::getConexao()->prepare($sql);
-			$consulta->bindValue(":id_personal",$id_personal);
+			$consulta->bindValue(":id_user",$id_user);
 			$consulta->execute();
-			return ($consulta->fetchAll(PDO::FETCH_ASSOC));
+			return ($consulta->fetch(PDO::FETCH_ASSOC));
         } catch (Exception $e) {
             print "Erro ao carregar Personal <br>" . $e . '<br>';
         }
@@ -46,11 +46,23 @@ class PersonalDAO{
 	//Busca elementos da tabela
 	public function buscar($coluna, $valor){
         try {
-			$sql = 'SELECT * FROM personal WHERE id_personal LIKE :valor';
+			$sql = 'SELECT * FROM personal WHERE $coluna LIKE :valor';
 			$consulta = Conexao::getConexao()->prepare($sql);
 			$consulta->bindValue(":valor",$valor);
 			$consulta->execute();
-			return ($consulta->fetchAll(PDO::FETCH_ASSOC));
+			return ($consulta->fetch(PDO::FETCH_ASSOC));
+        } catch (Exception $e) {
+            print "Erro ao listar Personals <br>" . $e . '<br>';
+        }
+	}
+
+	public function buscarId($coluna, $valor){
+        try {
+			$sql = 'SELECT * FROM personal WHERE id_user = :valor';
+			$consulta = Conexao::getConexao()->prepare($sql);
+			$consulta->bindValue(":valor",$valor);
+			$consulta->execute();
+			return ($consulta->fetch(PDO::FETCH_ASSOC));
         } catch (Exception $e) {
             print "Erro ao listar Personals <br>" . $e . '<br>';
         }
@@ -74,10 +86,14 @@ class PersonalDAO{
 			$sql = 'INSERT INTO personal (id_personal, id_user, certf, avaliacao, especialidade) VALUES (:id_personal, :id_user, :certf, :avaliacao, :especialidade)';
 			$consulta = Conexao::getConexao()->prepare($sql);
 			$consulta->bindValue(':id_personal',$personal->getId_personal()); 
-			$consulta->bindValue(':id_user',$personal->getId_user()); 
-			$consulta->bindValue(':certf',$personal->getCertf()); 
-			$consulta->bindValue(':avaliacao',$personal->getAvaliacao()); 
-			$consulta->bindValue(':especialidade',$personal->getEspecialidade());
+
+			$consulta->bindValue(':id_user',$personal->getId_user()); 
+
+			$consulta->bindValue(':certf',$personal->getCertf()); 
+
+			$consulta->bindValue(':avaliacao',$personal->getAvaliacao()); 
+
+			$consulta->bindValue(':especialidade',$personal->getEspecialidade());
 			$consulta->execute();
         } catch (Exception $e) {
             print "Erro ao inserir Personal <br>" . $e . '<br>';
@@ -90,10 +106,14 @@ class PersonalDAO{
 			$sql = 'UPDATE personal SET id_personal = :id_personal, id_user = :id_user, certf = :certf, avaliacao = :avaliacao, especialidade = :especialidade WHERE id_personal = :id_personal';
 			$consulta = Conexao::getConexao()->prepare($sql);
 			$consulta->bindValue(':id_personal',$personal->getId_personal()); 
-			$consulta->bindValue(':id_user',$personal->getId_user()); 
-			$consulta->bindValue(':certf',$personal->getCertf()); 
-			$consulta->bindValue(':avaliacao',$personal->getAvaliacao()); 
-			$consulta->bindValue(':especialidade',$personal->getEspecialidade());
+
+			$consulta->bindValue(':id_user',$personal->getId_user()); 
+
+			$consulta->bindValue(':certf',$personal->getCertf()); 
+
+			$consulta->bindValue(':avaliacao',$personal->getAvaliacao()); 
+
+			$consulta->bindValue(':especialidade',$personal->getEspecialidade());
 			$consulta->execute();			
         } catch (Exception $e) {
             print "Erro ao atualizar Personal <br>" . $e . '<br>';

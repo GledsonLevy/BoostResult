@@ -6,6 +6,8 @@
     include_once "../conexao/Conexao.php";
     include_once "../model/Solicitacao.php";
     include_once "../dao/SolicitacaoDAO.php";
+    include "../dao/ChatDao.php";
+    include "../model/Chat.php";
 
 
     $solicitacao = new Solicitacao();
@@ -30,7 +32,7 @@
 
 		$solicitacao->setId_personal($s['id_personal']); 
 
-		$solicitacao->setData($s['data']); 
+		$solicitacao->setData(date('Y-m-d H:i:s')); 
 
 		$solicitacao->setStatus($s['status']);
         $solicitacaoDAO->inserir($solicitacao);
@@ -40,16 +42,10 @@
     // se a requisição for editar
     else if(isset($_POST['editar'])){
 
-        $solicitacao->setId_solicitacao($s['id_solicitacao']); 
-
-		$solicitacao->setId_aluno($s['id_aluno']); 
-
-		$solicitacao->setId_personal($s['id_personal']); 
-
-		$solicitacao->setData($s['data']); 
-
-		$solicitacao->setStatus($s['status']);
-        $solicitacaoDAO->atualizar($solicitacao);
+        $chatDao = new ChatDAO();
+        $chatDao->inserir($s['id_solicitacao']);
+      
+        $solicitacaoDAO->atualizar($s['id_solicitacao'], $s['status']);
 
         header("Location: ../../solicitacao.php?msg=editado");
     }

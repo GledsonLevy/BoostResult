@@ -3,13 +3,38 @@ session_start();
 include("../../app/conexao/Conexao.php");
 include("../../app/dao/UsuarioDAO.php");
 include("../../app/model/Usuario.php");
+include("../../app/dao/PersonalDAO.php");
+include("../../app/model/Personal.php");
+include("../../app/dao/AlunoDAO.php");
+include("../../app/model/Aluno.php");
 include("../../app/dao/Imagem_usuarioDAO.php");
 include("../../app/model/Imagem_usuario.php");
+include("../../app/dao/SolicitacaoDAO.php");
+include("../../app/model/Solicitacao.php");
+include("../../app/dao/ChatDAO.php");
+include("../../app/model/Chat.php");
 
+function console_log($msg) {
+    echo "<script>console.log(" . json_encode($msg) . ");</script>";
+}
 
 $usuarioDAO = new UsuarioDAO();
-$alunos = $usuarioDAO->buscarTipo('aluno');
 $personais = $usuarioDAO->buscarTipo('personal');
+
+$solicitacaoDAO = new SolicitacaoDAO();
+$personalDao = new PersonalDao();
+$alunoDao = new AlunoDao();
+
+
+//criar um header caso a session não possua nada
+console_log($_SESSION);
+if($_SESSION['tipo'] == "personal"){
+    $userPersonal = $personalDao->buscarId('id_personal', $_SESSION['id_user']);
+    $solicitacoesRecebidas = $solicitacaoDAO->carregarPersonaisSol($userPersonal['id_personal'], "solicitada");
+    $solicitacaoAlunoList = $solicitacaoDAO->carregarPersonaisSol($userPersonal['id_personal'], "ativa");
+    console_log("solicitação aluno list:");
+    console_log($solicitacaoAlunoList);
+}
 
 
 ?>
@@ -98,15 +123,6 @@ $personais = $usuarioDAO->buscarTipo('personal');
 
 <body>
     
-    <div class="mensagens-panel" id="mensagens-panel">
-        <button class="close-btn" id="close-mensagens-btn">X</button>
-        <h2>Mensagens</h2>
-        <div class="message">
-            <button class="messageButton" id="chat-btn">
-            </button>
-        </div>
-    </div>
-
     <div class="personais-panel" id="personais-panel">
         <button class="close-btn" id="close-personais-btn">X</button>
         <div class="message">
@@ -119,12 +135,67 @@ $personais = $usuarioDAO->buscarTipo('personal');
         </div>
     </div>
 
+    
+
+    <div class="solicitacao-panel" id="solicitacao-panel">
+        <button class="close-btn" id="close-solicitacao-btn">X</button>
+        <div class="message">
+            <?php if (isset($solicitacoesRecebidas) && !empty($solicitacoesRecebidas)) { ?>
+                    <h3>Solicitações Recebidas</h3>
+                    <?php foreach($solicitacoesRecebidas as $sol){ 
+                        $alunoLog = $alunoDao->carregar($sol['id_aluno']);
+                        $userAluno = $usuarioDAO->carregar($alunoLog['id_user']);
+                        $nomeAluno = $userAluno['nome'];
+                        console_log("sol:");
+                        console_log($sol);
+
+                    ?>
+                        <div class="alunos">
+                            <div class="nome"><div class="nome"><?= $nomeAluno ?></div></div>
+                            <div class="nome">Status: <?=$sol['status']?></div>
+                            <form action="../../app/controller/SolicitacaoController.php" method="POST">
+                                <input type="hidden" name="id_solicitacao" value="<?=$sol['id_solicitacao']?>">
+                                <input type="hidden" name="status" value="ativa">
+                                <button class="action" type="submit" name="editar" value="editar">Aceitar</button>
+                            </form>
+                        </div>
+                    <?php } ?>
+            <?php } else { ?>
+                <div class="mensagem">Nenhuma solicitação recebida.</div>
+            <?php } ?>
+        </div>
+    </div>
+
     <div class="alunos-panel" id="alunos-panel">
         <button class="close-btn" id="close-alunos-btn">X</button>
         <div class="message">
-            <?php foreach($alunos as $aluno){ ?>
-                <div class="alunos" onclick="abrirModal(this.id)" id="<?=$aluno['id_user']?>" value="<?=$aluno['nome']?>">
+            <?php foreach($solicitacaoAlunoList as $solicitacaoAluno){ 
+                console_log($solicitacaoAluno);
+                $alunoLog = $alunoDao->carregarIdAluno($solicitacaoAluno['id_aluno']);
+                $aluno = $usuarioDAO->carregar($alunoLog['id_user']);
+
+                $dados = [
+                    'id_solicitacao' => $solicitacaoAluno['id_solicitacao'],
+                    'status' => $solicitacaoAluno['status'],
+                    
+                    'aluno' => [
+                        'id_user' => $aluno['id_user'],
+                        'id_aluno' => $solicitacaoAluno['id_aluno'],
+                    ],
+                    'personal' => [
+                        'id_user' => $_SESSION['id_user'],
+                        'id_personal' => $solicitacaoAluno['id_aluno']
+                    ]
+                ];
+                
+                $dadosAlunoJson = htmlspecialchars(json_encode($dados), ENT_QUOTES, 'UTF-8');
+            ?>
+               <div onclick="abrirModal(this.id)" 
+                id="<?=$aluno['id_user']?>" 
+                value="<?=$aluno['nome']?>" 
+                data-solicitacao="<?=$solicitacaoAluno['id_solicitacao']?>">
                     <div class="nome"><?=$aluno['nome']?></div>
+                    <div class="nome"><?=$solicitacaoAluno['status']?></div>
                 </div>
 
             <?php } ?>
@@ -160,7 +231,12 @@ $personais = $usuarioDAO->buscarTipo('personal');
                     echo "<li id='personais-btn'>Personais</li>";
                 } else {
 
-                    echo ($_SESSION['tipo'] == "aluno") ? "<li id='personais-btn'>Personais</li>" : "<li id='alunos-btn'>Alunos</li>";
+                    if($_SESSION['tipo'] == "aluno"){
+                        echo "<li id='personais-btn'>Personais</li>";
+                    }else{
+                        echo "<li id='alunos-btn'>Alunos</li>";
+                        echo "<li id='solicitacao-btn'>Solicitações</li>";
+                    }
                 }
 
                 ?>
@@ -249,16 +325,32 @@ $personais = $usuarioDAO->buscarTipo('personal');
                 <span>LUAN PINTO</span>
                 <button>Perfil</button>
             </div>
-            <div class="user">
-                <img src="https://pbs.twimg.com/profile_images/875391618634977280/-UYcaL0-_400x400.jpg" alt="">
-                <span>LUISAO</span>
-                <button>Perfil</button>
-            </div>
-            <div class="user">
-                <img src="https://pbs.twimg.com/profile_images/875391618634977280/-UYcaL0-_400x400.jpg" alt="">
-                <span>DAVI</span>
-                <button>Perfil</button>
-            </div>
+            <?php foreach($personais as $personal){ ?>
+                <div class="user">
+                    <img src="https://pbs.twimg.com/profile_images/875391618634977280/-UYcaL0-_400x400.jpg" alt="">
+                    <span><?=$personal['nome']?></span>
+                    <?php if($_SESSION['tipo'] == 'aluno'){ 
+                        $personalLog = $personalDao->carregar($personal['id_user']);
+                        console_log("array personal:");
+                        console_log($personalLog);
+                        $alunoLog = $alunoDao->buscar('id_user', $_SESSION['id_user']);
+                        
+                        console_log("id_aluno:");
+                        console_log($alunoLog);
+                    ?> 
+                        <form action="../../app/controller/SolicitacaoController.php" method="POST">
+                            <input type="hidden" name="id_personal" value="<?=$personalLog['id_personal'] ?>">
+                            <input type="hidden" name="id_aluno" value="<?=$alunoLog['id_aluno'] ?>">
+                            <input type="hidden" name="status" value="solicitada">
+                            <button type="submit" name="cadastrar" value="cadastrar">Solicitar</button>
+                        </form>
+                    <?php } ?>
+                </div>
+            <?php } ?>
+            
+                
+                
+            
         </div>
     </div>
 
@@ -292,6 +384,40 @@ $personais = $usuarioDAO->buscarTipo('personal');
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
     crossorigin="anonymous"></script>
-<script src="script.js"></script>
+<script src="script.js">
+    // Abrir modal do chat com nome do usuário e carregar mensagens
+    window.abrirModal = function(dadosAluno) {
+    // dadosAluno já é um objeto JS com as infos do PHP
+        document.getElementById('chat-panel').classList.add('open');
+        document.getElementById('mensagens-panel')?.classList.toggle('open');
+        document.getElementById('alunos-panel')?.classList.remove('open');
+        document.getElementById('personais-panel')?.classList.remove('open');
+
+        document.getElementById("receberNomeUsuario").innerHTML = dadosAluno.nome;
+        document.getElementById("destinatario_id").value = dadosAluno.id_user;
+
+        const solicitacaoInput = document.getElementById("solicitacao_id");
+        if (solicitacaoInput) {
+            solicitacaoInput.value = dadosAluno.id_solicitacao;
+        }
+
+        const chatBox = document.getElementById("interacao-conteudo");
+        chatBox.innerHTML = "Carregando mensagens...";
+
+        fetch("../../app/controller/carregarMensagens.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `id_user=${dadosAluno.id_user}&id_solicitacao=${dadosAluno.id_solicitacao}`
+        })
+        .then(response => response.text())
+        .then(html => {
+            chatBox.innerHTML = html;
+        })
+        .catch(error => {
+            chatBox.innerHTML = "Erro ao carregar mensagens.";
+            console.error(error);
+        });
+};
+</script>
 
 </html>

@@ -18,6 +18,19 @@ class SolicitacaoDAO{
         }
 	}
 
+	public function carregarPersonaisSol($id_personal, $status){
+        try {
+			$sql = 'SELECT * FROM solicitacao WHERE id_personal = :id_personal AND status = :status';
+			$consulta = Conexao::getConexao()->prepare($sql);
+			$consulta->bindValue(":id_personal",$id_personal);
+			$consulta->bindValue(":status",$status);
+			$consulta->execute();
+			return ($consulta->fetchAll(PDO::FETCH_ASSOC));
+        } catch (Exception $e) {
+            print "Erro ao carregar Solicitacao <br>" . $e . '<br>';
+        }
+	}
+
 	//Lista todos os elementos da tabela
 	public function listarTodos(){
         try {
@@ -88,22 +101,15 @@ class SolicitacaoDAO{
 	}
 	
 	//Atualiza um elemento na tabela
-	public function atualizar(Solicitacao $solicitacao){
-        try {
-			$sql = 'UPDATE solicitacao SET id_solicitacao = :id_solicitacao, id_aluno = :id_aluno, id_personal = :id_personal, data = :data, status = :status WHERE id_solicitacao = :id_solicitacao';
-			$consulta = Conexao::getConexao()->prepare($sql);
-			$consulta->bindValue(':id_solicitacao',$solicitacao->getId_solicitacao()); 
-
-			$consulta->bindValue(':id_aluno',$solicitacao->getId_aluno()); 
-
-			$consulta->bindValue(':id_personal',$solicitacao->getId_personal()); 
-
-			$consulta->bindValue(':data',$solicitacao->getData()); 
-
-			$consulta->bindValue(':status',$solicitacao->getStatus());
-			$consulta->execute();			
-        } catch (Exception $e) {
-            print "Erro ao atualizar Solicitacao <br>" . $e . '<br>';
-        }
-	}
+	public function atualizar($id_solicitacao, $status) {
+    try {
+        $sql = 'UPDATE solicitacao SET status = :status WHERE id_solicitacao = :id_solicitacao';
+        $consulta = Conexao::getConexao()->prepare($sql);
+        $consulta->bindValue(':status', $status);
+        $consulta->bindValue(':id_solicitacao', $id_solicitacao);
+        $consulta->execute();
+    } catch (Exception $e) {
+        echo "Erro ao atualizar status da solicitação: " . $e->getMessage();
+    }
+}
 }

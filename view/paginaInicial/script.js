@@ -1,109 +1,107 @@
-// Função para movimentar a underline entre os botões
-function loadPageAndHighlight(button, url) {
-    // Atualiza o conteúdo do iframe
-    document.getElementById('myIframe').src = url;
+document.addEventListener("DOMContentLoaded", function () {
+    // Aqui dentro, TODO o seu código:
+    
+    // Função underline
+    function loadPageAndHighlight(button, url) {
+        document.getElementById('myIframe').src = url;
+        const underline = document.getElementById('underline-indicator');
+        const rect = button.getBoundingClientRect();
+        const containerRect = button.parentElement.getBoundingClientRect();
 
-    // Obtém a underline e os elementos do botão
-    const underline = document.getElementById('underline-indicator');
-    const rect = button.getBoundingClientRect();
-    const containerRect = button.parentElement.getBoundingClientRect();
+        underline.style.width = rect.width + "px";
+        underline.style.left = (rect.left - containerRect.left) + "px";
 
-    // Aplica a posição e o tamanho da underline
-    underline.style.width = rect.width + "px";
-    underline.style.left = (rect.left - containerRect.left) + "px";
+        setTimeout(() => {
+            button.parentElement.classList.add('transition');
+        }, 10);
 
-    // Ativa a transição (apenas se não for o botão inicial)
-    setTimeout(() => {
-        button.parentElement.classList.add('transition');
-    }, 10); // Atrasar um pouco para garantir que a transição funcione
-
-    // Adiciona uma classe para que a transição ocorra depois de clicar em um botão
-    document.querySelectorAll('.button-container button').forEach(btn => {
-        btn.classList.remove('active'); // Remove a classe "active" dos outros botões
-    });
-    button.classList.add('active'); // Adiciona a classe "active" ao botão clicado
-}
-
-// Abrir painel de mensagens
-document.getElementById('mensagens-btn').addEventListener('click', function () {
-    const panel = document.getElementById('mensagens-panel');
-    panel.classList.toggle('open');
-});
-
-document.getElementById('personais-btn').addEventListener('click', function () {
-    document.getElementById('personais-panel').classList.add('open');
-});
-
-document.getElementById('close-personais-btn').addEventListener('click', function () {
-    document.getElementById('personais-panel').classList.remove('open');
-});
-
-document.getElementById('alunos-btn').addEventListener('click', function () {
-    document.getElementById('alunos-panel').classList.add('open');
-});
-
-document.getElementById('close-alunos-btn').addEventListener('click', function () {
-    document.getElementById('alunos-panel').classList.remove('open');
-});
-
-// Fechar painel de mensagens
-document.getElementById('close-mensagens-btn').addEventListener('click', function () {
-    document.getElementById('mensagens-panel').classList.remove('open');
-    document.getElementById('chat-panel').classList.remove('open');
-});
-
-// Abrir painel de chat ao clicar em uma mensagem
-document.getElementById('chat-btn').addEventListener('click', function () {
-    document.getElementById('chat-panel').classList.add('open');
-});
-
-// Fechar painel de chat
-document.getElementById('close-chat-btn').addEventListener('click', function () {
-    document.getElementById('chat-panel').classList.remove('open');
-});
-
-
-document.getElementById("toggleDarkMode").addEventListener("click", function () {
-    document.body.classList.toggle("dark-mode");
-
-    const btn = document.getElementById("toggleDarkMode");
-
-    if (document.body.classList.contains("dark-mode")) {
-        localStorage.setItem("modo", "escuro");
-        btn.textContent = "Modo Claro ☀️";
-        document.getElementById("toggleDarkMode").style.backgroundColor = "#FAFAFA";
-        document.getElementById("toggleDarkMode").style.color = "#000";
-    } else {
-        localStorage.setItem("modo", "claro");
-        btn.textContent = "Modo Escuro 🌙";
-        document.getElementById("toggleDarkMode").style.backgroundColor = "#000";
-        document.getElementById("toggleDarkMode").style.color = "#FAFAFA";
+        document.querySelectorAll('.button-container button').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        button.classList.add('active');
     }
-});
 
-// Ao carregar a página, aplica o modo salvo e ajusta o texto do botão
+    // Painéis
+    document.getElementById('mensagens-btn')?.addEventListener('click', function () {
+        document.getElementById('mensagens-panel').classList.toggle('open');
+    });
 
-window.addEventListener("load", function () {
+    document.getElementById('personais-btn')?.addEventListener('click', function () {
+        document.getElementById('personais-panel').classList.add('open');
+    });
+
+    document.getElementById('close-personais-btn')?.addEventListener('click', function () {
+        document.getElementById('personais-panel').classList.remove('open');
+    });
+
+    document.getElementById('alunos-btn')?.addEventListener('click', function () {
+        document.getElementById('alunos-panel').classList.add('open');
+    });
+
+    document.getElementById('close-alunos-btn')?.addEventListener('click', function () {
+        document.getElementById('alunos-panel').classList.remove('open');
+    });
+
+    document.getElementById('solicitacao-btn')?.addEventListener('click', function () {
+        document.getElementById('solicitacao-panel').classList.add('open');
+    });
+
+    document.getElementById('close-solicitacao-btn')?.addEventListener('click', function () {
+        document.getElementById('solicitacao-panel').classList.remove('open');
+    });
+
+    document.getElementById('close-mensagens-btn')?.addEventListener('click', function () {
+        document.getElementById('mensagens-panel').classList.remove('open');
+        document.getElementById('chat-panel').classList.remove('open');
+    });
+
+    document.getElementById('chat-btn')?.addEventListener('click', function () {
+        document.getElementById('chat-panel').classList.add('open');
+    });
+
+    document.getElementById('close-chat-btn')?.addEventListener('click', function () {
+        document.getElementById('chat-panel').classList.remove('open');
+    });
+
+    document.getElementById("toggleDarkMode")?.addEventListener("click", function () {
+        document.body.classList.toggle("dark-mode");
+
+        const btn = document.getElementById("toggleDarkMode");
+
+        if (document.body.classList.contains("dark-mode")) {
+            localStorage.setItem("modo", "escuro");
+            btn.textContent = "Modo Claro ☀️";
+            btn.style.backgroundColor = "#FAFAFA";
+            btn.style.color = "#000";
+        } else {
+            localStorage.setItem("modo", "claro");
+            btn.textContent = "Modo Escuro 🌙";
+            btn.style.backgroundColor = "#000";
+            btn.style.color = "#FAFAFA";
+        }
+    });
+
+    // Aplicar modo salvo
     const btn = document.getElementById("toggleDarkMode");
     if (localStorage.getItem("modo") === "escuro") {
         document.body.classList.add("dark-mode");
         btn.textContent = "Modo Claro ☀️";
-        document.getElementById("toggleDarkMode").style.backgroundColor = "#FAFAFA";
-        document.getElementById("toggleDarkMode").style.color = "#000";
+        btn.style.backgroundColor = "#FAFAFA";
+        btn.style.color = "#000";
     } else {
         btn.textContent = "Modo Escuro 🌙";
-        document.getElementById("toggleDarkMode").style.backgroundColor = "#000";
-        document.getElementById("toggleDarkMode").style.color = "#FAFAFA";
+        btn.style.backgroundColor = "#000";
+        btn.style.color = "#FAFAFA";
     }
-});
 
-function abrirModal(id) {
-    document.getElementById('chat-panel').classList.add('open');
-    const panel = document.getElementById('mensagens-panel');
-    panel.classList.toggle('open');
-    document.getElementById('alunos-panel').classList.remove('open');
-    document.getElementById('personais-panel').classList.remove('open');
-    const elementoAluno = document.getElementById(id);
-    const nomeDoUsuario = elementoAluno.getAttribute('value');
-    const recebeNome = document.getElementById("receberNomeUsuario").innerHTML = nomeDoUsuario;
-}
+    // Abrir modal do chat com nome do usuário
+    window.abrirModal = function (id) {
+        document.getElementById('chat-panel').classList.add('open');
+        document.getElementById('mensagens-panel').classList.toggle('open');
+        document.getElementById('alunos-panel').classList.remove('open');
+        document.getElementById('personais-panel').classList.remove('open');
+        const elemento = document.getElementById(id);
+        const nome = elemento?.getAttribute('value');
+        document.getElementById("receberNomeUsuario").innerHTML = nome;
+    };
+});
