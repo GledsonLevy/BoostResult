@@ -104,4 +104,38 @@ document.addEventListener("DOMContentLoaded", function () {
         const nome = elemento?.getAttribute('value');
         document.getElementById("receberNomeUsuario").innerHTML = nome;
     };
+
+     window.abrirModalChat = function(dadosAluno) {
+    // dadosAluno já é um objeto JS com as infos do PHP
+        console.log(dadosAluno);
+       /* document.getElementById('chat-panel').classList.add('open');
+        document.getElementById('mensagens-panel')?.classList.toggle('open');
+        document.getElementById('alunos-panel')?.classList.remove('open');
+        document.getElementById('personais-panel')?.classList.remove('open');
+
+        document.getElementById("receberNomeUsuario").innerHTML = dadosAluno.nome;
+        document.getElementById("destinatario_id").value = dadosAluno.id_user;
+
+        const solicitacaoInput = document.getElementById("solicitacao_id");
+        if (solicitacaoInput) {
+            solicitacaoInput.value = dadosAluno.id_solicitacao;
+        }
+
+        const chatBox = document.getElementById("interacao-conteudo");
+        chatBox.innerHTML = "Carregando mensagens...";
+
+        fetch("../../app/controller/carregarMensagens.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: `id_user=${dadosAluno.id_user}&id_solicitacao=${dadosAluno.id_solicitacao}`
+        })
+        .then(response => response.text())
+        .then(html => {
+            chatBox.innerHTML = html;
+        })
+        .catch(error => {
+            chatBox.innerHTML = "Erro ao carregar mensagens.";
+            console.error(error);
+        }); */
+};
 });

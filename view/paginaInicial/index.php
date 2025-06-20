@@ -190,10 +190,7 @@ if($_SESSION['tipo'] == "personal"){
                 
                 $dadosAlunoJson = htmlspecialchars(json_encode($dados), ENT_QUOTES, 'UTF-8');
             ?>
-               <div onclick="abrirModal(this.id)" 
-                id="<?=$aluno['id_user']?>" 
-                value="<?=$aluno['nome']?>" 
-                data-solicitacao="<?=$solicitacaoAluno['id_solicitacao']?>">
+               <div class="alunos" onclick='abrirModalChat(<?=$dadosAlunoJson?>)'>
                     <div class="nome"><?=$aluno['nome']?></div>
                     <div class="nome"><?=$solicitacaoAluno['status']?></div>
                 </div>
@@ -386,38 +383,7 @@ if($_SESSION['tipo'] == "personal"){
     crossorigin="anonymous"></script>
 <script src="script.js">
     // Abrir modal do chat com nome do usuário e carregar mensagens
-    window.abrirModal = function(dadosAluno) {
-    // dadosAluno já é um objeto JS com as infos do PHP
-        document.getElementById('chat-panel').classList.add('open');
-        document.getElementById('mensagens-panel')?.classList.toggle('open');
-        document.getElementById('alunos-panel')?.classList.remove('open');
-        document.getElementById('personais-panel')?.classList.remove('open');
-
-        document.getElementById("receberNomeUsuario").innerHTML = dadosAluno.nome;
-        document.getElementById("destinatario_id").value = dadosAluno.id_user;
-
-        const solicitacaoInput = document.getElementById("solicitacao_id");
-        if (solicitacaoInput) {
-            solicitacaoInput.value = dadosAluno.id_solicitacao;
-        }
-
-        const chatBox = document.getElementById("interacao-conteudo");
-        chatBox.innerHTML = "Carregando mensagens...";
-
-        fetch("../../app/controller/carregarMensagens.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: `id_user=${dadosAluno.id_user}&id_solicitacao=${dadosAluno.id_solicitacao}`
-        })
-        .then(response => response.text())
-        .then(html => {
-            chatBox.innerHTML = html;
-        })
-        .catch(error => {
-            chatBox.innerHTML = "Erro ao carregar mensagens.";
-            console.error(error);
-        });
-};
+   
 </script>
 
 </html>
