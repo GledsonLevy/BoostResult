@@ -1,5 +1,4 @@
 <?php
-
 /* @Autor: Dalker Pinheiro
 	  Classe DAO */
 class UsuarioDAO
@@ -135,6 +134,20 @@ class UsuarioDAO
 		}
 	}
 
+	public function pegarIdAluno($id_user) {
+	try {
+		$sql = 'SELECT * FROM aluno WHERE id_user = :id_user';
+		$consulta = Conexao::getConexao()->prepare($sql);
+		$consulta->bindValue(":id_user", $id_user);
+		$consulta->execute(); // Adicione isso!
+		if ($consulta->rowCount() > 0) {
+			$dadosUsuario = $consulta->fetch(PDO::FETCH_ASSOC);
+			$_SESSION['id_aluno'] = $dadosUsuario['id_aluno'];
+		}
+	} catch (Exception $e) {
+		print "Erro ao buscar ID do aluno <br>" . $e . '<br>';
+	}
+}
 
 	public function logar(Usuario $usuario)
 	{
@@ -153,6 +166,8 @@ class UsuarioDAO
 				$_SESSION['tipo_usuario'] = $dadosUsuario['tipo_usuario'];
 				$_SESSION['descricao'] = $dadosUsuario['descricao'];
 			}
+
+			$this->pegarIdAluno($_SESSION['id_user']);
 			
 		} catch (Exception $e) {
 			print "Erro ao inserir Usuario <br>" . $e . '<br>';

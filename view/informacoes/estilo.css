@@ -1,0 +1,101 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f8;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 50px;
+}
+
+.form-container {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 30px 40px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+.form-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.form-container label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #444;
+}
+
+.form-container input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.form-container input:focus {
+    border-color: #269126;
+    outline: none;
+}
+
+.form-container button {
+    width: 100%;
+    margin-top: 25px;
+    padding: 12px;
+    background-color: #269126;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.form-container button:hover {
+    background-color: #1e7a1e;
+}
+
+.sucesso {
+    color: green;
+    text-align: center;
+    font-weight: bold;
+}
+
+.erro {
+    color: red;
+    text-align: center;
+    font-weight: bold;
+}
+
+.bio-container {
+    max-width: 400px;
+    background-color: #fdfdfd;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    font-family: Arial, sans-serif;
+    margin: 20px auto;
+}
+
+.bio-container h2 {
+    font-size: 1.4em;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.bio-item {
+    margin-bottom: 10px;
+    font-size: 1em;
+    color: #555;
+}
+
+.bio-item .label {
+    font-weight: bold;
+    color: #111;
+    margin-right: 5px;
+}
