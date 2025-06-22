@@ -371,17 +371,15 @@ if($_SESSION['tipo'] == "personal"){
             </div>
             <?php foreach($personais as $personal){ ?>
                 <div class="user">
-                    <img src="https://pbs.twimg.com/profile_images/875391618634977280/-UYcaL0-_400x400.jpg" alt="">
-                    <span><?=$personal['nome']?></span>
                     <?php if($_SESSION['tipo'] == 'aluno'){ 
                         $personalLog = $personalDao->carregar($personal['id_user']);
-                        console_log("array personal:");
-                        console_log($personalLog);
                         $alunoLog = $alunoDao->buscar('id_user', $_SESSION['id_user']);
-                        
-                        console_log("id_aluno:");
-                        console_log($alunoLog);
-                    ?> 
+                    ?>
+                    <img src="../../view/paginaInicial/imagemreader.php?id_user=<?php echo $personal['id_user']?>" 
+                            alt="avatar" width="150" id="imgAvatar"
+                            onerror="this.onerror=null; this.src='https://www.w3schools.com/howto/img_avatar.png';">
+                    <span><?=$personal['nome']?></span>
+        
                         <form action="../../app/controller/SolicitacaoController.php" method="POST">
                             <input type="hidden" name="id_personal" value="<?=$personalLog['id_personal'] ?>">
                             <input type="hidden" name="id_aluno" value="<?=$alunoLog['id_aluno'] ?>">
