@@ -1,5 +1,5 @@
 <?php   
-
+    session_start();
     /* @Autor: Dalker Pinheiro
     Classe Controller */
     
@@ -24,27 +24,38 @@
 
 
     //se a operação for gravar entra nessa condição
-    if(isset($_POST['cadastrar'])){
+    if(isset($_POST['acao']) && ($_POST['acao'] == "CADASTRAR")){
 
-        $registro_dado->setId_dados($r['id_dados']); 
-		$registro_dado->setId_aluno($r['id_aluno']); 
-		$registro_dado->setAltura($r['altura']); 
-		$registro_dado->setData($r['data']); 
-		$registro_dado->setPeso($r['peso']); 
-		$registro_dado->setImc($r['imc']);
+		$registro_dado->setId_aluno($_SESSION['id_aluno']); 
+
+		$registro_dado->setAltura($r['altura']); 
+
+        $registro_dado->setData(date("Y-m-d H:i:s")); 
+
+		$registro_dado->setPeso($r['peso']); 
+
+		$registro_dado->setImc($r['imc']);
+
+        var_dump($registro_dado);
+
         $registro_dadoDAO->inserir($registro_dado);
 
-        header("Location: ../../registro_dado.php?msg=adicionado");
+        //header("Location: ../../registro_dado.php?msg=adicionado");
     } 
     // se a requisição for editar
     else if(isset($_POST['editar'])){
 
         $registro_dado->setId_dados($r['id_dados']); 
-		$registro_dado->setId_aluno($r['id_aluno']); 
-		$registro_dado->setAltura($r['altura']); 
-		$registro_dado->setData($r['data']); 
-		$registro_dado->setPeso($r['peso']); 
-		$registro_dado->setImc($r['imc']);
+
+		$registro_dado->setId_aluno($r['id_aluno']); 
+
+		$registro_dado->setAltura($r['altura']); 
+
+		$registro_dado->setData($r['data']); 
+
+		$registro_dado->setPeso($r['peso']); 
+
+		$registro_dado->setImc($r['imc']);
         $registro_dadoDAO->atualizar($registro_dado);
 
         header("Location: ../../registro_dado.php?msg=editado");

@@ -68,18 +68,45 @@ class Registro_dadoDAO{
         }
 	}
 	
+	public function pegarUltimosDadosAluno($id_aluno) {
+    try {
+        $sql = 'SELECT * FROM registro_dados WHERE id_aluno = :id_aluno ORDER BY data_dados DESC LIMIT 1';
+        $consulta = Conexao::getConexao()->prepare($sql);
+        $consulta->bindValue(":id_aluno", $id_aluno);
+        $consulta->execute();
+
+        if ($consulta->rowCount() > 0) {
+            $dados = $consulta->fetch(PDO::FETCH_ASSOC);
+
+            $_SESSION['altura'] = $dados['altura'];
+            $_SESSION['peso'] = $dados['peso'];
+            $_SESSION['data_dados'] = $dados['data_dados'];
+            $_SESSION['imc'] = $dados['imc'];
+        }
+    } catch (Exception $e) {
+        print "Erro ao buscar dados do aluno <br>" . $e . '<br>';
+    }
+}
+
 	//Insere um elemento na tabela
 	public function inserir(Registro_dado $registro_dado){
         try {
-			$sql = 'INSERT INTO registro_dados (id_dados, id_aluno, altura, data, peso, imc) VALUES (:id_dados, :id_aluno, :altura, :data, :peso, :imc)';
+			$sql = 'INSERT INTO registro_dados (id_aluno, altura, data_dados, peso, imc) VALUES (:id_aluno, :altura, :data_dados, :peso, :imc)';
 			$consulta = Conexao::getConexao()->prepare($sql);
-			$consulta->bindValue(':id_dados',$registro_dado->getId_dados()); 
-			$consulta->bindValue(':id_aluno',$registro_dado->getId_aluno()); 
-			$consulta->bindValue(':altura',$registro_dado->getAltura()); 
-			$consulta->bindValue(':data',$registro_dado->getData()); 
-			$consulta->bindValue(':peso',$registro_dado->getPeso()); 
-			$consulta->bindValue(':imc',$registro_dado->getImc());
+
+			$consulta->bindValue(':id_aluno',$registro_dado->getId_aluno()); 
+
+			$consulta->bindValue(':altura',$registro_dado->getAltura()); 
+
+			$consulta->bindValue(':data_dados',$registro_dado->getData()); 
+
+			$consulta->bindValue(':peso',$registro_dado->getPeso()); 
+
+			$consulta->bindValue(':imc',$registro_dado->getImc());
+	
 			$consulta->execute();
+
+			$this->pegarUltimosDadosAluno($_SESSION['id_aluno']);
         } catch (Exception $e) {
             print "Erro ao inserir Registro_dado <br>" . $e . '<br>';
         }
@@ -91,11 +118,16 @@ class Registro_dadoDAO{
 			$sql = 'UPDATE registro_dados SET id_dados = :id_dados, id_aluno = :id_aluno, altura = :altura, data = :data, peso = :peso, imc = :imc WHERE id_dados = :id_dados';
 			$consulta = Conexao::getConexao()->prepare($sql);
 			$consulta->bindValue(':id_dados',$registro_dado->getId_dados()); 
-			$consulta->bindValue(':id_aluno',$registro_dado->getId_aluno()); 
-			$consulta->bindValue(':altura',$registro_dado->getAltura()); 
-			$consulta->bindValue(':data',$registro_dado->getData()); 
-			$consulta->bindValue(':peso',$registro_dado->getPeso()); 
-			$consulta->bindValue(':imc',$registro_dado->getImc());
+
+			$consulta->bindValue(':id_aluno',$registro_dado->getId_aluno()); 
+
+			$consulta->bindValue(':altura',$registro_dado->getAltura()); 
+
+			$consulta->bindValue(':data',$registro_dado->getData()); 
+
+			$consulta->bindValue(':peso',$registro_dado->getPeso()); 
+
+			$consulta->bindValue(':imc',$registro_dado->getImc());
 			$consulta->execute();			
         } catch (Exception $e) {
             print "Erro ao atualizar Registro_dado <br>" . $e . '<br>';
