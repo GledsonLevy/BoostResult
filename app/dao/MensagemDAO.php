@@ -18,6 +18,20 @@ class MensagemDAO{
         }
 	}
 
+    public function listarMensagensPorChat($id_chat){
+        try {
+			$sql = 'SELECT * FROM mensagem WHERE id_chat = :id_chat';
+			$consulta = Conexao::getConexao()->prepare($sql);
+			$consulta->bindValue(":id_chat",$id_chat);
+			$consulta->execute();
+			return ($consulta->fetchAll(PDO::FETCH_ASSOC));
+        } catch (Exception $e) {
+            print "Erro ao carregar Mensagem <br>" . $e . '<br>';
+        }
+	}
+
+    
+
 	//Lista todos os elementos da tabela
 	public function listarTodos(){
         try {

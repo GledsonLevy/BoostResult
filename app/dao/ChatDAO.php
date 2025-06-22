@@ -18,6 +18,18 @@ class ChatDAO{
         }
 	}
 
+	public function carregarPorSolicitacao($id_solicitacao){
+        try {
+			$sql = 'SELECT * FROM chat WHERE id_solicitacao = :id_solicitacao';
+			$consulta = Conexao::getConexao()->prepare($sql);
+			$consulta->bindValue(":id_solicitacao",$id_solicitacao);
+			$consulta->execute();
+			return ($consulta->fetch(PDO::FETCH_ASSOC));
+        } catch (Exception $e) {
+            print "Erro ao carregar Chat <br>" . $e . '<br>';
+        }
+	}
+
 	//Lista todos os elementos da tabela
 	public function listarTodos(){
         try {

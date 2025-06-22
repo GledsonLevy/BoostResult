@@ -29,6 +29,28 @@ $alunoDao = new AlunoDao();
 $chatDao = new ChatDAO();
 $mensagemDao = new MensagemDAO();
 
+$mensagens = [];
+$chat = null;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_solicitacao'], $_POST['id_user'])) {
+    $id_solicitacao = $_POST['id_solicitacao'];
+    $id_user = $_POST['id_user'];
+    $nome = $_POST['nome'] ?? 'Aluno';
+
+    
+    $chat = $chatDao->carregarPorSolicitacao($id_solicitacao);
+    console_log("chat");
+    console_log($chat);
+
+    if ($chat) {
+        
+        $mensagens = $mensagemDao->listarMensagensPorChat($chat['id_chat']);
+        console_log("mensagens");
+        console_log($mensagens);
+    }
+}
+
+
 //criar um header caso a session não possua nada
 console_log($_SESSION);
 if($_SESSION['tipo'] == "personal"){
@@ -179,8 +201,7 @@ if($_SESSION['tipo'] == "personal"){
                 <button 
                     class="alunos" 
                     data-id-solicitacao="<?= $solicitacaoAluno['id_solicitacao'] ?>" 
-                    data-id-destinatario="<?= $aluno['id_user'] ?>" 
-                    data-id-remetente="<?= $_SESSION['id_user'] ?>"
+                    data-id-user="<?= $aluno['id_user'] ?>" 
                     data-nome="<?= htmlspecialchars($aluno['nome']) ?>"
                 >
                     <div class="nome"><?= htmlspecialchars($aluno['nome']) ?></div>
@@ -202,11 +223,9 @@ if($_SESSION['tipo'] == "personal"){
 
                 <form class="interacao-input" action="../../app/controller/MensagemController.php" method="POST">
                     <input type="text" name="mensagem" placeholder="Digite sua mensagem..." required>
-                    <input type="hidden" name="destinatario" id="destinatario_id">
-                    <input type="hidden" name="remetente" id="remetente_id">
+                    <input type="hidden" name="destinatario_id" id="destinatario_id">
                     <input type="hidden" name="solicitacao_id" id="solicitacao_id">
-                    <input type="hidden" name="acao" value="INSERIR">
-                    <button>Enviar</button>
+                    <button name="cadastrar" value="cadastrar">Enviar</button>
                 </form>
             </div>
         </div>
@@ -377,6 +396,7 @@ if($_SESSION['tipo'] == "personal"){
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
     crossorigin="anonymous"></script>
-<script src="script.js"></script>
+<script src="script.js">
+</script>
 
 </html>

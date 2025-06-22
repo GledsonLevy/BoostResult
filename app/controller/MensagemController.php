@@ -4,10 +4,13 @@
     include_once "../conexao/Conexao.php";
     include_once "../model/Mensagem.php";
     include_once "../dao/MensagemDAO.php";
+    include_once "../model/Chat.php";
+    include_once "../dao/ChatDAO.php";
 
 
     $mensagem = new Mensagem();
     $mensagemDAO	= new MensagemDAO();
+    $chatDAO= new ChatDAO();
 
     header('Content-Type: application/json');
     $m= filter_input_array(INPUT_POST);
@@ -26,14 +29,15 @@
   
     $textoMensagem = filter_var($_POST['mensagem'] ?? '', FILTER_SANITIZE_STRING);
   
-    $remetente = $_SESSION['id_user'] ?? null;
+    $remetente = filter_var($_POST['remetente'] ?? '', FILTER_SANITIZE_NUMBER_INT);
 
-    $destinatario = filter_var($_POST['destinatario_id'] ?? '', FILTER_SANITIZE_NUMBER_INT);
+    $destinatario = filter_var($_POST['destinatario'] ?? '', FILTER_SANITIZE_NUMBER_INT);
 
-    $id_chat = filter_var($_POST['id_chat'] ?? '', FILTER_SANITIZE_NUMBER_INT);
+    $id_solicitacao = filter_var($_POST['solicitacao_id'] ?? '', FILTER_SANITIZE_NUMBER_INT);
+    $chat = $chatDAO->carregarPorSolicitacao($id_solicitacao);
+    $id_chat = $chat['id_chat'];
 
-
-    if (empty($destinatario) || empty($textoMensagem)) {
+    if (empty($destinatario) || empty($textoMensagem) || empty($id_chat)) {
         echo json_encode(['status' => 'error', 'message' => 'Dados essenciais faltando para inserir a mensagem.']);
         exit();
     }
