@@ -54,12 +54,8 @@
 			$this->tipo=$tipo;
 		}
 
-		public function setImagem($tmpFilePath) {
-			if (is_uploaded_file($tmpFilePath)) {
-				$this->imagem = file_get_contents($tmpFilePath);
-			} else {
-				throw new Exception("Erro ao processar o upload da imagem.");
-			}
+		public function setImagem($conteudoBinario) {
+			$this->imagem = $conteudoBinario;
 		}
 
 		

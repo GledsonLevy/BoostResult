@@ -55,6 +55,25 @@ class SolicitacaoDAO{
         }
 	}
 	
+	public function carregarPorPersonalEAluno($id_personal, $id_aluno) {
+    try {
+        $sql = "SELECT * FROM solicitacao 
+                WHERE id_personal = :id_personal 
+                  AND id_aluno = :id_aluno 
+                  AND status = 'ativa'";
+
+        $conexao = Conexao::getConexao();
+        $stmt = $conexao->prepare($sql);
+        $stmt->bindParam(':id_personal', $id_personal, PDO::PARAM_INT);
+        $stmt->bindParam(':id_aluno', $id_aluno, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        print "Erro ao carregar solicitação por personal e aluno <br>" . $e . '<br>';
+        return null;
+    }
+}
 	
 	//Busca elementos da tabela
 	public function buscar($coluna, $valor){

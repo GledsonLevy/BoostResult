@@ -5,8 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Função para atualizar mensagens
     function atualizarMensagens() {
-        console.log('atualizando');
-        console.log(dadosAluno);
+        
         
         if (!dadosAluno.id_solicitacao) return;
 
@@ -20,7 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(res => res.json())
         .then(mensagens => {
-            console.log("Mensagens recebidas:", mensagens);
             const container = document.getElementById("interacao-conteudo");
 
             // Verifica se há novas mensagens
@@ -32,6 +30,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
             let html = "";
             mensagens.forEach(msg => {
+                console.log("importante:");
+                console.log('msg');
+                console.log(msg);
+                console.log("daodos");
+                console.log(dadosAluno);
                 const classe = (msg.remetente == dadosAluno.id_destinatario) ? "mensagem-recebida" : "mensagem-enviada";
                 html += `
                     <div class="mensagem ${classe}">
@@ -51,11 +54,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const id_solicitacao = this.dataset.idSolicitacao;
             const id_destinatario = this.dataset.idDestinatario; // Corrigido aqui
             const id_remetente = this.dataset.idRemetente; // Opcional, se quiser guardar
-            const nome = this.dataset.nome;
-
-            dadosAluno = { id_solicitacao, id_destinatario, nome, id_remetente };
-
-            // Carrega a primeira vez
+            console.log("solicitação:" ,id_solicitacao);
+            console.log("destinatario:" ,id_destinatario);
+            console.log("remetente:" ,id_remetente);
+            dadosAluno = { id_solicitacao, id_destinatario, id_remetente };
+            console.log(dadosAluno);
             atualizarMensagens();
 
             // Atualiza a cada 3 segundos
@@ -64,7 +67,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Abre o painel com os dados
             document.getElementById("chat-panel").style.display = "block";
-            document.getElementById("receberNomeUsuario").innerText = nome;
             document.getElementById("destinatario_id").value = id_destinatario;
             document.getElementById("remetente_id").value = id_remetente;
             document.getElementById("solicitacao_id").value = id_solicitacao;
@@ -72,11 +74,14 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    
+
     document.querySelector(".interacao-input")?.addEventListener("submit", function (e) {
         console.log('tentativa de envio');
         e.preventDefault();
         const form = e.target;
         const mensagem = form.mensagem.value.trim();
+        console.log(mensagem);
         if (!mensagem) return;
 
         const formData = new URLSearchParams(new FormData(form));

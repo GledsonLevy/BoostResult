@@ -1,20 +1,39 @@
 <?php
-require_once '../../app/dao/Imagem_usuarioDAO.php'; // ajuste o caminho conforme seu projeto
+include("../../app/conexao/Conexao.php");
 
-if (isset($_GET['id_user'])) {
-    $id_user = $_GET['id_user'];
-
-    $dao = new Imagem_usuarioDAO();
-    $imagem = $dao->carregar($id_user);
-
-    if ($imagem && !empty($imagem['imagem'])) {
-        header("Content-Type: " . $imagem['tipo']); // ex: image/png
-        echo $imagem['imagem']; // imprime os dados binários da imagem
-        exit;
+function carregar($id_user) {
+    try {
+        $sql = 'SELECT * FROM imagem_usuario WHERE id_user = :id_user';
+        $consulta = ConexaoBinaria::getConexao()->prepare($sql);
+        $consulta->bindValue(":id_user", $id_user);
+        $consulta->execute();
+        return $consulta->fetch(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+        error_log("Erro ao carregar imagem_usuario: " . $e->getMessage());
+        return null;
     }
 }
 
-// Se não encontrar ou der erro, mostra uma imagem padrão
-header("Content-Type: image/png");
-readfile("../../imagens/imagem_padrao.png"); // ajuste o caminho da imagem padrão
-exit; ?>
+if (isset($_GET['id_user'])) {
+    $id_user = intval($_GET['id_user']);
+    $imagemData = carregar($id_user);
+
+    if ($imagemData && !empty($imagemData['imagem'])) {
+        // Define corretamente o tipo da imagem (image/png, image/jpeg etc)
+        header("Content-Type: " . $imagemData['tipo']);
+        
+        // Evita qualquer saída extra
+        ob_clean(); // limpa qualquer buffer de saída
+        flush();     // força envio dos headers
+        
+        // Exibe a imagem binária
+        echo $imagemData['imagem'];
+    } else {
+        http_response_code(404);
+        echo "Imagem não encontrada.";
+    }
+} else {
+    http_response_code(400);
+    echo "ID do usuário não informado.";
+}
+?>

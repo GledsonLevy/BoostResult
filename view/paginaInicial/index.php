@@ -28,6 +28,7 @@ $personalDao = new PersonalDao();
 $alunoDao = new AlunoDao();
 $chatDao = new ChatDAO();
 $mensagemDao = new MensagemDAO();
+$imagemDao = new Imagem_usuarioDAO();
 
 //criar um header caso a session não possua nada
 console_log($_SESSION);
@@ -121,32 +122,70 @@ if($_SESSION['tipo'] == "personal"){
             color: #888;
             padding: 20px;
         }
+
+        .mensagem-enviada {
+            background-color: #d1e7dd;
+            color: #155724;
+            margin-left: auto;
+            text-align: right;
+            border-bottom-right-radius: 0;
+        }
+
+        /* Mensagens recebidas (à esquerda) */
+        .mensagem-recebida {
+            background-color: #f8d7da;
+            color: #721c24;
+            margin-right: auto;
+            text-align: left;
+            border-bottom-left-radius: 0;
+        }
     </style>
 </head>
 
 <body>
     
-    <div class="personais-panel" id="personais-panel">
-        <button class="close-btn" id="close-personais-btn">X</button>
-        <div class="message">
-            <?php foreach($personais as $personal){ ?>
-                <div class="personal" onclick="abrirModal(this.id)" id="<?=$personal['id_user']?>" value="<?=$personal['nome']?>">
-                    <div class="nome"><?=$personal['nome']?></div>
-                </div>
-
-            <?php } ?>
+    <?php if ($_SESSION['tipo'] == 'aluno') { ?>
+        <div class="personais-panel" id="personais-panel">
+            <button class="close-btn" id="close-personais-btn">X</button>
+            <div class="message">
+                <?php foreach($personais as $personal){ 
+                    $idAlunoUser = $_SESSION['id_user'];
+                    $idPersonalUser = $personal['id_user'];
+                    $personalLog = $personalDao->carregar($idPersonalUser);//destinatario
+                    $alunoLog = $alunoDao->carregar($idAlunoUser);
+                    $solicitacao = $solicitacaoDAO->carregarPorPersonalEAluno($personalLog['id_personal'], $alunoLog['id_aluno']);
+                    console_log('olah aq seu merda');
+                    console_log($solicitacao);
+                    if ($solicitacao): ?>
+                            <button 
+                                class="alunos" 
+                                data-id-solicitacao="<?= $solicitacao['id_solicitacao'] ?>" 
+                                data-id-destinatario="<?= $idPersonalUser ?>" 
+                                data-id-remetente="<?= $idAlunoUser ?>" 
+                                data-nome="<?= htmlspecialchars($personal['nome']) ?>"
+                            >
+                                <div class="nome"><?= htmlspecialchars($personal['nome']) ?></div>
+                                <div class="nome"><?= htmlspecialchars($solicitacao['status']) ?></div>
+                            </button>
+                        <?php endif; ?>
+                <?php } ?>
+            </div>
         </div>
-    </div>
+    <?php } ?>
 
     
 
     <div class="solicitacao-panel" id="solicitacao-panel">
         <button class="close-btn" id="close-solicitacao-btn">X</button>
         <div class="message">
-            <?php if (isset($solicitacoesRecebidas) && !empty($solicitacoesRecebidas)) { ?>
+            <?php
+            if (isset($solicitacoesRecebidas) && !empty($solicitacoesRecebidas)) { ?>
                     <h3>Solicitações Recebidas</h3>
-                    <?php foreach($solicitacoesRecebidas as $sol){ 
-                        $alunoLog = $alunoDao->carregar($sol['id_aluno']);
+                    <?php 
+                    foreach($solicitacoesRecebidas as $sol){ 
+                        $alunoLog = $alunoDao->carregarPorId($sol['id_aluno']);
+                        console_log("importante aluno log");                        
+                        console_log($alunoLog);
                         $userAluno = $usuarioDAO->carregar($alunoLog['id_user']);
                         $nomeAluno = $userAluno['nome'];
                         console_log("sol:");
@@ -168,27 +207,27 @@ if($_SESSION['tipo'] == "personal"){
             <?php } ?>
         </div>
     </div>
-
-    <div class="alunos-panel" id="alunos-panel">
-        <button class="close-btn" id="close-alunos-btn">X</button>
-        <div class="message">
-            <?php foreach($solicitacaoAlunoList as $solicitacaoAluno): 
-                $alunoLog = $alunoDao->carregarIdAluno($solicitacaoAluno['id_aluno']);
-                $aluno = $usuarioDAO->carregar($alunoLog['id_user']);
-            ?>
-                <button 
-                    class="alunos" 
-                    data-id-solicitacao="<?= $solicitacaoAluno['id_solicitacao'] ?>" 
-                    data-id-destinatario="<?= $aluno['id_user'] ?>" 
-                    data-id-remetente="<?= $_SESSION['id_user'] ?>"
-                    data-nome="<?= htmlspecialchars($aluno['nome']) ?>"
-                >
-                    <div class="nome"><?= htmlspecialchars($aluno['nome']) ?></div>
-                    <div class="nome"><?= htmlspecialchars($solicitacaoAluno['status']) ?></div>
-                </button>
-            <?php endforeach; ?>
+    <?php if ($_SESSION['tipo'] == 'personal') { ?>
+        <div class="alunos-panel" id="alunos-panel">
+            <button class="close-btn" id="close-alunos-btn">X</button>
+            <div class="message">
+                <?php foreach($solicitacaoAlunoList as $solicitacaoAluno): 
+                    $alunoLog = $alunoDao->carregarIdAluno($solicitacaoAluno['id_aluno']);
+                    $aluno = $usuarioDAO->carregar($alunoLog['id_user']);
+                ?>
+                    <button 
+                        class="alunos" 
+                        data-id-solicitacao="<?= $solicitacaoAluno['id_solicitacao'] ?>" 
+                        data-id-destinatario="<?= $aluno['id_user'] ?>" 
+                        data-id-remetente="<?= $_SESSION['id_user'] ?>"
+                    >
+                        <div class="nome"><?= htmlspecialchars($aluno['nome']) ?></div>
+                        <div class="nome"><?= htmlspecialchars($solicitacaoAluno['status']) ?></div>
+                    </button>
+                <?php endforeach; ?>
+            </div>
         </div>
-    </div>
+    <?php } ?>
 
     <div class="chat-panel" id="chat-panel" style="display: none;">
         <button class="close-btn" id="close-chat-btn">X</button>
@@ -206,7 +245,7 @@ if($_SESSION['tipo'] == "personal"){
                     <input type="hidden" name="remetente" id="remetente_id">
                     <input type="hidden" name="solicitacao_id" id="solicitacao_id">
                     <input type="hidden" name="acao" value="INSERIR">
-                    <button>Enviar</button>
+                    <button >Enviar</button>
                 </form>
             </div>
         </div>
@@ -260,16 +299,23 @@ if($_SESSION['tipo'] == "personal"){
             </form>
             <form action="../../app/controller/imagem_usuarioController.php" method="POST" enctype="multipart/form-data">
                 <label for="fileUpload">
-                    <div class="avatar">
-                        <img src="../../view/exibir_imagem.php?id_user=<?php echo $_SESSION['id_user']; ?>" alt="Clique para enviar uma imagem" width="150" id="imgAvatar">
-                            alt="Clique para enviar uma imagem" width="150" id="imgAvatar">
+                    <div class="avatar" style="cursor:pointer;">
+                        <img src="../../view/paginaInicial/imagemreader.php?id_user=<?php echo $_SESSION['id_user']; ?>" 
+                            alt="avatar" width="150" id="imgAvatar"
+                            onerror="this.onerror=null; this.src='https://www.w3schools.com/howto/img_avatar.png';">
                         <span class="emoji"><img src="../../imagens/icongaleria.png" alt=""></span>
                     </div>
                 </label>
-                <input type="hidden" name="cadastrar" value="Cadastrar">
+                <?php 
+                    $imagem = $imagemDao->carregar($_SESSION['id_user']);
+                    if (!empty($imagem) && !empty($imagem['imagem'])) {
+                        echo '<input type="hidden" name="editar" value="Editar">';
+                    } else {
+                        echo '<input type="hidden" name="cadastrar" value="Cadastrar">';
+                    }
+                ?>
                 <input type="hidden" name="id_user" value="<?php echo $_SESSION['id_user']; ?>">
                 <input type="file" id="fileUpload" name="imagem" accept="image/*" style="display:none;" onchange="this.form.submit();">
-                 
             </form>
             
             <div class="profile-info">

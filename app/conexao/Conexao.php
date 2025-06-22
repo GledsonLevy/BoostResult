@@ -38,3 +38,38 @@ class Conexao {
        return self::$instance;
    }
 }
+
+class ConexaoBinaria {
+    public static $instance;
+
+    private function __construct() {}
+
+    public static function getConexao() {
+        if (!isset(self::$instance)) {
+            $servidor = "mysql-boostresult.alwaysdata.net";
+            $usuario = "411254";
+            $senha = "boostresult_userpass";
+            $nomeDoBanco = "boostresult_db";
+
+            try {
+                self::$instance = new PDO(
+                    "mysql:dbname=$nomeDoBanco;host=$servidor",
+                    $usuario,
+                    $senha,
+                    [
+                        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                        PDO::ATTR_ORACLE_NULLS => PDO::NULL_EMPTY_STRING,
+                        PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
+                        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES binary"
+                    ]
+                );
+
+            } catch (PDOException $e) {
+                echo "Erro ao conectar (binário): " . $e->getMessage();
+                self::$instance = null;
+            }
+        }
+
+        return self::$instance;
+    }
+}
