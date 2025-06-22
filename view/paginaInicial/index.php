@@ -342,14 +342,19 @@ if($_SESSION['tipo'] == "personal"){
 
             </div>
 
-            <div class="button-container">
-                <button onclick="loadPageAndHighlight(this, 'informacoes/treinos.php')" id="button1">Meus
-                    Treinos</button>
-                <button onclick="loadPageAndHighlight(this, 'informacoes/medidas.php')" id="button2">Medidas</button>
-                <button onclick="loadPageAndHighlight(this, 'informacoes/dados.php')" id="button3">Dados
-                    Pessoais</button>
-                <div id="underline-indicator"></div>
-            </div>
+            <div>
+    <!-- Botões -->
+    <div class="button-container transition">
+    <button id="button1" onclick="loadPage('../informacoes/treinos.php', this)">Meus Treinos</button>
+    <button id="button2" onclick="loadPage('../informacoes/medidas.php', this)">Medidas</button>
+    <button id="button3" onclick="loadPage('../informacoes/dados.php', this)">Dados Pessoais</button>
+
+    <div id="underline-indicator"></div>
+</div>
+
+<iframe id="conteudo-iframe" src="" style="width: 100%; height: 600px; border: none; margin-top: 20px;"></iframe>
+
+</div>
 
         </div>
     </div>
@@ -417,12 +422,11 @@ if($_SESSION['tipo'] == "personal"){
         </div>
     </div>
 </body>
+<script src="script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
     crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
     crossorigin="anonymous"></script>
-<script src="script.js"></script>
-
 </html>

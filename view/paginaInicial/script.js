@@ -103,31 +103,32 @@ document.addEventListener("DOMContentLoaded", function () {
         if (intervaloMensagens) clearInterval(intervaloMensagens);
     });
 
-    function loadPageAndHighlight(button, url) {
-        const iframe = document.getElementById('myIframe');
-        if (iframe) iframe.src = url;
+    // Função existente
+    window.loadPage = function (url, button) {
+    const iframe = document.getElementById('conteudo-iframe');
+    const underline = document.getElementById('underline-indicator');
+    const buttons = document.querySelectorAll('.button-container button');
 
-        const underline = document.getElementById('underline-indicator');
-        const container = button.closest('.button-container');
+    // Trocar o conteúdo do iframe
+    iframe.src = url;
 
-        if (underline && container) {
-            const rect = button.getBoundingClientRect();
-            const containerRect = container.getBoundingClientRect();
+    // Remover destaque dos outros botões
+    buttons.forEach(btn => btn.classList.remove('Underline'));
 
-            underline.style.width = rect.width + "px";
-            underline.style.left = (rect.left - containerRect.left) + "px";
+    // Adicionar destaque ao botão atual
+    button.classList.add('Underline');
 
-            setTimeout(() => {
-                container.classList.add('transition');
-            }, 10);
+    // Mover a underline para o botão clicado
+    const rect = button.getBoundingClientRect();
+    const containerRect = button.parentElement.getBoundingClientRect();
+    underline.style.width = rect.width + 'px';
+    underline.style.left = (rect.left - containerRect.left) + 'px';
+};
 
-            container.querySelectorAll('button').forEach(btn => {
-                btn.classList.remove('active');
-            });
-
-            button.classList.add('active');
-        }
-    }
+window.addEventListener('DOMContentLoaded', () => {
+        const button = document.getElementById('button1');
+        loadPage('../informacoes/treinos.php', button);
+    });
 
     document.getElementById('personais-btn')?.addEventListener('click', function () {
         document.getElementById('personais-panel').classList.add('open');
