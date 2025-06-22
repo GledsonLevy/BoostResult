@@ -9,7 +9,7 @@ class Imagem_usuarioDAO{
 	public function carregar($id_user){
         try {
 			$sql = 'SELECT * FROM imagem_usuario WHERE id_user = :id_user';
-			$consulta = Conexao::getConexao()->prepare($sql);
+			$consulta = ConexaoBinaria::getConexao()->prepare($sql);
 			$consulta->bindValue(":id_user",$id_user);
 			$consulta->execute();
 			return ($consulta->fetch(PDO::FETCH_ASSOC));
@@ -71,29 +71,29 @@ class Imagem_usuarioDAO{
 	
 	//Insere um elemento na tabela
 	public function inserir(Imagem_usuario $imagem_usuario){
-        try {
-			$sql = 'INSERT INTO imagem_usuario (id_img, id_user, nome_arquivo, tipo, imagem) VALUES (:id_img, :id_user, :nome_arquivo, :tipo, :imagem)';
-			$consulta = Conexao::getConexao()->prepare($sql);
-			$consulta->bindValue(':id_img',$imagem_usuario->getId_img()); 
+    try {
+        $sql = 'INSERT INTO imagem_usuario (id_img, id_user, nome_arquivo, tipo, imagem)
+                VALUES (:id_img, :id_user, :nome_arquivo, :tipo, :imagem)
+                ON DUPLICATE KEY UPDATE nome_arquivo = :nome_arquivo, tipo = :tipo, imagem = :imagem';
 
-			$consulta->bindValue(':id_user',$imagem_usuario->getId_user()); 
+        $consulta =  ConexaoBinaria::getConexao()->prepare($sql);
+        $consulta->bindValue(':id_img', $imagem_usuario->getId_img());
+        $consulta->bindValue(':id_user', $imagem_usuario->getId_user());
+        $consulta->bindValue(':nome_arquivo', $imagem_usuario->getNome_arquivo());
+        $consulta->bindValue(':tipo', $imagem_usuario->getTipo());
+        $consulta->bindValue(':imagem', $imagem_usuario->getImagem(), PDO::PARAM_LOB);
 
-			$consulta->bindValue(':nome_arquivo',$imagem_usuario->getNome_arquivo()); 
-
-			$consulta->bindValue(':tipo',$imagem_usuario->getTipo()); 
-
-			$consulta->bindValue(':imagem',$imagem_usuario->getImagem());
-			$consulta->execute();
-        } catch (Exception $e) {
-            print "Erro ao inserir Imagem_usuario <br>" . $e . '<br>';
-        }
-	}
+        $consulta->execute();
+    } catch (Exception $e) {
+        print "Erro ao inserir Imagem_usuario <br>" . $e . '<br>';
+    }
+}
 	
 	//Atualiza um elemento na tabela
 	public function atualizar(Imagem_usuario $imagem_usuario){
         try {
 			$sql = 'UPDATE imagem_usuario SET id_img = :id_img, id_user = :id_user, nome_arquivo = :nome_arquivo, tipo = :tipo, imagem = :imagem WHERE id_img = :id_img';
-			$consulta = Conexao::getConexao()->prepare($sql);
+			$consulta = ConexaoBinaria::getConexao()->prepare($sql);
 			$consulta->bindValue(':id_img',$imagem_usuario->getId_img()); 
 
 			$consulta->bindValue(':id_user',$imagem_usuario->getId_user()); 
@@ -105,7 +105,7 @@ class Imagem_usuarioDAO{
 			$consulta->bindValue(':imagem',$imagem_usuario->getImagem());
 			$consulta->execute();			
         } catch (Exception $e) {
-            print "Erro ao atualizar Imagem_usuario <br>" . $e . '<br>';
+            header("Location: ../../view/paginaInicial/index.php?msg=erro_imagem");
         }
 	}
 }

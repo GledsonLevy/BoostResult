@@ -6,7 +6,19 @@
 class AlunoDAO{
 
 	//Carrega um elemento pela chave primária
-	public function carregar($id_aluno){
+	public function carregar($id_user){
+        try {
+			$sql = 'SELECT * FROM aluno WHERE id_user = :id_user';
+			$consulta = Conexao::getConexao()->prepare($sql);
+			$consulta->bindValue(":id_user",$id_user);
+			$consulta->execute();
+			return ($consulta->fetch(PDO::FETCH_ASSOC));
+        } catch (Exception $e) {
+            print "Erro ao carregar Aluno <br>" . $e . '<br>';
+        }
+	}
+
+	public function carregarPorId($id_aluno){
         try {
 			$sql = 'SELECT * FROM aluno WHERE id_aluno = :id_aluno';
 			$consulta = Conexao::getConexao()->prepare($sql);

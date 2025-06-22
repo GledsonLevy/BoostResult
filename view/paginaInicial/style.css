@@ -211,15 +211,13 @@ button:focus {
     margin: auto;
 }
 
+
 #underline-indicator {
     position: absolute;
     bottom: 0;
     height: 3px;
-    background-color: black;
-    width: 0;
-    left: 0;
-    transition: none;
-    /* Remover transição */
+    background-color: #007bff;
+    transition: left 0.3s, width 0.3s;
 }
 
 /* Adicionar a transição quando a underline for movida */
@@ -234,7 +232,8 @@ iframe {
 }
 
 .Underline {
-    border-bottom: 3px solid black;
+    font-weight: bold;
+    color: #007bff; /* exemplo */
 }
 
 #nomeConta,
@@ -692,4 +691,8 @@ body.dark-mode {
 
 .interacao-input button:hover {
     background-color: #1565c0;
+}
+
+.button-container button.Underline {
+    font-weight: bold;
 }
