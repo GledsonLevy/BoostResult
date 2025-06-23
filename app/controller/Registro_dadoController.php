@@ -38,7 +38,7 @@
 
         $registro_dadoDAO->inserir($registro_dado);
 
-        header("Location: ../../view/informacoes/dados.php");
+        header("Location: ../../view/informacoes/medidas.php");
     } 
     // se a requisição for editar
     else if(isset($_POST['editar'])){

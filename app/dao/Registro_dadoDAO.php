@@ -70,7 +70,7 @@ class Registro_dadoDAO{
 	
 	public function pegarUltimosDadosAluno($id_aluno) {
     try {
-        $sql = 'SELECT * FROM registro_dados WHERE id_aluno = :id_aluno ORDER BY data_dados DESC LIMIT 1';
+        $sql = 'SELECT * FROM registro_dados WHERE id_aluno = :id_aluno ORDER BY id_dados DESC LIMIT 1';
         $consulta = Conexao::getConexao()->prepare($sql);
         $consulta->bindValue(":id_aluno", $id_aluno);
         $consulta->execute();
