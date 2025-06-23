@@ -59,94 +59,6 @@ if($_SESSION['tipo'] == "aluno"){
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="style.css">
-    <style>
-         body {
-            font-family: sans-serif;
-            background-color: #f2f2f2;
-            padding: 20px;
-            margin: 0;
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-
-        .lista-personais {
-            max-width: 600px;
-            margin: auto;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            padding: 0;
-            overflow: hidden;
-        }
-
-        .personal {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-        }
-        .alunos {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .alunos:last-child {
-            border-bottom: none;
-        }
-
-        .alunos img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 15px;
-        }
-
-        .personal:last-child {
-            border-bottom: none;
-        }
-
-        .personal img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 15px;
-        }
-
-        .nome {
-            font-size: 18px;
-            color: #333;
-        }
-
-        .mensagem {
-            text-align: center;
-            color: #888;
-            padding: 20px;
-        }
-
-        .mensagem-enviada {
-            background-color: #d1e7dd;
-            color: #155724;
-            margin-left: auto;
-            text-align: right;
-            border-bottom-right-radius: 0;
-        }
-
-        /* Mensagens recebidas (à esquerda) */
-        .mensagem-recebida {
-            background-color: #f8d7da;
-            color: #721c24;
-            margin-right: auto;
-            text-align: left;
-            border-bottom-left-radius: 0;
-        }
-    </style>
 </head>
 
 <body>
@@ -439,9 +351,6 @@ if($_SESSION['tipo'] == "aluno"){
             <form method="POST" action="../../app/controller/UsuarioController.php">
                 <button type="submit" name="acao" value="DESLOGAR" id="sair">Sair</button>
             </form>
-            <li>
-                <button id="toggleDarkMode" class="btn btn-sm btn-dark">Modo Escuro</button>
-            </li>
         </ul>
     </div>
 

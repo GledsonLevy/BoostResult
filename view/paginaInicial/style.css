@@ -5,12 +5,94 @@
     font-family: Arial, sans-serif;
 }
 
+
 body {
     display: flex;
-    background-color: #f5f8fa;
+    background-color: #121212;
     cursor: url('https://cdn.custom-cursor.com/packs/1863/pack2490.png'), auto;
     font-family: Arial, sans-serif;
     padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.lista-personais {
+    max-width: 600px;
+    margin: auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 0;
+    overflow: hidden;
+}
+
+.personal {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.alunos {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.alunos:last-child {
+    border-bottom: none;
+}
+
+.alunos img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.personal:last-child {
+    border-bottom: none;
+}
+
+.personal img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.nome {
+    font-size: 18px;
+    color: #333;
+}
+
+.mensagem {
+    text-align: center;
+    color: #888;
+    padding: 20px;
+}
+
+.mensagem-enviada {
+    background-color: #d1e7dd;
+    color: #155724;
+    margin-left: auto;
+    text-align: right;
+    border-bottom-right-radius: 0;
+}
+
+/* Mensagens recebidas (à esquerda) */
+.mensagem-recebida {
+    background-color: #f8d7da;
+    color: #721c24;
+    margin-right: auto;
+    text-align: left;
+    border-bottom-left-radius: 0;
 }
 
 body,
@@ -233,7 +315,8 @@ iframe {
 
 .Underline {
     font-weight: bold;
-    color: #007bff; /* exemplo */
+    color: #007bff;
+    /* exemplo */
 }
 
 #nomeConta,
@@ -395,12 +478,16 @@ iframe {
 }
 
 .chat-body {
-    flex: 1;                 /* ocupa todo o espaço disponível */
+    flex: 1;
+    /* ocupa todo o espaço disponível */
     padding: 20px;
-    overflow-y: auto;        /* habilita scroll vertical */
+    overflow-y: auto;
+    /* habilita scroll vertical */
     background-color: #f8f9fa;
-    min-height: 0;           /* importante para flex containers em alguns browsers */
-    max-height: 100%;        /* opcional, garante que não ultrapasse o pai */
+    min-height: 0;
+    /* importante para flex containers em alguns browsers */
+    max-height: 100%;
+    /* opcional, garante que não ultrapasse o pai */
 }
 
 .chat-input {
@@ -527,12 +614,13 @@ iframe {
     background-color: #fff;
     z-index: 1055;
     transition: transform 0.3s ease-in-out;
-    box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
 }
 
 .alunos-panel.open {
     display: block;
 }
+
 .alunos-panel h2 {
     margin-bottom: 20px;
 }
@@ -570,12 +658,13 @@ iframe {
     background-color: #fff;
     z-index: 1055;
     transition: transform 0.3s ease-in-out;
-    box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
 }
 
 .chats-panel.open {
     display: block;
 }
+
 .chats-panel h2 {
     margin-bottom: 20px;
 }
@@ -606,12 +695,13 @@ iframe {
 .solicitacao-panel {
     position: fixed;
     top: 0;
-    left: -100%; /* escondido fora da tela */
+    left: -100%;
+    /* escondido fora da tela */
     width: 40%;
     height: 100vh;
     background: #fff;
     border-radius: 0 12px 12px 0;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     z-index: 1050;
     display: flex;
     flex-direction: column;
@@ -635,6 +725,7 @@ iframe {
     overflow-y: auto;
     padding: 20px;
 }
+
 .solicitacao-panel .card {
     border: 1px solid #e1e8ed;
     border-radius: 10px;
@@ -726,62 +817,57 @@ iframe {
     /* Garante que o padding seja incluído na altura total */
 }
 
-body.dark-mode {
-    background-color: #121212;
-    color: #f5f5f5;
-}
-
-.dark-mode .sidebar,
-.dark-mode .profile,
-.dark-mode .Users,
-.dark-mode .mensagens-panel,
-.dark-mode .modal-content {
+ .sidebar,
+ .profile,
+ .Users,
+ .mensagens-panel,
+ .modal-content {
     background-color: #1e1e1e;
     color: #FAFAFA;
     border-color: #333;
 }
 
-.dark-mode .search-input {
+ .search-input {
     background-color: #333;
     color: #FAFAFA;
     border-color: #555;
 }
 
-.dark-mode .search-icon {
+ .search-icon {
     fill: #ccc;
 }
 
-.dark-mode .tweet-btn,
-.dark-mode .Users .user button {
+ .tweet-btn,
+ .Users .user button {
     background-color: #2e7d32;
 }
 
-.dark-mode #sair {
+ #sair {
     background-color: #e3e3e3;
 
 }
 
-.dark-mode #button3 {
+ #button3 {
     background-color: #1e1e1e;
     color: #FAFAFA;
 }
 
-.dark-mode #button2 {
+ #button2 {
     background-color: #1e1e1e;
     color: #FAFAFA;
 }
 
-.dark-mode #button1 {
+ #button1 {
     background-color: #1e1e1e;
     color: #FAFAFA;
 }
 
-.dark-mode #botaoBio {
+ #botaoBio {
     background-color: #1c1c1c;
     color: #FAFAFA;
 }
 
-.dark-mode #underline-indicator {
+ #underline-indicator {
     background-color: #FAFAFA;
 }
 

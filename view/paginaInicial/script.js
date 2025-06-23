@@ -196,35 +196,4 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
-
-    // Event Listener - Dark Mode
-    toggleDarkMode?.addEventListener("click", function () {
-        document.body.classList.toggle("dark-mode");
-
-        if (document.body.classList.contains("dark-mode")) {
-            localStorage.setItem("modo", "escuro");
-            this.textContent = "Modo Claro ☀️";
-            this.style.backgroundColor = "#FAFAFA";
-            this.style.color = "#000";
-        } else {
-            localStorage.setItem("modo", "claro");
-            this.textContent = "Modo Escuro 🌙";
-            this.style.backgroundColor = "#000";
-            this.style.color = "#FAFAFA";
-        }
-    });
-
-    // Inicialização do Dark Mode
-    if (localStorage.getItem("modo") === "escuro") {
-        document.body.classList.add("dark-mode");
-        if (toggleDarkMode) {
-            toggleDarkMode.textContent = "Modo Claro ☀️";
-            toggleDarkMode.style.backgroundColor = "#FAFAFA";
-            toggleDarkMode.style.color = "#000";
-        }
-    } else if (toggleDarkMode) {
-        toggleDarkMode.textContent = "Modo Escuro 🌙";
-        toggleDarkMode.style.backgroundColor = "#000";
-        toggleDarkMode.style.color = "#FAFAFA";
-    }
 });
