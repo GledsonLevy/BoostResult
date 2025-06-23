@@ -66,17 +66,17 @@ if (isset($_POST['acao']) && ($_POST['acao'] == "CADASTRAR")) {
         
     }
 
-    header("Location: ../../view/login/index.php");
+    header("Location: ../../view/login/login.php");
 }
 } else if (isset($_POST['acao']) && ($_POST['acao'] == "LOGAR")) {
 
     if ($usuarioDAO->verificarEmail($u['email'])) {
         $_SESSION['erro_login'] = "Não existe usuário com esse email";
-        header("Location: ../../view/login/index.php?erro=usuarioinexistente");
+        header("Location: ../../view/login/login.php?erro=usuarioinexistente");
         exit;
     } else if($usuarioDAO->verificarCredenciais($u['email'], $u['senha'])){
         $_SESSION['erro_login'] = "Não existe usuário com esses dados";
-        header("Location: ../../view/login/index.php?erro=dadosincorretos");
+        header("Location: ../../view/login/login.php?erro=dadosincorretos");
         exit;
     }
     $usuario->setEmail($u['email']);
@@ -91,7 +91,7 @@ if (isset($_POST['acao']) && ($_POST['acao'] == "CADASTRAR")) {
     session_unset();
     session_destroy();
 
-    header("Location: ../../view/login/index.php");
+    header("Location: ../../view/login/login.php");
     exit;
 
 }

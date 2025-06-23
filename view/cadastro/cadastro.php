@@ -242,7 +242,7 @@
                                     href="#finish" role="menuitem">Cadastrar</a></li>
                             <input type="hidden" name="acao" value="CADASTRAR">
                         </ul>
-                        <a href="../login/index.php" class="form-holder link-redir" id="logarConta">Já possui uma conta? Entre já.</a>
+                        <a href="../login/login.php" class="form-holder link-redir" id="logarConta">Já possui uma conta? Entre já.</a>
                     </div>
             </div>
 
