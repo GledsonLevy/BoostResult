@@ -36,11 +36,9 @@
 
 		$registro_dado->setImc($r['imc']);
 
-        var_dump($registro_dado);
-
         $registro_dadoDAO->inserir($registro_dado);
 
-        //header("Location: ../../registro_dado.php?msg=adicionado");
+        header("Location: ../../view/informacoes/dados.php");
     } 
     // se a requisição for editar
     else if(isset($_POST['editar'])){

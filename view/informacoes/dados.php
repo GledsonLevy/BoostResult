@@ -5,52 +5,57 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Adicionar Dados</title>
+    <title>Cadastro do Cliente</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
-    <div class="bio-container">
-    <h2>Informações Físicas</h2>
-    <div class="bio-item"><span class="label">Altura:</span> <?php echo $_SESSION['altura']; ?> m</div>
-    <div class="bio-item"><span class="label">Peso:</span> <?php echo $_SESSION['peso']; ?> kg</div>
-    <div class="bio-item"><span class="label">IMC:</span> <?php echo $_SESSION['imc']; ?></div>
-    <div class="bio-item"><span class="label">Última Atualização:</span> <?php echo $_SESSION['data_dados']; ?></div>
-</div>
+    <div class="dados">
+        <h2>Dados Cadastrais</h2>
+        <div class="bio-item"><span class="label">Nome:</span> <?php echo $_SESSION['nome_completo']; ?></div>
+        <div class="bio-item"><span class="label">Gênero:</span> <?php echo $_SESSION['genero']; ?></div>
+        <div class="bio-item"><span class="label">CPF:</span> <?php echo $_SESSION['cpf']; ?></div>
+        <div class="bio-item"><span class="label">RG:</span> <?php echo $_SESSION['rg']; ?></div>
+        <button type="button" class="secondary btn-sm border-0" data-toggle="modal" data-target="#modalExemplo" id="botaoBio">
+            Modificar
+        </button>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="modalExemplo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Mudar Descrição</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
                 <div class="modal-body">
                     <div class="form-container">
-                        <h2>Adicione seus dados</h2>
-                        <form method="post" action="../../app/controller/Registro_dadoController.php">
-                            <label>Altura (em metros):</label>
-                            <input type="text" name="altura" required placeholder="Ex: 1.75">
+                        <h2>Atualizar Cadastro</h2>
+                        <form method="post" action="../../app/controller/ClienteController.php">
+                            <label>Nome Completo:</label>
+                            <input type="text" name="nome_completo" placeholder="Ex: João da Silva">
 
-                            <label>Peso (kg):</label>
-                            <input type="text" name="peso" required placeholder="Ex: 70.5">
+                            <label>Gênero:</label>
+                            <select name="genero">
+                                <option value="">Selecione</option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Feminino">Feminino</option>
+                                <option value="Outro">Outro</option>
+                            </select>
 
-                            <label>IMC:</label>
-                            <input type="text" name="imc" required placeholder="Ex: 23.0">
+                            <label>CPF:</label>
+                            <input type="text" name="cpf" placeholder="Ex: 000.000.000-00">
+
+                            <label>RG:</label>
+                            <input type="text" name="rg" placeholder="Ex: 12.345.678-9">
 
                             <button type="submit" name="acao" value="CADASTRAR">Salvar</button>
                         </form>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </body>
+
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
     integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
     crossorigin="anonymous"></script>

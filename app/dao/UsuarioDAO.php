@@ -1,4 +1,7 @@
 <?php
+require_once 'Registro_dadoDAO.php';
+require_once 'ClienteDAO.php';
+
 /* @Autor: Dalker Pinheiro
 	  Classe DAO */
 class UsuarioDAO
@@ -151,6 +154,8 @@ class UsuarioDAO
 
 	public function logar(Usuario $usuario)
 	{
+		$clienteDAO = new ClienteDAO();
+		$registro = new Registro_dadoDAO();
 		try {
 			$sql = 'SELECT * FROM usuario WHERE email = :email AND senha = :senha';
 			$consulta = Conexao::getConexao()->prepare($sql);
@@ -168,6 +173,8 @@ class UsuarioDAO
 			}
 
 			$this->pegarIdAluno($_SESSION['id_user']);
+			$registro->pegarUltimosDadosAluno($_SESSION['id_aluno']);
+			$clienteDAO->pegarUltimosDadosCliente($_SESSION['id_aluno']);
 			
 		} catch (Exception $e) {
 			print "Erro ao inserir Usuario <br>" . $e . '<br>';

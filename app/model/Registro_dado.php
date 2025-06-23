@@ -6,49 +6,67 @@
 	class Registro_dado{
 		//Atributos
 		private $id_dados;
- 		private $id_aluno;
- 		private $altura;
- 		private $data;
- 		private $peso;
- 		private $imc;
- 				
+
+ 		private $id_aluno;
+
+ 		private $altura;
+
+ 		private $data;
+
+ 		private $peso;
+
+ 		private $imc;
+
+ 				
 		//Métodos Getters e Setters
 		public function getId_dados(){
 			return $this->id_dados;
 		}
-		public function getId_aluno(){
+
+		public function getId_aluno(){
 			return $this->id_aluno;
 		}
-		public function getAltura(){
+
+		public function getAltura(){
 			return $this->altura;
 		}
-		public function getData(){
+
+		public function getData(){
 			return $this->data;
 		}
-		public function getPeso(){
+
+		public function getPeso(){
 			return $this->peso;
 		}
-		public function getImc(){
+
+		public function getImc(){
 			return $this->imc;
 		}
-		
+
+		
 		public function setId_dados($id_dados){
 			$this->id_dados=$id_dados;
 		}
-		public function setId_aluno($id_aluno){
+
+		public function setId_aluno($id_aluno){
 			$this->id_aluno=$id_aluno;
 		}
-		public function setAltura($altura){
+
+		public function setAltura($altura){
 			$this->altura=$altura;
 		}
-		public function setData($data){
+
+		public function setData($data){
 			$this->data=$data;
 		}
-		public function setPeso($peso){
+
+		public function setPeso($peso){
 			$this->peso=$peso;
 		}
-		public function setImc($imc){
+
+		public function setImc($imc){
 			$this->imc=$imc;
 		}
-		
+
+		
 	}
