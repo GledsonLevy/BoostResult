@@ -1,4 +1,6 @@
 <?php
+require_once 'Registro_dadoDAO.php';
+require_once 'ClienteDAO.php';
 
 /* @Autor: Dalker Pinheiro
 	  Classe DAO */
@@ -135,9 +137,25 @@ class UsuarioDAO
 		}
 	}
 
+	public function pegarIdAluno($id_user) {
+	try {
+		$sql = 'SELECT * FROM aluno WHERE id_user = :id_user';
+		$consulta = Conexao::getConexao()->prepare($sql);
+		$consulta->bindValue(":id_user", $id_user);
+		$consulta->execute(); // Adicione isso!
+		if ($consulta->rowCount() > 0) {
+			$dadosUsuario = $consulta->fetch(PDO::FETCH_ASSOC);
+			$_SESSION['id_aluno'] = $dadosUsuario['id_aluno'];
+		}
+	} catch (Exception $e) {
+		print "Erro ao buscar ID do aluno <br>" . $e . '<br>';
+	}
+}
 
 	public function logar(Usuario $usuario)
 	{
+		$clienteDAO = new ClienteDAO();
+		$registro = new Registro_dadoDAO();
 		try {
 			$sql = 'SELECT * FROM usuario WHERE email = :email AND senha = :senha';
 			$consulta = Conexao::getConexao()->prepare($sql);
@@ -148,11 +166,16 @@ class UsuarioDAO
 				$dadosUsuario = $consulta->fetch(PDO::FETCH_ASSOC);
 				$_SESSION['tipo'] = $dadosUsuario['tipo'];
 				$_SESSION['id_user'] = $dadosUsuario['id_user'];
+				$_SESSION['sexo'] = $dadosUsuario['sexo'];
 				$_SESSION['email'] = $dadosUsuario['email'];
 				$_SESSION['nome'] = $dadosUsuario['nome'];
 				$_SESSION['tipo_usuario'] = $dadosUsuario['tipo_usuario'];
 				$_SESSION['descricao'] = $dadosUsuario['descricao'];
 			}
+
+			$this->pegarIdAluno($_SESSION['id_user']);
+			$registro->pegarUltimosDadosAluno($_SESSION['id_aluno']);
+			$clienteDAO->pegarUltimosDadosCliente($_SESSION['id_aluno']);
 			
 		} catch (Exception $e) {
 			print "Erro ao inserir Usuario <br>" . $e . '<br>';

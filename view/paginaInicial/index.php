@@ -143,7 +143,6 @@ if($_SESSION['tipo'] == "personal"){
 </head>
 
 <body>
-    
     <?php if ($_SESSION['tipo'] == 'aluno') { ?>
         <div class="personais-panel" id="personais-panel">
             <button class="close-btn" id="close-personais-btn">X</button>
