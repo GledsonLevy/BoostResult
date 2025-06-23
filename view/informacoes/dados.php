@@ -54,10 +54,10 @@
                             <input type="text" name="nome_completo" placeholder="Ex: João da Silva">
 
                             <label>CPF:</label>
-                            <input type="text" name="cpf" placeholder="Ex: 000.000.000-00">
+                            <input type="text" name="cpf" id="cpf" placeholder="Ex: 000.000.000-00" maxlength="14">
 
                             <label>RG:</label>
-                            <input type="text" name="rg" placeholder="Ex: 12.345.678-9">
+                            <input type="text" name="rg" id="rg" placeholder="Ex: 12.345.678-9" maxlength="12   ">
 
                             <button type="submit" name="acao" value="CADASTRAR">Salvar</button>
                         </form>
@@ -74,4 +74,32 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
     crossorigin="anonymous"></script>
+
+
+    <script>
+    function aplicarMascaraCPF(cpf) {
+        cpf = cpf.replace(/\D/g, ''); // Remove tudo que não for número
+        cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+        cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+        cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        return cpf;
+    }
+
+    function aplicarMascaraRG(rg) {
+        rg = rg.replace(/\D/g, '');
+        rg = rg.replace(/(\d{2})(\d)/, '$1.$2');
+        rg = rg.replace(/(\d{3})(\d)/, '$1.$2');
+        rg = rg.replace(/(\d{3})(\d{1})$/, '$1-$2');
+        return rg;
+    }
+
+    document.getElementById('cpf').addEventListener('input', function () {
+        this.value = aplicarMascaraCPF(this.value);
+    });
+
+    document.getElementById('rg').addEventListener('input', function () {
+        this.value = aplicarMascaraRG(this.value);
+    });
+</script>
+
 </html>
