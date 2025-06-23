@@ -31,6 +31,19 @@ class SolicitacaoDAO{
         }
 	}
 
+	public function carregarAlunosSol($id_aluno, $status){
+        try {
+			$sql = 'SELECT * FROM solicitacao WHERE id_aluno = :id_aluno AND status = :status';
+			$consulta = Conexao::getConexao()->prepare($sql);
+			$consulta->bindValue(":id_aluno",$id_aluno);
+			$consulta->bindValue(":status",$status);
+			$consulta->execute();
+			return ($consulta->fetchAll(PDO::FETCH_ASSOC));
+        } catch (Exception $e) {
+            print "Erro ao carregar Solicitacao <br>" . $e . '<br>';
+        }
+	}
+
 	//Lista todos os elementos da tabela
 	public function listarTodos(){
         try {

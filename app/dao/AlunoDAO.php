@@ -17,6 +17,20 @@ class AlunoDAO{
             print "Erro ao carregar Aluno <br>" . $e . '<br>';
         }
 	}
+	public function buscarIdAluno($id_user) {
+		try {
+			$sql = 'SELECT id_aluno FROM aluno WHERE id_user = :id_user';
+			$consulta = Conexao::getConexao()->prepare($sql);
+			$consulta->bindValue(":id_user", $id_user);
+			$consulta->execute();
+			
+			$resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+			return ($resultado) ? $resultado['id_aluno'] : null;
+		} catch (Exception $e) {
+			print "Erro ao buscar ID do aluno <br>" . $e . '<br>';
+			return null;
+		}
+	}
 
 	public function carregarPorId($id_aluno){
         try {

@@ -18,6 +18,33 @@ class PersonalDAO{
         }
 	}
 
+	public function carregarPorId($id_personal){
+        try {
+			$sql = 'SELECT * FROM personal WHERE id_personal = :id_personal';
+			$consulta = Conexao::getConexao()->prepare($sql);
+			$consulta->bindValue(":id_personal",$id_personal);
+			$consulta->execute();
+			return ($consulta->fetch(PDO::FETCH_ASSOC));
+        } catch (Exception $e) {
+            print "Erro ao carregar Personal <br>" . $e . '<br>';
+        }
+	}
+
+	public function buscarIdPersonal($id_user) {
+		try {
+			$sql = 'SELECT id_personal FROM personal WHERE id_user = :id_user';
+			$consulta = Conexao::getConexao()->prepare($sql);
+			$consulta->bindValue(":id_user", $id_user);
+			$consulta->execute();
+			
+			$resultado = $consulta->fetch(PDO::FETCH_ASSOC);
+			return ($resultado) ? $resultado['id_personal'] : null;
+		} catch (Exception $e) {
+			print "Erro ao buscar ID do personal <br>" . $e . '<br>';
+			return null;
+		}
+	}
+
 	//Lista todos os elementos da tabela
 	public function listarTodos(){
         try {

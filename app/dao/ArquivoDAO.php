@@ -31,16 +31,21 @@ class ArquivoDAO{
 	}
 	
 	//Lista todos os elementos da tabela listando ordenados por uma coluna específica
-	public function listarTodosOrgenandoPor($coluna){
-        try {
-			$sql = 'SELECT * FROM arquivo ORDER BY '.$coluna;
-			$consulta = Conexao::getConexao()->prepare($sql);
-			$consulta->execute();
-			return ($consulta->fetchAll(PDO::FETCH_ASSOC));
-        } catch (Exception $e) {
-            print "Erro ao listar Arquivos <br>" . $e . '<br>';
-        }
-	}
+	public function listarPorSolicitacao($idSolicitacao) {
+    try {
+
+        $sql = "SELECT * FROM arquivo WHERE id_solicitacao = :id_solicitacao";
+        $consulta = ConexaoBinaria::getConexao()->prepare($sql);
+        $consulta->bindParam(':id_solicitacao', $idSolicitacao, PDO::PARAM_INT);
+        $consulta->execute();
+
+        return $consulta->fetchAll(PDO::FETCH_ASSOC);
+
+    } catch (Exception $e) {
+        echo "Erro ao listar arquivos por solicitação: " . $e->getMessage() . "<br>";
+        return [];
+    }
+}
 	
 	
 	//Busca elementos da tabela

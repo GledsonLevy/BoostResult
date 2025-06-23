@@ -1,12 +1,21 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let dadosAluno = {}; // Variável global
-    let intervaloMensagens = null; // Intervalo para auto refresh
-    let ultimaMensagemId = null; // ID da última mensagem exibida
+    // Variáveis globais
+    let dadosAluno = {};
+    let intervaloMensagens = null;
+    let ultimaMensagemId = null;
+    
+    // Elementos DOM frequentemente acessados
+    const chatPanel = document.getElementById('chat-panel');
+    const conteudoIframe = document.getElementById('conteudo-iframe');
+    const interacaoConteudo = document.getElementById('interacao-conteudo');
+    const toggleDarkMode = document.getElementById('toggleDarkMode');
+
+    // Inicialização
+    const button = document.getElementById('button3');
+    
 
     // Função para atualizar mensagens
     function atualizarMensagens() {
-        
-        
         if (!dadosAluno.id_solicitacao) return;
 
         fetch("carregar_mensagens.php", {
@@ -30,11 +39,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             let html = "";
             mensagens.forEach(msg => {
-                console.log("importante:");
-                console.log('msg');
-                console.log(msg);
-                console.log("daodos");
-                console.log(dadosAluno);
                 const classe = (msg.remetente == dadosAluno.id_destinatario) ? "mensagem-recebida" : "mensagem-enviada";
                 html += `
                     <div class="mensagem ${classe}">
@@ -49,16 +53,58 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(err => console.error("Erro ao atualizar mensagens:", err));
     }
 
-    document.querySelectorAll(".alunos").forEach(button => {
+    // Função para carregar páginas no iframe
+    window.loadPage = function (url, button) {
+        const iframe = document.getElementById('conteudo-iframe');
+        const underline = document.getElementById('underline-indicator');
+        const buttons = document.querySelectorAll('.button-container button');
+
+        // Força reload sempre (mesma URL inclusive)
+        iframe.src = url.includes('?') ? url + '&_t=' + Date.now() : url + '?_t=' + Date.now();
+
+        // Remover destaque dos outros botões
+        buttons.forEach(btn => btn.classList.remove('Underline'));
+
+        // Adicionar destaque ao botão atual
+        button.classList.add('Underline');
+
+        // Mover a underline para o botão clicado
+        const rect = button.getBoundingClientRect();
+        const containerRect = button.parentElement.getBoundingClientRect();
+        underline.style.width = rect.width + 'px';
+        underline.style.left = (rect.left - containerRect.left) + 'px';
+    };
+
+    loadPage('../informacoes/dados.php', button);
+
+    // Funções para abrir modais
+    window.abrirModal = function (id) {
+        document.getElementById('chats-panel')?.classList.remove('open');
+        document.getElementById('chat-panel').classList.add('open');
+        document.getElementById('alunos-panel')?.classList.remove('open');
+        document.getElementById('personais-panel')?.classList.remove('open');
+        const elemento = document.getElementById(id);
+        const nome = elemento?.getAttribute('value');
+        document.getElementById("receberNomeUsuario").innerHTML = nome;
+    };
+
+    window.abrirModalChat = function (nome) {
+        document.getElementById('chat-panel').classList.add('open');
+        document.getElementById('chats-panel')?.classList.toggle('open');
+        document.getElementById('alunos-panel')?.classList.remove('open');
+        document.getElementById('personais-panel')?.classList.remove('open');
+        document.getElementById('receberNomeUsuario').textContent = nome;
+    };
+
+    // Event Listeners - Chat
+    document.querySelectorAll(".btn-open-chats").forEach(button => {
         button.addEventListener("click", function () {
             const id_solicitacao = this.dataset.idSolicitacao;
-            const id_destinatario = this.dataset.idDestinatario; // Corrigido aqui
-            const id_remetente = this.dataset.idRemetente; // Opcional, se quiser guardar
-            console.log("solicitação:" ,id_solicitacao);
-            console.log("destinatario:" ,id_destinatario);
-            console.log("remetente:" ,id_remetente);
+            const id_destinatario = this.dataset.idDestinatario;
+            const id_remetente = this.dataset.idRemetente;
+            const nome = this.dataset.nome;
+            
             dadosAluno = { id_solicitacao, id_destinatario, id_remetente };
-            console.log(dadosAluno);
             atualizarMensagens();
 
             // Atualiza a cada 3 segundos
@@ -70,36 +116,14 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("destinatario_id").value = id_destinatario;
             document.getElementById("remetente_id").value = id_remetente;
             document.getElementById("solicitacao_id").value = id_solicitacao;
-            abrirModalChat();
+            abrirModalChat(nome);
         });
     });
-
-     document.querySelectorAll(".arquivo-form").forEach(form => {
-        const inputFile = form.querySelector(".arquivo-input");
-        const labelBtn = form.querySelector(".btn-selecionar");
-        const nomeArquivo = form.querySelector(".nome-arquivo");
-
-        // Clique no label dispara o seletor
-        labelBtn?.addEventListener("click", () => inputFile.click());
-
-        // Atualiza o nome exibido ao selecionar o arquivo
-        inputFile?.addEventListener("change", () => {
-            if (inputFile.files.length > 0) {
-                nomeArquivo.textContent = inputFile.files[0].name;
-            } else {
-                nomeArquivo.textContent = "";
-            }
-        });
-    });
-
-    
 
     document.querySelector(".interacao-input")?.addEventListener("submit", function (e) {
-        console.log('tentativa de envio');
         e.preventDefault();
         const form = e.target;
         const mensagem = form.mensagem.value.trim();
-        console.log(mensagem);
         if (!mensagem) return;
 
         const formData = new URLSearchParams(new FormData(form));
@@ -121,33 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (intervaloMensagens) clearInterval(intervaloMensagens);
     });
 
-    // Função existente
-    window.loadPage = function (url, button) {
-    const iframe = document.getElementById('conteudo-iframe');
-    const underline = document.getElementById('underline-indicator');
-    const buttons = document.querySelectorAll('.button-container button');
-
-    // Trocar o conteúdo do iframe
-    iframe.src = url;
-
-    // Remover destaque dos outros botões
-    buttons.forEach(btn => btn.classList.remove('Underline'));
-
-    // Adicionar destaque ao botão atual
-    button.classList.add('Underline');
-
-    // Mover a underline para o botão clicado
-    const rect = button.getBoundingClientRect();
-    const containerRect = button.parentElement.getBoundingClientRect();
-    underline.style.width = rect.width + 'px';
-    underline.style.left = (rect.left - containerRect.left) + 'px';
-};
-
-window.addEventListener('DOMContentLoaded', () => {
-        const button = document.getElementById('button1');
-        loadPage('../informacoes/treinos.php', button);
-    });
-
+    // Event Listeners - Painéis
     document.getElementById('personais-btn')?.addEventListener('click', function () {
         document.getElementById('personais-panel').classList.add('open');
     });
@@ -172,59 +170,61 @@ window.addEventListener('DOMContentLoaded', () => {
         document.getElementById('solicitacao-panel').classList.remove('open');
     });
 
-    document.getElementById('close-mensagens-btn')?.addEventListener('click', function () {
-        document.getElementById('mensagens-panel').classList.remove('open');
-        document.getElementById('chat-panel').classList.remove('open');
+    document.getElementById('chats-btn')?.addEventListener('click', function () {
+        document.getElementById('chats-panel').classList.add('open');
     });
 
-    document.getElementById('chat-btn')?.addEventListener('click', function () {
-        document.getElementById('chat-panel').classList.add('open');
+    document.getElementById('close-chats-btn')?.addEventListener('click', function () {
+        document.getElementById('chats-panel').classList.remove('open');
     });
 
-    document.getElementById("toggleDarkMode")?.addEventListener("click", function () {
+    // Event Listeners - Formulários
+    document.querySelectorAll(".arquivo-form").forEach(form => {
+        const inputFile = form.querySelector(".arquivo-input");
+        const labelBtn = form.querySelector(".btn-selecionar");
+        const nomeArquivo = form.querySelector(".nome-arquivo");
+
+        // Clique no label dispara o seletor
+        labelBtn?.addEventListener("click", () => inputFile.click());
+
+        // Atualiza o nome exibido ao selecionar o arquivo
+        inputFile?.addEventListener("change", () => {
+            if (inputFile.files.length > 0) {
+                nomeArquivo.textContent = inputFile.files[0].name;
+            } else {
+                nomeArquivo.textContent = "";
+            }
+        });
+    });
+
+    // Event Listener - Dark Mode
+    toggleDarkMode?.addEventListener("click", function () {
         document.body.classList.toggle("dark-mode");
-
-        const btn = document.getElementById("toggleDarkMode");
 
         if (document.body.classList.contains("dark-mode")) {
             localStorage.setItem("modo", "escuro");
-            btn.textContent = "Modo Claro ☀️";
-            btn.style.backgroundColor = "#FAFAFA";
-            btn.style.color = "#000";
+            this.textContent = "Modo Claro ☀️";
+            this.style.backgroundColor = "#FAFAFA";
+            this.style.color = "#000";
         } else {
             localStorage.setItem("modo", "claro");
-            btn.textContent = "Modo Escuro 🌙";
-            btn.style.backgroundColor = "#000";
-            btn.style.color = "#FAFAFA";
+            this.textContent = "Modo Escuro 🌙";
+            this.style.backgroundColor = "#000";
+            this.style.color = "#FAFAFA";
         }
     });
 
-    const btn = document.getElementById("toggleDarkMode");
+    // Inicialização do Dark Mode
     if (localStorage.getItem("modo") === "escuro") {
         document.body.classList.add("dark-mode");
-        btn.textContent = "Modo Claro ☀️";
-        btn.style.backgroundColor = "#FAFAFA";
-        btn.style.color = "#000";
-    } else {
-        btn.textContent = "Modo Escuro 🌙";
-        btn.style.backgroundColor = "#000";
-        btn.style.color = "#FAFAFA";
+        if (toggleDarkMode) {
+            toggleDarkMode.textContent = "Modo Claro ☀️";
+            toggleDarkMode.style.backgroundColor = "#FAFAFA";
+            toggleDarkMode.style.color = "#000";
+        }
+    } else if (toggleDarkMode) {
+        toggleDarkMode.textContent = "Modo Escuro 🌙";
+        toggleDarkMode.style.backgroundColor = "#000";
+        toggleDarkMode.style.color = "#FAFAFA";
     }
-
-    window.abrirModal = function (id) {
-        document.getElementById('chat-panel').classList.add('open');
-        document.getElementById('mensagens-panel')?.classList.toggle('open');
-        document.getElementById('alunos-panel')?.classList.remove('open');
-        document.getElementById('personais-panel')?.classList.remove('open');
-        const elemento = document.getElementById(id);
-        const nome = elemento?.getAttribute('value');
-        document.getElementById("receberNomeUsuario").innerHTML = nome;
-    };
-
-    window.abrirModalChat = function () {
-        document.getElementById('chat-panel').classList.add('open');
-        document.getElementById('mensagens-panel')?.classList.toggle('open');
-        document.getElementById('alunos-panel')?.classList.remove('open');
-        document.getElementById('personais-panel')?.classList.remove('open');
-    };
 });

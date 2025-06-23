@@ -56,7 +56,7 @@
 
         $solicitacaoDAO->deletar($solicitacao);
 
-        header("Location: ../../solicitacao.php?msg=apagado");
+        header("Location: ../../view/paginaInicial/index.php?msg=apagado");
     }else{
         header("Location: ../../solicitacao.php?msg=erro");
     }

@@ -21,7 +21,7 @@ function console_log($msg) {
 }
 
 $usuarioDAO = new UsuarioDAO();
-$personais = $usuarioDAO->buscarTipo('personal');
+
 
 $solicitacaoDAO = new SolicitacaoDAO();
 $personalDao = new PersonalDao();
@@ -33,11 +33,17 @@ $imagemDao = new Imagem_usuarioDAO();
 //criar um header caso a session não possua nada
 console_log($_SESSION);
 if($_SESSION['tipo'] == "personal"){
-    $userPersonal = $personalDao->buscarId('id_personal', $_SESSION['id_user']);
-    $solicitacoesRecebidas = $solicitacaoDAO->carregarPersonaisSol($userPersonal['id_personal'], "solicitada");
-    $solicitacaoAlunoList = $solicitacaoDAO->carregarPersonaisSol($userPersonal['id_personal'], "ativa");
-    console_log("solicitação aluno list:");
-    console_log($solicitacaoAlunoList);
+    $userPersonal = $personalDao->buscarIdPersonal($_SESSION['id_user']);
+    $solicitacoesRecebidas = $solicitacaoDAO->carregarPersonaisSol($userPersonal, "solicitada");
+    $solicitacaoAlunoList = $solicitacaoDAO->carregarPersonaisSol($userPersonal, "ativa");
+    
+}
+if($_SESSION['tipo'] == "aluno"){
+    $personais = $usuarioDAO->buscarTipo('personal');
+    $userAluno = $alunoDao->buscarIdAluno($_SESSION['id_user']);
+    $solicitacoesRecebidas = $solicitacaoDAO->carregarAlunosSol($userAluno, "solicitada");
+    $solicitacaoPersonalList = $solicitacaoDAO->carregarAlunosSol($userAluno, "ativa");
+    console_log($solicitacaoPersonalList);
 }
 
 
@@ -50,7 +56,8 @@ if($_SESSION['tipo'] == "personal"){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BoostResult</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="style.css">
     <style>
          body {
@@ -144,6 +151,83 @@ if($_SESSION['tipo'] == "personal"){
 
 <body>
     <?php if ($_SESSION['tipo'] == 'aluno') { ?>
+        <div class="solicitacao-panel" id="solicitacao-panel">
+            <div class="solicitacao-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Solicitações</h4>
+                <button class="close-btn" id="close-solicitacao-btn">&times;</button>
+            </div>
+
+            <div class="solicitacao-body p-3">
+                <?php if (isset($solicitacoesRecebidas) && !empty($solicitacoesRecebidas)) { ?>
+                    <h5 class="mb-3 text-primary">Solicitações Recebidas</h5>
+                    <?php foreach($solicitacoesRecebidas as $sol){ 
+                        $personalLog = $personalDao->carregarPorId($sol['id_personal']);
+                        $userPersonal = $usuarioDAO->carregar($personalLog['id_user']);
+                        $nomePersonal = $userPersonal['nome'];
+                    ?>
+                    <div class="card mb-3 shadow-sm">
+                        <div class="card-body">
+                            <h6 class="card-title mb-1"><?= $nomePersonal ?></h6>
+                            <p class="card-text text-muted mb-2">Status: <strong><?= $sol['status'] ?></strong></p>
+                            <form action="../../app/controller/SolicitacaoController.php" method="POST" class="d-flex justify-content-end">
+                                <input type="hidden" name="id_solicitacao" value="<?= $sol['id_solicitacao'] ?>">
+                                <input type="hidden" name="status" value="ativa">
+                                <button class="btn btn-success btn-sm" type="submit" name="editar" value="editar">Aceitar</button>
+                            </form>
+                        </div>
+                    </div>
+                    <?php } ?>
+                <?php } else { ?>
+                    <div class="alert alert-info">Nenhuma solicitação na sua lista.</div>
+                <?php } ?>
+            </div>
+        </div>
+
+
+        <div class="chats-panel offcanvas-panel card p-4 shadow-lg" id="chats-panel" style="max-width: 600px;">
+            <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+                <h3 class="mb-0 fw-bold text-primary">Bate-papo</h3>
+                <button class="btn-close" id="close-chats-btn" aria-label="Fechar"></button>
+            </div>
+            <div class="row g-4">
+                <?php foreach ($solicitacaoPersonalList as $solicitacaoPersonal): 
+                    $personalLog = $personalDao->carregarPorId($solicitacaoPersonal['id_personal']);
+                    $personal = $usuarioDAO->carregar($personalLog['id_user']);
+                ?>
+                    <div class="col-12">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center mb-3 gap-3">
+                                    <img 
+                                        src="../../view/paginaInicial/imagemreader.php?id_user=<?= $personal['id_user'] ?>" 
+                                        alt="avatar" 
+                                        class="rounded-circle" 
+                                        style="width: 64px; height: 64px; object-fit: cover; border: 2px solid #0d6efd;"
+                                        onerror="this.onerror=null; this.src='https://www.w3schools.com/howto/img_avatar.png';"
+                                    >
+                                    <h5 class="card-title mb-0 flex-grow-1"><?= htmlspecialchars($personal['nome']) ?></h5>
+                                    <button 
+                                        class="btn btn-primary btn-open-chats rounded-circle d-flex align-items-center justify-content-center" 
+                                        title="Iniciar conversa"
+                                        style="width: 48px; height: 48px; padding: 0;"
+                                        data-id-solicitacao="<?= $solicitacaoPersonal['id_solicitacao'] ?>" 
+                                        data-id-destinatario="<?= $personal['id_user'] ?>" 
+                                        data-id-remetente="<?= $_SESSION['id_user'] ?>"
+                                        data-nome="<?= htmlspecialchars($personal['nome']) ?>"
+                                    >
+                                        <i class="bi bi-chat-dots fs-3"></i>
+                                    </button>
+                                </div>
+
+                                <p class="text-muted mb-3"><strong>Status:</strong> <?= htmlspecialchars($solicitacaoPersonal['status']) ?></p>
+
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+
         <div class="personais-panel" id="personais-panel">
             <button class="close-btn" id="close-personais-btn">X</button>
             <div class="message">
@@ -174,89 +258,167 @@ if($_SESSION['tipo'] == "personal"){
 
     
 
+    
+<?php if ($_SESSION['tipo'] == 'personal') { ?>
     <div class="solicitacao-panel" id="solicitacao-panel">
-        <button class="close-btn" id="close-solicitacao-btn">X</button>
-        <div class="message">
-            <?php
-            if (isset($solicitacoesRecebidas) && !empty($solicitacoesRecebidas)) { ?>
-                    <h3>Solicitações Recebidas</h3>
-                    <?php 
-                    foreach($solicitacoesRecebidas as $sol){ 
-                        $alunoLog = $alunoDao->carregarPorId($sol['id_aluno']);
-                        console_log("importante aluno log");                        
-                        console_log($alunoLog);
-                        $userAluno = $usuarioDAO->carregar($alunoLog['id_user']);
-                        $nomeAluno = $userAluno['nome'];
-                        console_log("sol:");
-                        console_log($sol);
+        <div class="solicitacao-header d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Solicitações</h4>
+            <button class="close-btn" id="close-solicitacao-btn">&times;</button>
+        </div>
 
-                    ?>
-                        <div class="alunos">
-                            <div class="nome"><div class="nome"><?= $nomeAluno ?></div></div>
-                            <div class="nome">Status: <?=$sol['status']?></div>
-                            <form action="../../app/controller/SolicitacaoController.php" method="POST">
-                                <input type="hidden" name="id_solicitacao" value="<?=$sol['id_solicitacao']?>">
-                                <input type="hidden" name="status" value="ativa">
-                                <button class="action" type="submit" name="editar" value="editar">Aceitar</button>
-                            </form>
-                        </div>
-                    <?php } ?>
+        <div class="solicitacao-body p-3">
+            <?php if (isset($solicitacoesRecebidas) && !empty($solicitacoesRecebidas)) { ?>
+                <h5 class="mb-3 text-primary">Solicitações Recebidas</h5>
+                <?php foreach($solicitacoesRecebidas as $sol){ 
+                    $alunoLog = $alunoDao->carregarPorId($sol['id_aluno']);
+                    $userAluno = $usuarioDAO->carregar($alunoLog['id_user']);
+                    $nomeAluno = $userAluno['nome'];
+                ?>
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-body">
+                        <h6 class="card-title mb-1"><?= $nomeAluno ?></h6>
+                        <p class="card-text text-muted mb-2">Status: <strong><?= $sol['status'] ?></strong></p>
+                        <form action="../../app/controller/SolicitacaoController.php" method="POST" class="d-flex justify-content-end">
+                            <input type="hidden" name="id_solicitacao" value="<?= $sol['id_solicitacao'] ?>">
+                            <input type="hidden" name="status" value="ativa">
+                            <button class="btn btn-success btn-sm" type="submit" name="editar" value="editar">Aceitar</button>
+                        </form>
+                    </div>
+                </div>
+                <?php } ?>
             <?php } else { ?>
-                <div class="mensagem">Nenhuma solicitação recebida.</div>
+                <div class="alert alert-info">Nenhuma solicitação recebida.</div>
             <?php } ?>
         </div>
     </div>
-    <?php if ($_SESSION['tipo'] == 'personal') { ?>
-        <div class="alunos-panel" id="alunos-panel">
-            <button class="close-btn" id="close-alunos-btn">X</button>
-            <div class="message">
-                <?php foreach($solicitacaoAlunoList as $solicitacaoAluno): 
-                    $alunoLog = $alunoDao->carregarIdAluno($solicitacaoAluno['id_aluno']);
-                    $aluno = $usuarioDAO->carregar($alunoLog['id_user']);
-                ?>
-                    <button 
-                        class="alunos" 
-                        data-id-solicitacao="<?= $solicitacaoAluno['id_solicitacao'] ?>" 
-                        data-id-destinatario="<?= $aluno['id_user'] ?>" 
-                        data-id-remetente="<?= $_SESSION['id_user'] ?>"
-                    >
-                        <div class="nome"><?= htmlspecialchars($aluno['nome']) ?></div>
-                        <div class="nome"><?= htmlspecialchars($solicitacaoAluno['status']) ?></div>
-                    </button>
-                <?php endforeach; ?>
-            </div>
+
+
+    <div class="chats-panel offcanvas-panel card p-4 shadow-lg" id="chats-panel" style="max-width: 600px;">
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+            <h3 class="mb-0 fw-bold text-primary">Bate-papo</h3>
+            <button class="btn-close" id="close-chats-btn" aria-label="Fechar"></button>
         </div>
-    <?php } ?>
+        <div class="row g-4">
+            <?php foreach ($solicitacaoAlunoList as $solicitacaoAluno): 
+                $alunoLog = $alunoDao->carregarIdAluno($solicitacaoAluno['id_aluno']);
+                $aluno = $usuarioDAO->carregar($alunoLog['id_user']);
+            ?>
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3 gap-3">
+                                <img 
+                                    src="../../view/paginaInicial/imagemreader.php?id_user=<?= $aluno['id_user'] ?>" 
+                                    alt="avatar" 
+                                    class="rounded-circle" 
+                                    style="width: 64px; height: 64px; object-fit: cover; border: 2px solid #0d6efd;"
+                                    onerror="this.onerror=null; this.src='https://www.w3schools.com/howto/img_avatar.png';"
+                                >
+                                <h5 class="card-title mb-0 flex-grow-1"><?= htmlspecialchars($aluno['nome']) ?></h5>
+                                <button 
+                                    class="btn btn-primary btn-open-chats rounded-circle d-flex align-items-center justify-content-center" 
+                                    title="Iniciar conversa"
+                                    style="width: 48px; height: 48px; padding: 0;"
+                                    data-id-solicitacao="<?= $solicitacaoAluno['id_solicitacao'] ?>" 
+                                    data-id-destinatario="<?= $aluno['id_user'] ?>" 
+                                    data-id-remetente="<?= $_SESSION['id_user'] ?>"
+                                    data-nome="<?= htmlspecialchars($aluno['nome']) ?>"
+                                >
+                                    <i class="bi bi-chat-dots fs-3"></i>
+                                </button>
+                            </div>
+
+                            <p class="text-muted mb-3"><strong>Status:</strong> <?= htmlspecialchars($solicitacaoAluno['status']) ?></p>
+
+                            <form class="arquivo-form" action="../../app/controller/ArquivoController.php" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="id_solicitacao" value="<?= $solicitacaoAluno['id_solicitacao'] ?>">
+
+                                <div class="row g-2 align-items-center">
+                                    <div class="col-12 col-sm-8">
+                                        <div class="input-group">
+                                            <label class="input-group-text" for="arquivo_<?= $solicitacaoAluno['id_solicitacao'] ?>">
+                                                <i class="bi bi-upload"></i>
+                                            </label>
+                                            <input type="file" class="form-control arquivo-input" id="arquivo_<?= $solicitacaoAluno['id_solicitacao'] ?>" name="arquivo" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-4">
+                                        <button type="submit" name="enviar_arquivo" class="btn btn-success w-100">
+                                            <i class="bi bi-send"></i> Enviar Treino
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+
+    <div class="alunos-panel offcanvas-panel card p-4 shadow-lg" id="alunos-panel" style="max-width: 600px;">
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+            <h3 class="mb-0 fw-bold text-primary">Meus Alunos</h3>
+            <button class="btn-close" id="close-alunos-btn" aria-label="Fechar"></button>
+        </div>
+        <div class="row g-4">
+            <?php foreach ($solicitacaoAlunoList as $solicitacaoAluno): 
+                $alunoLog = $alunoDao->carregarIdAluno($solicitacaoAluno['id_aluno']);
+                $aluno = $usuarioDAO->carregar($alunoLog['id_user']);
+            ?>
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3 gap-3">
+                                <img 
+                                    src="../../view/paginaInicial/imagemreader.php?id_user=<?= $aluno['id_user'] ?>" 
+                                    alt="avatar" 
+                                    class="rounded-circle" 
+                                    style="width: 64px; height: 64px; object-fit: cover; border: 2px solid #0d6efd;"
+                                    onerror="this.onerror=null; this.src='https://www.w3schools.com/howto/img_avatar.png';"
+                                >
+                                <h5 class="card-title mb-0 flex-grow-1"><?= htmlspecialchars($aluno['nome']) ?></h5>
+                                <form action="../../app/controller/SolicitacaoController.php" method="GET">
+                                    <input type="hidden" name="deletar" value="<?= $solicitacaoAluno['id_solicitacao'] ?>">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-trash"></i> Remover Aluno
+                                    </button>
+                                </form>
+                            </div>
+
+                            <p class="text-muted mb-3"><strong>Status:</strong> <?= htmlspecialchars($solicitacaoAluno['status']) ?></p>
+
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+<?php } ?>
 
     <div class="chat-panel" id="chat-panel" style="display: none;">
-        <button class="close-btn" id="close-chat-btn">X</button>
-        <h2 id="receberNomeUsuario"></h2>
-
-        <div class="chat">
-            <div class="interacao-panel" id="interacao-panel">
-                <div class="interacao-conteudo" id="interacao-conteudo">
-                    <!-- Mensagens vão aqui via JS -->
-                </div>
-
-                <form class="interacao-input" action="../../app/controller/MensagemController.php" method="POST">
-                    <input type="text" name="mensagem" placeholder="Digite sua mensagem..." required>
-                    <input type="hidden" name="destinatario" id="destinatario_id">
-                    <input type="hidden" name="remetente" id="remetente_id">
-                    <input type="hidden" name="solicitacao_id" id="solicitacao_id">
-                    <input type="hidden" name="acao" value="INSERIR">
-                    <button >Enviar</button>
-                </form>
-            </div>
+        <div class="chat-header">
+            <span id="receberNomeUsuario">Nome do Usuário</span>
+            <button class="close-btn" id="close-chat-btn">&times;</button>
         </div>
+
+        <div class="chat-body" id="interacao-conteudo">
+            <!-- mensagens geradas dinamicamente -->
+        </div>
+
+        <form class="chat-input" action="../../app/controller/MensagemController.php" method="POST">
+            <input type="text" name="mensagem" placeholder="Digite sua mensagem..." required>
+            <input type="hidden" name="destinatario" id="destinatario_id">
+            <input type="hidden" name="remetente" id="remetente_id">
+            <input type="hidden" name="solicitacao_id" id="solicitacao_id">
+            <input type="hidden" name="acao" value="INSERIR">
+            <button><i class="bi bi-send-fill"></i></button>
+        </form>
     </div>
 
     <div class="sidebar">
         <ul>
-
-            <li>Minha Conta</li>
-            
                 <?php
-
                 if ($_SESSION['tipo_usuario'] == "admin") {
                     echo "<li id='alunos-btn'>Alunos</li>";
                     echo "<li id='personais-btn'>Personais</li>";
@@ -264,16 +426,16 @@ if($_SESSION['tipo'] == "personal"){
 
                     if($_SESSION['tipo'] == "aluno"){
                         echo "<li id='personais-btn'>Personais</li>";
+                        echo "<li id='chats-btn'>Bate-papo</li>";
+                        echo "<li id='solicitacao-btn'>Solicitações</li>";
                     }else{
                         echo "<li id='alunos-btn'>Alunos</li>";
+                        echo "<li id='chats-btn'>Bate-papo</li>";
                         echo "<li id='solicitacao-btn'>Solicitações</li>";
                     }
                 }
 
                 ?>
-            
-            <li id="mensagens-btn">Mensagens</li>
-            <li>Suporte</li>
             <form method="POST" action="../../app/controller/UsuarioController.php">
                 <button type="submit" name="acao" value="DESLOGAR" id="sair">Sair</button>
             </form>
@@ -300,7 +462,7 @@ if($_SESSION['tipo'] == "personal"){
                 <label for="fileUpload">
                     <div class="avatar" style="cursor:pointer;">
                         <img src="../../view/paginaInicial/imagemreader.php?id_user=<?php echo $_SESSION['id_user']; ?>" 
-                            alt="avatar" width="150" id="imgAvatar"
+                            alt="avatar" width="150" 
                             onerror="this.onerror=null; this.src='https://www.w3schools.com/howto/img_avatar.png';">
                         <span class="emoji"><img src="../../imagens/icongaleria.png" alt=""></span>
                     </div>
@@ -344,8 +506,16 @@ if($_SESSION['tipo'] == "personal"){
             <div>
     <!-- Botões -->
     <div class="button-container transition">
-    <button id="button1" onclick="loadPage('../informacoes/treinos.php', this)">Meus Treinos</button>
-    <button id="button2" onclick="loadPage('../informacoes/medidas.php', this)">Medidas</button>
+    <?php if ($_SESSION['tipo'] == 'aluno') {
+            $idAluno = $alunoDao->buscarIdAluno($_SESSION['id_user']);
+            if (!$idAluno) {
+                console_log("ID do aluno não encontrado!");
+                $idAluno = 0;
+            }
+        ?>
+            <button id="button1" onclick="loadPage('../informacoes/treinos.php?arquivos_aluno=<?=$idAluno ?>', this)">Meus Treinos</button>
+            <button id="button2" onclick="loadPage('../informacoes/medidas.php', this)">Medidas</button>
+        <?php }?>
     <button id="button3" onclick="loadPage('../informacoes/dados.php', this)">Dados Pessoais</button>
 
     <div id="underline-indicator"></div>
@@ -357,7 +527,7 @@ if($_SESSION['tipo'] == "personal"){
 
         </div>
     </div>
-
+<?php if($_SESSION['tipo'] == 'aluno'){ ?>
     <div class="right-sidebar">
         <div class="Users">
             <br>
@@ -368,12 +538,14 @@ if($_SESSION['tipo'] == "personal"){
                 <span>LUAN PINTO</span>
                 <button>Perfil</button>
             </div>
-            <?php foreach($personais as $personal){ ?>
-                <div class="user">
-                    <?php if($_SESSION['tipo'] == 'aluno'){ 
+            <?php foreach($personais as $personal){ 
                         $personalLog = $personalDao->carregar($personal['id_user']);
                         $alunoLog = $alunoDao->buscar('id_user', $_SESSION['id_user']);
-                    ?>
+                ?>
+                <div class="user">
+                    
+                        
+                    
                     <img src="../../view/paginaInicial/imagemreader.php?id_user=<?php echo $personal['id_user']?>" 
                             alt="avatar" width="150" id="imgAvatar"
                             onerror="this.onerror=null; this.src='https://www.w3schools.com/howto/img_avatar.png';">
@@ -385,16 +557,13 @@ if($_SESSION['tipo'] == "personal"){
                             <input type="hidden" name="status" value="solicitada">
                             <button type="submit" name="cadastrar" value="cadastrar">Solicitar</button>
                         </form>
-                    <?php } ?>
+                    
                 </div>
             <?php } ?>
             
-                
-                
-            
         </div>
     </div>
-
+<?php } ?>
     <!-- Modal -->
     <div class="modal fade" id="modalExemplo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
