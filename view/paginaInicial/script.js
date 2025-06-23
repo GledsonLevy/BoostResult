@@ -74,6 +74,24 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+     document.querySelectorAll(".arquivo-form").forEach(form => {
+        const inputFile = form.querySelector(".arquivo-input");
+        const labelBtn = form.querySelector(".btn-selecionar");
+        const nomeArquivo = form.querySelector(".nome-arquivo");
+
+        // Clique no label dispara o seletor
+        labelBtn?.addEventListener("click", () => inputFile.click());
+
+        // Atualiza o nome exibido ao selecionar o arquivo
+        inputFile?.addEventListener("change", () => {
+            if (inputFile.files.length > 0) {
+                nomeArquivo.textContent = inputFile.files[0].name;
+            } else {
+                nomeArquivo.textContent = "";
+            }
+        });
+    });
+
     
 
     document.querySelector(".interacao-input")?.addEventListener("submit", function (e) {

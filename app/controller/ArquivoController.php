@@ -24,25 +24,35 @@
 
 
     //se a operação for gravar entra nessa condição
-    if(isset($_POST['cadastrar'])){
+    if (isset($_POST['enviar_arquivo']) && isset($_FILES['arquivo'])) {
+        $id_solicitacao = $_POST['id_solicitacao'];
+        $file = $_FILES['arquivo'];
 
-        $arquivo->setId_arq($a['id_arq']); 
-		$arquivo->setId_msg($a['id_msg']); 
-		$arquivo->setNome($a['nome']); 
-		$arquivo->setArq($a['arq']); 
-		$arquivo->setTipo($a['tipo']);
+        $nome = $file['name'];
+        $tipo = $file['type'];
+        $conteudo = file_get_contents($file['tmp_name']);
+
+        $arquivo->setId_solicitacao($id_solicitacao);
+        $arquivo->setNome($nome);
+        $arquivo->setArq($conteudo); // binário
+        $arquivo->setTipo($tipo);
+
         $arquivoDAO->inserir($arquivo);
-
-        header("Location: ../../arquivo.php?msg=adicionado");
-    } 
+        header("Location: ../../view/paginaInicial/index.php?msg=arquivo_enviado");
+        exit;
+    }
     // se a requisição for editar
     else if(isset($_POST['editar'])){
 
         $arquivo->setId_arq($a['id_arq']); 
-		$arquivo->setId_msg($a['id_msg']); 
-		$arquivo->setNome($a['nome']); 
-		$arquivo->setArq($a['arq']); 
-		$arquivo->setTipo($a['tipo']);
+
+		$arquivo->setId_msg($a['id_msg']); 
+
+		$arquivo->setNome($a['nome']); 
+
+		$arquivo->setArq($a['arq']); 
+
+		$arquivo->setTipo($a['tipo']);
         $arquivoDAO->atualizar($arquivo);
 
         header("Location: ../../arquivo.php?msg=editado");

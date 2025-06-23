@@ -9,10 +9,10 @@ class ArquivoDAO{
 	public function carregar($id_arq){
         try {
 			$sql = 'SELECT * FROM arquivo WHERE id_arq = :id_arq';
-			$consulta = Conexao::getConexao()->prepare($sql);
+			$consulta = ConexaoBinaria::getConexao()->prepare($sql);
 			$consulta->bindValue(":id_arq",$id_arq);
 			$consulta->execute();
-			return ($consulta->fetchAll(PDO::FETCH_ASSOC));
+			return ($consulta->fetch(PDO::FETCH_ASSOC));
         } catch (Exception $e) {
             print "Erro ao carregar Arquivo <br>" . $e . '<br>';
         }
@@ -70,30 +70,35 @@ class ArquivoDAO{
 	
 	//Insere um elemento na tabela
 	public function inserir(Arquivo $arquivo){
-        try {
-			$sql = 'INSERT INTO arquivo (id_arq, id_msg, nome, arq, tipo) VALUES (:id_arq, :id_msg, :nome, :arq, :tipo)';
+		try {
+			$sql = 'INSERT INTO arquivo (id_solicitacao, nome, arq, tipo)
+					VALUES (:id_solicitacao, :nome, :arq, :tipo)';
+
 			$consulta = Conexao::getConexao()->prepare($sql);
-			$consulta->bindValue(':id_arq',$arquivo->getId_arq()); 
-			$consulta->bindValue(':id_msg',$arquivo->getId_msg()); 
-			$consulta->bindValue(':nome',$arquivo->getNome()); 
-			$consulta->bindValue(':arq',$arquivo->getArq()); 
-			$consulta->bindValue(':tipo',$arquivo->getTipo());
+			$consulta->bindValue(':id_solicitacao', $arquivo->getId_solicitacao());
+			$consulta->bindValue(':nome', $arquivo->getNome());
+			$consulta->bindValue(':arq', $arquivo->getArq(), PDO::PARAM_LOB);
+			$consulta->bindValue(':tipo', $arquivo->getTipo());
+
 			$consulta->execute();
-        } catch (Exception $e) {
-            print "Erro ao inserir Arquivo <br>" . $e . '<br>';
-        }
+		} catch (Exception $e) {
+			echo "Erro ao inserir Arquivo <br>" . $e . '<br>';
+		}
 	}
-	
 	//Atualiza um elemento na tabela
 	public function atualizar(Arquivo $arquivo){
         try {
 			$sql = 'UPDATE arquivo SET id_arq = :id_arq, id_msg = :id_msg, nome = :nome, arq = :arq, tipo = :tipo WHERE id_arq = :id_arq';
 			$consulta = Conexao::getConexao()->prepare($sql);
 			$consulta->bindValue(':id_arq',$arquivo->getId_arq()); 
-			$consulta->bindValue(':id_msg',$arquivo->getId_msg()); 
-			$consulta->bindValue(':nome',$arquivo->getNome()); 
-			$consulta->bindValue(':arq',$arquivo->getArq()); 
-			$consulta->bindValue(':tipo',$arquivo->getTipo());
+
+			$consulta->bindValue(':id_msg',$arquivo->getId_msg()); 
+
+			$consulta->bindValue(':nome',$arquivo->getNome()); 
+
+			$consulta->bindValue(':arq',$arquivo->getArq()); 
+
+			$consulta->bindValue(':tipo',$arquivo->getTipo());
 			$consulta->execute();			
         } catch (Exception $e) {
             print "Erro ao atualizar Arquivo <br>" . $e . '<br>';
