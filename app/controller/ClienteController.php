@@ -11,7 +11,7 @@ if (isset($_POST['acao']) && $_POST['acao'] === 'CADASTRAR') {
     
 
     $cliente->setNome_completo($_POST['nome_completo']);
-    $cliente->setGenero($_POST['genero']);
+    $cliente->setGenero($_SESSION['sexo']);
     $cliente->setCpf($_POST['cpf']);
     $cliente->setRg($_POST['rg']);
 

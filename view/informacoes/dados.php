@@ -12,10 +12,30 @@
 <body>
     <div class="dados">
         <h2>Dados Cadastrais</h2>
-        <div class="bio-item"><span class="label">Nome:</span> <?php echo $_SESSION['nome_completo']; ?></div>
-        <div class="bio-item"><span class="label">Gênero:</span> <?php echo $_SESSION['genero']; ?></div>
-        <div class="bio-item"><span class="label">CPF:</span> <?php echo $_SESSION['cpf']; ?></div>
-        <div class="bio-item"><span class="label">RG:</span> <?php echo $_SESSION['rg']; ?></div>
+
+        <?php
+            $campos = ['nome_completo', 'genero', 'cpf', 'rg'];
+            $temTodosOsDados = true;
+
+            foreach ($campos as $campo) {
+                if (empty($_SESSION[$campo])) {
+                    $temTodosOsDados = false;
+                    break;
+                }
+            }
+
+            if ($temTodosOsDados):
+        ?>
+            <div class="bio-item"><span class="label">Nome:</span> <?php echo $_SESSION['nome_completo']; ?></div>
+            <div class="bio-item"><span class="label">Gênero:</span> <?php echo $_SESSION['genero']; ?></div>
+            <div class="bio-item"><span class="label">CPF:</span> <?php echo $_SESSION['cpf']; ?></div>
+            <div class="bio-item"><span class="label">RG:</span> <?php echo $_SESSION['rg']; ?></div>
+        <?php else: ?>
+            <div class="alert alert-warning">
+                Algumas informações estão faltando. Por favor, clique em "Modificar" para completar seus dados.
+            </div>
+        <?php endif; ?>
+
         <button type="button" class="secondary btn-sm border-0" data-toggle="modal" data-target="#modalExemplo" id="botaoBio">
             Modificar
         </button>
@@ -32,14 +52,6 @@
                         <form method="post" action="../../app/controller/ClienteController.php">
                             <label>Nome Completo:</label>
                             <input type="text" name="nome_completo" placeholder="Ex: João da Silva">
-
-                            <label>Gênero:</label>
-                            <select name="genero">
-                                <option value="">Selecione</option>
-                                <option value="Masculino">Masculino</option>
-                                <option value="Feminino">Feminino</option>
-                                <option value="Outro">Outro</option>
-                            </select>
 
                             <label>CPF:</label>
                             <input type="text" name="cpf" placeholder="Ex: 000.000.000-00">

@@ -166,6 +166,7 @@ class UsuarioDAO
 				$dadosUsuario = $consulta->fetch(PDO::FETCH_ASSOC);
 				$_SESSION['tipo'] = $dadosUsuario['tipo'];
 				$_SESSION['id_user'] = $dadosUsuario['id_user'];
+				$_SESSION['sexo'] = $dadosUsuario['sexo'];
 				$_SESSION['email'] = $dadosUsuario['email'];
 				$_SESSION['nome'] = $dadosUsuario['nome'];
 				$_SESSION['tipo_usuario'] = $dadosUsuario['tipo_usuario'];

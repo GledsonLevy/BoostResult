@@ -11,15 +11,35 @@
 </head>
 <body>
     <div class="dados">
-    <h2>Informações Físicas</h2>
-    <div class="bio-item"><span class="label">Altura:</span> <?php echo $_SESSION['altura']; ?> m</div>
-    <div class="bio-item"><span class="label">Peso:</span> <?php echo $_SESSION['peso']; ?> kg</div>
-    <div class="bio-item"><span class="label">IMC:</span> <?php echo $_SESSION['imc']; ?></div>
-    <div class="bio-item"><span class="label">Última Atualização:</span> <?php echo $_SESSION['data_dados']; ?></div>
-    <button type="button" class="secondary btn-sm border-0" data-toggle="modal" data-target="#modalExemplo" id="botaoBio">
-        Modificar
-    </button>
-</div>
+        <h2>Informações Físicas</h2>
+
+        <?php
+            $campos = ['altura', 'peso', 'imc', 'data_dados'];
+            $temTodosOsDados = true;
+
+            foreach ($campos as $campo) {
+                if (empty($_SESSION[$campo])) {
+                    $temTodosOsDados = false;
+                    break;
+                }
+            }
+
+            if ($temTodosOsDados):
+        ?>
+            <div class="bio-item"><span class="label">Altura:</span> <?php echo $_SESSION['altura']; ?> m</div>
+            <div class="bio-item"><span class="label">Peso:</span> <?php echo $_SESSION['peso']; ?> kg</div>
+            <div class="bio-item"><span class="label">IMC:</span> <?php echo $_SESSION['imc']; ?></div>
+            <div class="bio-item"><span class="label">Última Atualização:</span> <?php echo $_SESSION['data_dados']; ?></div>
+        <?php else: ?>
+            <div class="alert alert-warning">
+                Algumas informações físicas estão faltando. Por favor, clique em "Modificar" para preencher os dados.
+            </div>
+        <?php endif; ?>
+
+        <button type="button" class="secondary btn-sm border-0" data-toggle="modal" data-target="#modalExemplo" id="botaoBio">
+            Modificar
+        </button>
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="modalExemplo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
