@@ -13,7 +13,7 @@
     $solicitacao = new Solicitacao();
     $solicitacaoDAO	= new SolicitacaoDAO();
 
-
+    date_default_timezone_set('America/Sao_Paulo');
     $s= filter_input_array(INPUT_POST);
 
     // Verifica se pesquisaram alguma coisa.

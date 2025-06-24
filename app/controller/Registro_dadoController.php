@@ -11,7 +11,7 @@
     $registro_dado = new Registro_dado();
     $registro_dadoDAO	= new Registro_dadoDAO();
 
-
+    date_default_timezone_set('America/Sao_Paulo');
     $r= filter_input_array(INPUT_POST);
 
     // Verifica se pesquisaram alguma coisa.

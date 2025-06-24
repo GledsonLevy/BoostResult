@@ -11,7 +11,7 @@
     $mensagem = new Mensagem();
     $mensagemDAO	= new MensagemDAO();
     $chatDAO= new ChatDAO();
-
+    date_default_timezone_set('America/Sao_Paulo');
     header('Content-Type: application/json');
     $m= filter_input_array(INPUT_POST);
     var_dump($_POST);
