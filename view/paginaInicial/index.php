@@ -189,7 +189,7 @@ if($_SESSION['tipo'] == "aluno"){
                         <div id="underline-indicator"></div>
                 </div>
 
-                <iframe id="conteudo-iframe" src="" style="width: 100%; height: 600px; border: none; margin-top: 20px;"></iframe>
+                <iframe id="conteudo-iframe" src="" style="width: 100%; height: 600px;"></iframe>
             </div>
         </div>
     </div>
