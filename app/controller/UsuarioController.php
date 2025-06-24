@@ -32,7 +32,7 @@ if (isset($_POST['acao']) && ($_POST['acao'] == "CADASTRAR")) {
 
     if ($usuarioDAO->verificarDuplicado($u['email'], $u['telefone'])) {
         $_SESSION['erro_cadastro'] = "Já existe um usuário com este e-mail ou telefone.";
-        header("Location: ../../view/cadastro/index.php?erro=usuario%existente");
+        header("Location: ../../view/cadastro/cadastro.php?erro=usuario%existente");
         exit;
     } else {
     $usuario->setNome($u['nome']);

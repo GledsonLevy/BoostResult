@@ -42,7 +42,7 @@
 <div class="chats-panel offcanvas-panel card p-4 shadow-lg" id="chats-panel" style="max-width: 600px;">
     <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
         <h3 class="mb-0 fw-bold">Bate-papo</h3>
-        <button class="btn-close" id="close-chats-btn" aria-label="Fechar"></button>
+        <button class="btn-close btn-close-white" id="close-chats-btn" aria-label="Fechar"></button>
     </div>
     <div class="row g-4">
         <?php foreach ($solicitacaoAlunoList as $solicitacaoAluno): 
