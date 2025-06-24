@@ -175,7 +175,7 @@ class UsuarioDAO
 
 			$this->pegarIdAluno($_SESSION['id_user']);
 			$registro->pegarUltimosDadosAluno($_SESSION['id_aluno']);
-			$clienteDAO->pegarUltimosDadosCliente($_SESSION['id_aluno']);
+			$clienteDAO->pegarUltimosDadosCliente($_SESSION['id_aluno'], $_SESSION['id_user']);
 			
 		} catch (Exception $e) {
 			print "Erro ao inserir Usuario <br>" . $e . '<br>';

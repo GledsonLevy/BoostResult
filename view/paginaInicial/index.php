@@ -373,8 +373,8 @@ if($_SESSION['tipo'] == "aluno"){
             <form action="../../app/controller/imagem_usuarioController.php" method="POST" enctype="multipart/form-data">
                 <label for="fileUpload">
                     <div class="cover">
-                        <img src="https://preview.redd.it/34mmdb3oo42d1.png?auto=webp&s=5b038c9df7e574ce5b88b9664471e7bd83fc94ca"
-                            alt="Clique para enviar uma imagem" width="150" id="imgCover">
+                        <img src="https://img.freepik.com/vetores-gratis/fundo-de-tecnologia-brilhante-realista_52683-74130.jpg?semt=ais_hybrid&w=740"
+                            alt="Clique para enviar uma imagem" width="100vw" id="imgCover">
                         <span class="emoji"><img src="../../imagens/icongaleria.png" alt=""></span>
                     </div>
                 </label>
@@ -444,7 +444,7 @@ if($_SESSION['tipo'] == "aluno"){
     <div id="underline-indicator"></div>
 </div>
 
-<iframe id="conteudo-iframe" src="" style="width: 100%; height: 600px; border: none; margin-top: 20px;"></iframe>
+<iframe id="conteudo-iframe" src=""></iframe>
 
 </div>
 

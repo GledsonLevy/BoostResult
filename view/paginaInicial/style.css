@@ -117,6 +117,7 @@ button:focus {
     color: #FAFAFA;
     box-sizing: border-box;
     flex-shrink: 0;
+    z-index: 1;
     /* <- ESSENCIAL para não ser empurrada */
 }
 
@@ -597,7 +598,7 @@ iframe {
     background: #FAFAFA;
     box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
     transition: left 0.3s ease;
-    z-index: 1000;
+    z-index: 1100;
     padding: 20px;
     border-right: 1px solid #e1e8ed;
 }

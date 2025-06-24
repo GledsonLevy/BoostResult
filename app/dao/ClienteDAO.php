@@ -1,15 +1,16 @@
 <?php
 
 class ClienteDAO {
-    public function pegarUltimosDadosCliente($id_aluno) {
+    public function pegarUltimosDadosCliente($id_aluno, $id_user) {
     try {
         $sql = 'SELECT * FROM clientes 
-                WHERE id_aluno = :id_aluno 
+                WHERE id_aluno = :id_aluno OR id_user = :id_user
                 ORDER BY id_cliente DESC 
                 LIMIT 1';
 
         $consulta = Conexao::getConexao()->prepare($sql);
         $consulta->bindValue(":id_aluno", $id_aluno);
+        $consulta->bindValue(":id_user", $id_user);
         $consulta->execute();
 
         if ($consulta->rowCount() > 0) {
@@ -28,11 +29,12 @@ class ClienteDAO {
 }
 
 
+
     public function inserir(Cliente $cliente) {
     try {
         $sql = "INSERT INTO clientes 
-                (nome_completo, genero, cpf, rg, id_aluno)
-                VALUES (:nome_completo, :genero, :cpf, :rg, :id_aluno)";
+                (nome_completo, genero, cpf, rg, id_aluno, id_user)
+                VALUES (:nome_completo, :genero, :cpf, :rg, :id_aluno, :id_user)";
 
         $con = Conexao::getConexao()->prepare($sql);
         $con->bindValue(":nome_completo", $cliente->getNome_completo());
@@ -40,11 +42,12 @@ class ClienteDAO {
         $con->bindValue(":cpf", $cliente->getCpf());
         $con->bindValue(":rg", $cliente->getRg());
         $con->bindValue(":id_aluno", $_SESSION['id_aluno']);
+        $con->bindValue(":id_user", $_SESSION['id_user']);
 
         $resultado = $con->execute();
 
         // Pega os dados atualizados depois de inserir
-        $this->pegarUltimosDadosCliente($_SESSION['id_aluno']);
+        $this->pegarUltimosDadosCliente($_SESSION['id_aluno'], $_SESSION['id_user']);
 
         return $resultado;
     } catch (Exception $e) {
