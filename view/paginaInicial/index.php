@@ -21,8 +21,6 @@ function console_log($msg) {
 }
 
 $usuarioDAO = new UsuarioDAO();
-
-
 $solicitacaoDAO = new SolicitacaoDAO();
 $personalDao = new PersonalDao();
 $alunoDao = new AlunoDao();
@@ -30,14 +28,14 @@ $chatDao = new ChatDAO();
 $mensagemDao = new MensagemDAO();
 $imagemDao = new Imagem_usuarioDAO();
 
-//criar um header caso a session não possua nada
 console_log($_SESSION);
+
 if($_SESSION['tipo'] == "personal"){
     $userPersonal = $personalDao->buscarIdPersonal($_SESSION['id_user']);
     $solicitacoesRecebidas = $solicitacaoDAO->carregarPersonaisSol($userPersonal, "solicitada");
     $solicitacaoAlunoList = $solicitacaoDAO->carregarPersonaisSol($userPersonal, "ativa");
-    
 }
+
 if($_SESSION['tipo'] == "aluno"){
     $personais = $usuarioDAO->buscarTipo('personal');
     $userAluno = $alunoDao->buscarIdAluno($_SESSION['id_user']);
@@ -45,8 +43,6 @@ if($_SESSION['tipo'] == "aluno"){
     $solicitacaoPersonalList = $solicitacaoDAO->carregarAlunosSol($userAluno, "ativa");
     console_log($solicitacaoPersonalList);
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -57,11 +53,12 @@ if($_SESSION['tipo'] == "aluno"){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BoostResult</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+<<<<<<< Updated upstream
     <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
     <?php if ($_SESSION['tipo'] == 'aluno') { ?>
         <div class="solicitacao-panel" id="solicitacao-panel">
@@ -321,6 +318,15 @@ if($_SESSION['tipo'] == "aluno"){
         </div>
     </div>
 <?php } ?>
+=======
+    <?php 
+    if ($_SESSION['tipo'] == 'aluno') {
+        include('paineis/aluno_paineis.php');
+    } else if ($_SESSION['tipo'] == 'personal') {
+        include('paineis/personal_paineis.php');
+    }
+    ?>
+>>>>>>> Stashed changes
 
     <div class="chat-panel" id="chat-panel" style="display: none;">
         <div class="chat-header">
@@ -344,24 +350,22 @@ if($_SESSION['tipo'] == "aluno"){
 
     <div class="sidebar">
         <ul>
-                <?php
-                if ($_SESSION['tipo_usuario'] == "admin") {
-                    echo "<li id='alunos-btn'>Alunos</li>";
+            <?php
+            if ($_SESSION['tipo_usuario'] == "admin") {
+                echo "<li id='alunos-btn'>Alunos</li>";
+                echo "<li id='personais-btn'>Personais</li>";
+            } else {
+                if($_SESSION['tipo'] == "aluno"){
                     echo "<li id='personais-btn'>Personais</li>";
-                } else {
-
-                    if($_SESSION['tipo'] == "aluno"){
-                        echo "<li id='personais-btn'>Personais</li>";
-                        echo "<li id='chats-btn'>Bate-papo</li>";
-                        echo "<li id='solicitacao-btn'>Solicitações</li>";
-                    }else{
-                        echo "<li id='alunos-btn'>Alunos</li>";
-                        echo "<li id='chats-btn'>Bate-papo</li>";
-                        echo "<li id='solicitacao-btn'>Solicitações</li>";
-                    }
+                    echo "<li id='chats-btn'>Bate-papo</li>";
+                    echo "<li id='solicitacao-btn'>Solicitações</li>";
+                }else{
+                    echo "<li id='alunos-btn'>Alunos</li>";
+                    echo "<li id='chats-btn'>Bate-papo</li>";
+                    echo "<li id='solicitacao-btn'>Solicitações</li>";
                 }
-
-                ?>
+            }
+            ?>
             <form method="POST" action="../../app/controller/UsuarioController.php">
                 <button type="submit" name="acao" value="DESLOGAR" id="sair">Sair</button>
             </form>
@@ -408,7 +412,6 @@ if($_SESSION['tipo'] == "aluno"){
                 </h1>
                 <p id="tipoConta">
                     <?php echo $_SESSION['tipo']; ?>
-
                 </p>
                 <p>
                     <?php
@@ -423,10 +426,10 @@ if($_SESSION['tipo'] == "aluno"){
                     id="botaoBio">
                     Modificar bio
                 </button>
-
             </div>
 
             <div>
+<<<<<<< Updated upstream
     <!-- Botões -->
     <div class="button-container transition">
     <?php if ($_SESSION['tipo'] == 'aluno') {
@@ -447,9 +450,28 @@ if($_SESSION['tipo'] == "aluno"){
 <iframe id="conteudo-iframe" src=""></iframe>
 
 </div>
+=======
+                <div class="button-container transition">
+                    <?php if ($_SESSION['tipo'] == 'aluno') {
+                        $idAluno = $alunoDao->buscarIdAluno($_SESSION['id_user']);
+                        if (!$idAluno) {
+                            console_log("ID do aluno não encontrado!");
+                            $idAluno = 0;
+                        }
+                    ?>
+                        <button id="button1" onclick="loadPage('../informacoes/treinos.php?arquivos_aluno=<?=$idAluno ?>', this)">Meus Treinos</button>
+                        <button id="button2" onclick="loadPage('../informacoes/medidas.php', this)">Medidas</button>
+                    <?php }?>
+                    <button id="button3" onclick="loadPage('../informacoes/dados.php', this)">Dados Pessoais</button>
+                    <div id="underline-indicator"></div>
+                </div>
+>>>>>>> Stashed changes
 
+                <iframe id="conteudo-iframe" src="" style="width: 100%; height: 600px; border: none; margin-top: 20px;"></iframe>
+            </div>
         </div>
     </div>
+<<<<<<< Updated upstream
 <?php if($_SESSION['tipo'] == 'aluno'){ ?>
     <div class="right-sidebar">
         <div class="Users">
@@ -459,29 +481,37 @@ if($_SESSION['tipo'] == "aluno"){
             <?php foreach($personais as $personal){ 
                         $personalLog = $personalDao->carregar($personal['id_user']);
                         $alunoLog = $alunoDao->buscar('id_user', $_SESSION['id_user']);
+=======
+
+    <?php if($_SESSION['tipo'] == 'aluno'){ ?>
+        <div class="right-sidebar">
+            <div class="Users">
+                <br>
+                <h3>Personais Em Destaque</h3>
+                <br>
+                <?php foreach($personais as $personal){ 
+                    $personalLog = $personalDao->carregar($personal['id_user']);
+                    $alunoLog = $alunoDao->buscar('id_user', $_SESSION['id_user']);
+>>>>>>> Stashed changes
                 ?>
-                <div class="user">
-                    
-                        
-                    
-                    <img src="../../view/paginaInicial/imagemreader.php?id_user=<?php echo $personal['id_user']?>" 
-                            alt="avatar" width="150" id="imgAvatar"
-                            onerror="this.onerror=null; this.src='https://www.w3schools.com/howto/img_avatar.png';">
-                    <span><?=$personal['nome']?></span>
-        
+                    <div class="user">
+                        <img src="../../view/paginaInicial/imagemreader.php?id_user=<?php echo $personal['id_user']?>" 
+                                alt="avatar" width="150" id="imgAvatar"
+                                onerror="this.onerror=null; this.src='https://www.w3schools.com/howto/img_avatar.png';">
+                        <span><?=$personal['nome']?></span>
+            
                         <form action="../../app/controller/SolicitacaoController.php" method="POST">
                             <input type="hidden" name="id_personal" value="<?=$personalLog['id_personal'] ?>">
                             <input type="hidden" name="id_aluno" value="<?=$alunoLog['id_aluno'] ?>">
                             <input type="hidden" name="status" value="solicitada">
                             <button type="submit" name="cadastrar" value="cadastrar">Solicitar</button>
                         </form>
-                    
-                </div>
-            <?php } ?>
-            
+                    </div>
+                <?php } ?>
+            </div>
         </div>
-    </div>
-<?php } ?>
+    <?php } ?>
+
     <!-- Modal -->
     <div class="modal fade" id="modalExemplo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -499,16 +529,16 @@ if($_SESSION['tipo'] == "aluno"){
                             class="btn btn-secondary">Atualizar</button>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
 </body>
-<script src="script.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-    crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
-    crossorigin="anonymous"></script>
 </html>
