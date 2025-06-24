@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css"
         href="fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
     <link rel="stylesheet" href="css/style.css" />
 
@@ -29,7 +30,9 @@
         unset($_SESSION['erro_cadastro']);
     }
     ?>
-
+    <a href="../../index.html" class="btn btn-outline-none position-absolute top-0 start-0 m-3 z-3" style="Background-color: #269126">
+        <i class="bi bi-house-fill" style="color: black"></i>
+    </a>
     <div id="particles-js"></div>
 
     <!-- scripts -->

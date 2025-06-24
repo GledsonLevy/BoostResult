@@ -18,6 +18,7 @@ class PersonalDAO{
         }
 	}
 
+
 	public function carregarPorId($id_personal){
         try {
 			$sql = 'SELECT * FROM personal WHERE id_personal = :id_personal';
