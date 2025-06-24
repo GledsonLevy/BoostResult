@@ -1,12 +1,13 @@
 <div class="solicitacao-panel" id="solicitacao-panel">
+    
     <div class="solicitacao-header d-flex justify-content-between align-items-center">
-        <h3 class="mb-0">Solicitações</h3>
+        <h3 class="mb-0">Solicitações Recebidas</h3>
         <button class="close-btn" id="close-solicitacao-btn">&times;</button>
     </div>
 
     <div class="solicitacao-body p-3">
         <?php if (isset($solicitacoesRecebidas) && !empty($solicitacoesRecebidas)) { ?>
-            <h5 class="mb-3 text-primary">Solicitações Recebidas</h5>
+            
             <?php foreach($solicitacoesRecebidas as $sol){ 
                 $alunoLog = $alunoDao->carregarPorId($sol['id_aluno']);
                 $userAluno = $usuarioDAO->carregar($alunoLog['id_user']);
@@ -15,12 +16,20 @@
             <div class="card mb-3 shadow-sm">
                 <div class="card-body">
                     <h6 class="card-title mb-1"><?= $nomeAluno ?></h6>
-                    <p class="card-text text-muted mb-2">Status: <strong><?= $sol['status'] ?></strong></p>
-                    <form action="../../app/controller/SolicitacaoController.php" method="POST" class="d-flex justify-content-end">
-                        <input type="hidden" name="id_solicitacao" value="<?= $sol['id_solicitacao'] ?>">
-                        <input type="hidden" name="status" value="ativa">
-                        <button class="btn btn-success btn-sm" type="submit" name="editar" value="editar">Aceitar</button>
-                    </form>
+                    <p class="card-text text-light mb-2">Status: <strong><?= $sol['status'] ?></strong></p>
+
+                    <div class="d-flex gap-2 justify-content-end"> <!-- Flex container -->
+                        <form action="../../app/controller/SolicitacaoController.php" method="POST">
+                            <input type="hidden" name="id_solicitacao" value="<?= $sol['id_solicitacao'] ?>">
+                            <input type="hidden" name="status" value="ativa">
+                            <button class="btn btn-success btn-sm" type="submit" name="editar" value="editar">Aceitar</button>
+                        </form>
+
+                        <form action="../../app/controller/SolicitacaoController.php" method="POST">
+                            <input type="hidden" name="deletar" value="<?= $sol['id_solicitacao'] ?>">
+                            <button class="btn btn-danger btn-sm" type="submit">Remover</button>
+                        </form>
+                    </div>
                 </div>
             </div>
             <?php } ?>
@@ -53,7 +62,7 @@
                             >
                             <h5 class="card-title mb-0 flex-grow-1"><?= htmlspecialchars($aluno['nome']) ?></h5>
                             <button 
-                                class="btn btn-primary btn-open-chats rounded-circle d-flex align-items-center justify-content-center" 
+                                class="btn btn-secondary btn-open-chats rounded-circle d-flex align-items-center justify-content-center" 
                                 title="Iniciar conversa"
                                 style="width: 48px; height: 48px; padding: 0;"
                                 data-id-solicitacao="<?= $solicitacaoAluno['id_solicitacao'] ?>" 

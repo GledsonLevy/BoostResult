@@ -37,7 +37,7 @@
 		$solicitacao->setStatus($s['status']);
         $solicitacaoDAO->inserir($solicitacao);
 
-        header("Location: ../../solicitacao.php?msg=adicionado");
+        header("Location: ../../view/paginaInicial/index.php?msg=solicitado");
     } 
     // se a requisição for editar
     else if(isset($_POST['editar'])){
@@ -47,16 +47,14 @@
       
         $solicitacaoDAO->atualizar($s['id_solicitacao'], $s['status']);
 
-        header("Location: ../../solicitacao.php?msg=editado");
+        header("Location: ../../view/paginaInicial/index.php?msg=solicitado");
     }
     // se a requisição for deletar
-    else if(isset($_GET['deletar'])){
+    else if(isset($_POST['deletar'])){
 
-        $solicitacao->setId_solicitacao($_GET['deletar']);
+        $solicitacaoDAO->deletar($_POST['deletar']);
 
-        $solicitacaoDAO->deletar($solicitacao);
-
-        header("Location: ../../view/paginaInicial/index.php?msg=apagado");
+        header("Location: ../../view/paginaInicial/index.php?msg=sol_apagada");
     }else{
         header("Location: ../../solicitacao.php?msg=erro");
     }

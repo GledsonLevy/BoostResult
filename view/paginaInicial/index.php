@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (!isset($_SESSION['id_user'])) {
+    header('Location: ../login/login.php');
+    exit();
+};
 include("../../app/conexao/Conexao.php");
 include("../../app/dao/UsuarioDAO.php");
 include("../../app/model/Usuario.php");
@@ -65,12 +69,7 @@ if($_SESSION['tipo'] == "aluno"){
 </head>
 
 <body>
-<<<<<<< Updated upstream
-    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
-    <?php
-=======
     <?php 
->>>>>>> Stashed changes
     if ($_SESSION['tipo'] == 'aluno') {
         include('paineis/aluno_paineis.php');
     } else if ($_SESSION['tipo'] == 'personal') {
@@ -196,15 +195,10 @@ if($_SESSION['tipo'] == "aluno"){
     </div>
 
     <?php if ($_SESSION['tipo'] == 'aluno') { ?>
-<<<<<<< Updated upstream
-    <div class="right-sidebar">
-        <div class="Users">
-=======
 
     <div class="right-sidebar">
         <div class="Users">
             
->>>>>>> Stashed changes
             <form method="GET" class="mb-3">
                 <div class="input-group">
                     <input type="text" name="busca" class="form-control" placeholder="Buscar personal..."
@@ -214,13 +208,19 @@ if($_SESSION['tipo'] == "aluno"){
                     </button>
                 </div>
             </form>
+        <?php
+            $busca = isset($_GET['busca']) ? $_GET['busca'] : '';
 
-            <?php
-<<<<<<< Updated upstream
-                foreach ($personais as $personal) {
-                    $personalLog = $personalDao->carregar($personal['id_user']);
-                    $alunoLog = $alunoDao->buscar('id_user', $_SESSION['id_user']);
-                    ?>
+            if (!empty($busca)) {
+                $personais = $usuarioDAO->buscarPersonaisPorNome($busca);
+
+                if (count($personais) === 0) {
+                    echo "<p>Nenhum usuário encontrado.</p>";
+                } else {
+                    foreach ($personais as $personal) {
+                        $personalLog = $personalDao->carregar($personal['id_user']);
+                        $alunoLog = $alunoDao->buscar('id_user', $_SESSION['id_user']);
+                        ?>
                         <div class="user">
                             <img src="../../view/paginaInicial/imagemreader.php?id_user=<?= $personal['id_user'] ?>" 
                                 alt="avatar" width="150" id="imgAvatar"
@@ -234,64 +234,46 @@ if($_SESSION['tipo'] == "aluno"){
                                 <button type="submit" name="cadastrar" value="cadastrar">Solicitar</button>
                             </form>
                         </div>
-                    <?php
-                }
-            ?>
-        </div>
-    </div>
-    <?php } ?>
-=======
-                $busca = isset($_GET['busca']) ? $_GET['busca'] : '';
-
-                if (!empty($busca)) {
-                    $personais = $usuarioDAO->buscarPersonaisPorNome($busca);
-                    foreach ($personais as $personal) {
-                    $personalLog = $personalDao->carregar($personal['id_user']);
-                    $alunoLog = $alunoDao->buscar('id_user', $_SESSION['id_user']);
-                    ?>
-                            <div class="user">
-                                <img src="../../view/paginaInicial/imagemreader.php?id_user=<?= $personal['id_user'] ?>" 
-                                    alt="avatar" width="150" id="imgAvatar"
-                                    onerror="this.onerror=null; this.src='https://www.w3schools.com/howto/img_avatar.png';">
-                                <span><?= $personal['nome'] ?></span>
-
-                                <form action="../../app/controller/SolicitacaoController.php" method="POST">
-                                    <input type="hidden" name="id_personal" value="<?= $personalLog['id_personal'] ?>">
-                                    <input type="hidden" name="id_aluno" value="<?= $alunoLog['id_aluno'] ?>">
-                                    <input type="hidden" name="status" value="solicitada">
-                                    <button type="submit" name="cadastrar" value="cadastrar">Solicitar</button>
-                                </form>
-                            </div>
-                    <?php 
+                        <?php
                     }
+                }
+
+            } else {
+                // Certifique-se de que $personais está definido mesmo sem busca
+                if (!isset($personais)) {
+                    $personais = $usuarioDAO->buscarTodosOsPersonais(); // ou outra função para retornar todos
+                }
+
+                if (count($personais) === 0) {
+                    echo "<p>Nenhum usuário encontrado.</p>";
                 } else {
-                    foreach($personais as $personal){ 
-                            $personalLog = $personalDao->carregar($personal['id_user']);
-                            $alunoLog = $alunoDao->buscar('id_user', $_SESSION['id_user']);
-                            ?>
-                        
-                            <div class="user">
-                                <img src="../../view/paginaInicial/imagemreader.php?id_user=<?php echo $personal['id_user']?>" 
-                                        alt="avatar" width="150" id="imgAvatar"
-                                        onerror="this.onerror=null; this.src='https://www.w3schools.com/howto/img_avatar.png';">
-                                <span><?=$personal['nome']?></span>
-                    
-                                <form action="../../app/controller/SolicitacaoController.php" method="POST">
-                                    <input type="hidden" name="id_personal" value="<?=$personalLog['id_personal'] ?>">
-                                    <input type="hidden" name="id_aluno" value="<?=$alunoLog['id_aluno'] ?>">
-                                    <input type="hidden" name="status" value="solicitada">
-                                    <button type="submit" name="cadastrar" value="cadastrar">Solicitar</button>
-                                </form>
-                            </div>
-                        <?php } 
-                
-                }?>
+                    foreach ($personais as $personal) {
+                        $personalLog = $personalDao->carregar($personal['id_user']);
+                        $alunoLog = $alunoDao->buscar('id_user', $_SESSION['id_user']);
+                        ?>
+                        <div class="user">
+                            <img src="../../view/paginaInicial/imagemreader.php?id_user=<?= $personal['id_user'] ?>" 
+                                alt="avatar" width="150" id="imgAvatar"
+                                onerror="this.onerror=null; this.src='https://www.w3schools.com/howto/img_avatar.png';">
+                            <span><?= $personal['nome'] ?></span>
+
+                            <form action="../../app/controller/SolicitacaoController.php" method="POST">
+                                <input type="hidden" name="id_personal" value="<?= $personalLog['id_personal'] ?>">
+                                <input type="hidden" name="id_aluno" value="<?= $alunoLog['id_aluno'] ?>">
+                                <input type="hidden" name="status" value="solicitada">
+                                <button type="submit" name="cadastrar" value="cadastrar">Solicitar</button>
+                            </form>
+                        </div>
+                        <?php
+                    }
+                }
+            }
+            ?>
                 
         </div>
     </div>
 
 <?php } ?>
->>>>>>> Stashed changes
 
     <div class="modal fade" id="modalExemplo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">

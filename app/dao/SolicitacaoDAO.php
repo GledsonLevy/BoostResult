@@ -102,11 +102,11 @@ class SolicitacaoDAO{
 	}
 	
 	//Apaga um elemento da tabela
-	public function deletar(Solicitacao $solicitacao){
+	public function deletar($id_solicitacao){
         try {
 			$sql = 'DELETE FROM solicitacao WHERE id_solicitacao = :chave';
 			$consulta = Conexao::getConexao()->prepare($sql);
-			$consulta->bindValue(":chave",$solicitacao->getid_solicitacao());
+			$consulta->bindValue(":chave",$id_solicitacao);
 			$consulta->execute();
         } catch (Exception $e) {
             print "Erro ao deletar Solicitacao <br>" . $e . '<br>';

@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    document.querySelector(".interacao-input")?.addEventListener("submit", function (e) {
+    document.querySelector(".chat-input")?.addEventListener("submit", function (e) {
         e.preventDefault();
         const form = e.target;
         const mensagem = form.mensagem.value.trim();

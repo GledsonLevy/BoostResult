@@ -1,12 +1,11 @@
 <div class="solicitacao-panel" id="solicitacao-panel">
     <div class="solicitacao-header d-flex justify-content-between align-items-center">
-        <h4 class="mb-0">Solicitações</h4>
+        <h3 class="mb-0">Solicitações</h3>
         <button class="close-btn" id="close-solicitacao-btn">&times;</button>
     </div>
 
     <div class="solicitacao-body p-3">
         <?php if (isset($solicitacoesRecebidas) && !empty($solicitacoesRecebidas)) { ?>
-            <h5 class="mb-3 text-primary">Solicitações Recebidas</h5>
             <?php foreach($solicitacoesRecebidas as $sol){ 
                 $personalLog = $personalDao->carregarPorId($sol['id_personal']);
                 $userPersonal = $usuarioDAO->carregar($personalLog['id_user']);
@@ -15,11 +14,10 @@
             <div class="card mb-3 shadow-sm">
                 <div class="card-body">
                     <h6 class="card-title mb-1"><?= $nomePersonal ?></h6>
-                    <p class="card-text text-muted mb-2">Status: <strong><?= $sol['status'] ?></strong></p>
+                    <p class="card-text text-light mb-2">Status: <strong><?= $sol['status'] ?></strong></p>
                     <form action="../../app/controller/SolicitacaoController.php" method="POST" class="d-flex justify-content-end">
-                        <input type="hidden" name="id_solicitacao" value="<?= $sol['id_solicitacao'] ?>">
-                        <input type="hidden" name="status" value="ativa">
-                        <button class="btn btn-success btn-sm" type="submit" name="editar" value="editar">Aceitar</button>
+                        <input type="hidden" name="deletar" value="<?= $sol['id_solicitacao'] ?>">
+                        <button class="btn btn-danger btn-sm" type="submit">Cancelar</button>
                     </form>
                 </div>
             </div>
@@ -32,7 +30,7 @@
 
 <div class="chats-panel offcanvas-panel card p-4 shadow-lg" id="chats-panel" style="max-width: 600px;">
     <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
-        <h3 class="mb-0 fw-bold text-primary">Bate-papo</h3>
+        <h3 class="mb-0 fw-bold">Bate-papo</h3>
         <button class="btn-close" id="close-chats-btn" aria-label="Fechar"></button>
     </div>
     <div class="row g-4">
@@ -53,7 +51,7 @@
                             >
                             <h5 class="card-title mb-0 flex-grow-1"><?= htmlspecialchars($personal['nome']) ?></h5>
                             <button 
-                                class="btn btn-primary btn-open-chats rounded-circle d-flex align-items-center justify-content-center" 
+                                class="btn btn-secondary btn-open-chats rounded-circle d-flex align-items-center justify-content-center" 
                                 title="Iniciar conversa"
                                 style="width: 48px; height: 48px; padding: 0;"
                                 data-id-solicitacao="<?= $solicitacaoPersonal['id_solicitacao'] ?>" 
@@ -75,7 +73,7 @@
 
 <div class="personais-panel offcanvas-panel card p-4 shadow-lg" id="personais-panel" style="max-width: 600px;">
     <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
-        <h3 class="mb-0 fw-bold text-primary">Meus Personais</h3>
+        <h3 class="mb-0 fw-bold">Meus Personais</h3>
         <button class="btn-close" id="close-personais-btn" aria-label="Fechar"></button>
     </div>
     <div class="row g-4">
