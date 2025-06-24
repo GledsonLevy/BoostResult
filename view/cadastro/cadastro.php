@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>Cadastro</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" href="../../imagens/LOGO.png" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="css/muli-font.css">
     <link rel="stylesheet" type="text/css"
         href="fonts/material-design-iconic-font/css/material-design-iconic-font.min.css">
