@@ -373,9 +373,6 @@ if($_SESSION['tipo'] == "aluno"){
             <form action="../../app/controller/imagem_usuarioController.php" method="POST" enctype="multipart/form-data">
                 <label for="fileUpload">
                     <div class="cover">
-                        <img src="https://img.freepik.com/vetores-gratis/fundo-de-tecnologia-brilhante-realista_52683-74130.jpg?semt=ais_hybrid&w=740"
-                            alt="Clique para enviar uma imagem" width="100vw" id="imgCover">
-                        <span class="emoji"><img src="../../imagens/icongaleria.png" alt=""></span>
                     </div>
                 </label>
                 <input type="file" name="foto" accept="image/*" style="display:none;"
