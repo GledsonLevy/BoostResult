@@ -178,6 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('chats-panel').classList.remove('open');
     });
 
+
     // Event Listeners - Formulários
     document.querySelectorAll(".arquivo-form").forEach(form => {
         const inputFile = form.querySelector(".arquivo-input");
