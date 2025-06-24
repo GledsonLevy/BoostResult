@@ -34,19 +34,19 @@ class UsuarioDAO
 		}
 	}
 
-	//Lista todos os elementos da tabela listando ordenados por uma coluna específica
-	public function listarTodosOrgenandoPor($coluna)
+	public function buscarPersonaisPorNome($nome)
 	{
 		try {
-			$sql = 'SELECT * FROM usuario ORDER BY ' . $coluna;
+			$sql = "SELECT * FROM usuario WHERE tipo = 'personal' AND nome LIKE :nome ORDER BY nome";
 			$consulta = Conexao::getConexao()->prepare($sql);
+			$consulta->bindValue(':nome', "%$nome%", PDO::PARAM_STR);
 			$consulta->execute();
-			return ($consulta->fetchAll(PDO::FETCH_ASSOC));
+			return $consulta->fetchAll(PDO::FETCH_ASSOC);
 		} catch (Exception $e) {
-			print "Erro ao listar Usuarios <br>" . $e . '<br>';
+			print "Erro ao buscar usuários por nome: <br>" . $e . "<br>";
+			return [];
 		}
 	}
-
 
 	//Busca elementos da tabela
 	public function buscar($coluna, $valor)
