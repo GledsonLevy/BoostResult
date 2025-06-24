@@ -196,4 +196,38 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
+    
 });
+
+  function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.classList.toggle('open');
+  }
+
+function updateUnderline() {
+  const activeBtn = document.querySelector('.button-container .Underline');
+  const underline = document.getElementById('underline-indicator');
+  
+  if (activeBtn && underline) {
+    const btnRect = activeBtn.getBoundingClientRect();
+    const containerRect = activeBtn.parentElement.getBoundingClientRect();
+    
+    underline.style.width = `${btnRect.width}px`;
+    underline.style.left = `${btnRect.left - containerRect.left}px`;
+  }
+}
+
+// Reposiciona ao clicar em qualquer botão
+document.querySelectorAll('.button-container button').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    document.querySelectorAll('.button-container button').forEach(b => b.classList.remove('Underline'));
+    e.target.classList.add('Underline');
+    updateUnderline();
+  });
+});
+
+// Reposiciona quando redimensiona a janela
+window.addEventListener('resize', updateUnderline);
+
+// Inicializa na primeira carga
+window.addEventListener('load', updateUnderline);

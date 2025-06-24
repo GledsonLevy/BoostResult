@@ -9,9 +9,11 @@
 body {
     display: flex;
     background-color: #121212;
-    cursor: url('https://cdn.custom-cursor.com/packs/1863/pack2490.png'), auto;
     font-family: Arial, sans-serif;
-    padding: 20px;
+    padding: 0;
+    margin: 0;
+    flex-direction: row;
+    min-width: 0;
 }
 
 h1 {
@@ -106,9 +108,16 @@ button:focus {
 
 .sidebar {
     width: 250px;
+    min-width: 250px;
+    /* Evita que seja encolhida */
+    height: 100vh;
     padding: 20px;
     border-right: 1px solid #e1e8ed;
-    height: 100vh;
+    background-color: #1e1e1e;
+    color: #FAFAFA;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    /* <- ESSENCIAL para não ser empurrada */
 }
 
 .sidebar h2 {
@@ -130,6 +139,19 @@ button:focus {
 .main {
     flex: 1;
     padding: 20px;
+    min-width: 0;
+    /* <-- Adicione isso para prevenir overflow */
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.main .profile-info h1 {
+
+    color: #FAFAFA;
+}
+
+.main .profile-info p {
+    color: #dee2e6;
 }
 
 .profile {
@@ -138,6 +160,10 @@ button:focus {
     border-radius: 8px;
     overflow: hidden;
     margin-bottom: 20px;
+    width: 100%;
+    /* <- Isso evita que ele tente ocupar mais do que o espaço permitido */
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .cover {
@@ -204,6 +230,8 @@ button:focus {
 }
 
 .Users .user {
+    flex-shrink: 0;
+    gap: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -212,7 +240,10 @@ button:focus {
 
 .Users .user img {
     width: 60px;
+    height: 60px;
+    object-fit: cover;
     border-radius: 50%;
+    flex-shrink: 0;
 }
 
 .Users .user button {
@@ -224,7 +255,7 @@ button:focus {
 }
 
 .tweet-btn {
-    background: #1da1f2;
+    background: #269126;
     color: #FAFAFA;
     border: none;
     padding: 10px 20px;
@@ -272,8 +303,8 @@ button:focus {
     width: 70px;
     border-radius: 3px;
     border: none;
-    background-color: gray;
-    color: #000;
+    background-color: #269126;
+    color: #FAFAFA;
 }
 
 .button-container {
@@ -298,7 +329,6 @@ button:focus {
     position: absolute;
     bottom: 0;
     height: 3px;
-    background-color: #007bff;
     transition: left 0.3s, width 0.3s;
 }
 
@@ -315,8 +345,6 @@ iframe {
 
 .Underline {
     font-weight: bold;
-    color: #007bff;
-    /* exemplo */
 }
 
 #nomeConta,
@@ -460,7 +488,7 @@ iframe {
 
 .chat-header {
     padding: 15px 20px;
-    background-color: #0d6efd;
+    background-color: #269126;
     color: white;
     font-weight: bold;
     font-size: 1.25rem;
@@ -714,7 +742,7 @@ iframe {
 }
 
 .solicitacao-header {
-    background-color: #0d6efd;
+    background-color: #269126;
     color: white;
     padding: 15px 20px;
     font-weight: bold;
@@ -817,57 +845,57 @@ iframe {
     /* Garante que o padding seja incluído na altura total */
 }
 
- .sidebar,
- .profile,
- .Users,
- .mensagens-panel,
- .modal-content {
+.sidebar,
+.profile,
+.Users,
+.mensagens-panel,
+.modal-content {
     background-color: #1e1e1e;
     color: #FAFAFA;
     border-color: #333;
 }
 
- .search-input {
+.search-input {
     background-color: #333;
     color: #FAFAFA;
     border-color: #555;
 }
 
- .search-icon {
+.search-icon {
     fill: #ccc;
 }
 
- .tweet-btn,
- .Users .user button {
+.tweet-btn,
+.Users .user button {
     background-color: #2e7d32;
 }
 
- #sair {
-    background-color: #e3e3e3;
 
-}
-
- #button3 {
+#button3 {
     background-color: #1e1e1e;
     color: #FAFAFA;
 }
 
- #button2 {
+#button2 {
     background-color: #1e1e1e;
     color: #FAFAFA;
 }
 
- #button1 {
+#button1 {
     background-color: #1e1e1e;
     color: #FAFAFA;
 }
 
- #botaoBio {
-    background-color: #1c1c1c;
+#botaoBio {
+    padding: 10px;
+    width: 150px;
+    border-radius: 3px;
+    border: none;
+    background-color: #3a3a3a;
     color: #FAFAFA;
 }
 
- #underline-indicator {
+#underline-indicator {
     background-color: #FAFAFA;
 }
 
@@ -921,7 +949,7 @@ iframe {
 .interacao-input button {
     margin-left: 10px;
     padding: 10px 20px;
-    background-color: #1976d2;
+    background-color: #269126;
     color: white;
     border: none;
     border-radius: 8px;
@@ -930,9 +958,316 @@ iframe {
 }
 
 .interacao-input button:hover {
-    background-color: #1565c0;
+    background-color: #269126;
 }
 
 .button-container button.Underline {
     font-weight: bold;
+}
+
+
+
+/* Responsividade ampla para tablets e celulares */
+@media (max-width: 1024px) {
+    body {
+        flex-direction: row;
+        padding: 0;
+    }
+
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        width: 250px;
+        background-color: #1e1e1e;
+        z-index: 1000;
+        overflow-y: auto;
+    }
+
+    .main {
+        width: 100%;
+        margin-left: 0;
+        padding: 20px;
+
+    }
+
+    .button-container {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .button-container button {
+        flex: 1 1 45%;
+        min-width: 120px;
+    }
+
+    .tweet-btn {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .Users .user {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .Users .user img {
+        width: 40px;
+    }
+
+    .Users .user button {
+        width: 100%;
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .search-container {
+        max-width: 100%;
+    }
+
+    .search-input {
+        font-size: 14px;
+        padding: 10px 40px 10px 12px;
+    }
+
+    .cover {
+        height: 100px;
+    }
+
+    .avatar {
+        width: 60px;
+        height: 60px;
+    }
+
+    .profile-info h1 {
+        font-size: 1.2em;
+    }
+
+    .profile-info p {
+        font-size: 0.9em;
+    }
+
+    iframe {
+        height: 60vh;
+    }
+
+
+    @media (max-width: 320px) {
+
+        .chat-panel,
+        .interacao-panel,
+        .alunos-panel,
+        .chats-panel,
+        .mensagens-panel,
+        .personais-panel {
+            width: 100%;
+            height: 100vh;
+            top: 0;
+            left: 0 !important;
+            border-radius: 0;
+        }
+
+        .solicitacao-panel {
+            width: 40%;
+            left: 30%;
+            border-radius: 0 12px 12px 0;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .solicitacao-panel {
+            width: 90%;
+            left: 5%;
+            border-radius: 12px;
+        }
+    }
+
+    .chat-input {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .chat-input input,
+    .chat-input button {
+        width: 100%;
+        margin: 5px 0;
+        font-size: 1em;
+    }
+
+    .mensagem,
+    .mensagem-enviada,
+    .mensagem-recebida {
+        font-size: 0.9rem;
+        padding: 8px 10px;
+    }
+
+    .interacao-conteudo .mensagem {
+        font-size: 0.9rem;
+        padding: 8px 10px;
+    }
+
+    #descricao {
+        width: 100%;
+        height: 150px;
+        font-size: 14px;
+    }
+}
+
+/* Extra responsividade para celulares pequenos */
+@media (max-width: 600px) {
+    .button-container button {
+        flex: 1 1 100%;
+    }
+
+    .chat-header,
+    .solicitacao-header,
+    .interacao-header {
+        font-size: 1rem;
+        padding: 10px;
+    }
+
+    .close-btn {
+        font-size: 1.2rem;
+    }
+
+    .profile-info h1 {
+        font-size: 1em;
+    }
+
+    .Users h3,
+    .sidebar h2 {
+        font-size: 1rem;
+    }
+
+    .nome {
+        font-size: 1rem;
+    }
+
+    .messageButton img {
+        width: 40px;
+    }
+
+    .tweet-btn {
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    .search-input {
+        padding: 8px 35px 8px 10px;
+        font-size: 14px;
+    }
+
+    .cover img,
+    .avatar img {
+        border-radius: 8px;
+    }
+
+    .interacao-input input,
+    .interacao-input button {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
+
+
+/* Botão só aparece em telas pequenas */
+.menu-toggle {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1100;
+    background-color: #1e1e1e;
+    color: #fff;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+/* Sidebar padrão em desktop */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    background-color: #1e1e1e;
+    color: #FAFAFA;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+}
+
+/* Oculta sidebar em telas pequenas (inicialmente) */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .main {
+        margin-left: 0;
+        /* não deixa espaço fixo */
+    }
+}
+
+/* Ajuste no main em telas grandes */
+@media (min-width: 769px) {
+    .main {
+        margin-left: 250px;
+    }
+}
+
+.remover-personal-btn {
+    display: none;
+}
+
+/* Aparece só em telas menores que 768px */
+@media (max-width: 767px) {
+    .remover-personal-btn {
+        display: inline-block;
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .personal:hover .remover-personal-btn {
+        display: inline-block;
+    }
+}
+
+@media (max-width: 1024px) {
+    .Users .user {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .Users .user img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .Users .user .nome {
+        font-size: 0.95rem;
+    }
+
+    .Users .user button {
+        width: 100%;
+        margin-top: 8px;
+    }
 }

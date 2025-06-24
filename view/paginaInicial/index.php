@@ -62,6 +62,7 @@ if($_SESSION['tipo'] == "aluno"){
 </head>
 
 <body>
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
     <?php if ($_SESSION['tipo'] == 'aluno') { ?>
         <div class="solicitacao-panel" id="solicitacao-panel">
             <div class="solicitacao-header d-flex justify-content-between align-items-center">
@@ -98,7 +99,7 @@ if($_SESSION['tipo'] == "aluno"){
 
         <div class="chats-panel offcanvas-panel card p-4 shadow-lg" id="chats-panel" style="max-width: 600px;">
             <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
-                <h3 class="mb-0 fw-bold text-primary">Bate-papo</h3>
+                <h3 class="mb-0 fw-bold text-primary" id="batpapo" style="color: #269126 !important;">Bate-papo</h3>
                 <button class="btn-close" id="close-chats-btn" aria-label="Fechar"></button>
             </div>
             <div class="row g-4">
@@ -114,12 +115,12 @@ if($_SESSION['tipo'] == "aluno"){
                                         src="../../view/paginaInicial/imagemreader.php?id_user=<?= $personal['id_user'] ?>" 
                                         alt="avatar" 
                                         class="rounded-circle" 
-                                        style="width: 64px; height: 64px; object-fit: cover; border: 2px solid #0d6efd;"
+                                        style="width: 64px; height: 64px; object-fit: cover;"
                                         onerror="this.onerror=null; this.src='https://www.w3schools.com/howto/img_avatar.png';"
                                     >
                                     <h5 class="card-title mb-0 flex-grow-1"><?= htmlspecialchars($personal['nome']) ?></h5>
                                     <button 
-                                        class="btn btn-primary btn-open-chats rounded-circle d-flex align-items-center justify-content-center" 
+                                        class="btn btn-primary btn-open-chats rounded-circle d-flex align-items-center justify-content-center" style="background-color: #269126 !important;" 
                                         title="Iniciar conversa"
                                         style="width: 48px; height: 48px; padding: 0;"
                                         data-id-solicitacao="<?= $solicitacaoPersonal['id_solicitacao'] ?>" 
@@ -158,13 +159,13 @@ if($_SESSION['tipo'] == "aluno"){
                                         src="../../view/paginaInicial/imagemreader.php?id_user=<?= $personal['id_user'] ?>" 
                                         alt="avatar" 
                                         class="rounded-circle" 
-                                        style="width: 64px; height: 64px; object-fit: cover; border: 2px solid #0d6efd;"
+                                        style="width: 64px; height: 64px; object-fit: cover; border: 2px solid #269126;"
                                         onerror="this.onerror=null; this.src='https://www.w3schools.com/howto/img_avatar.png';"
                                     >
                                     <h5 class="card-title mb-0 flex-grow-1"><?= htmlspecialchars($personal['nome']) ?></h5>
                                     <form action="../../app/controller/SolicitacaoController.php" method="GET">
                                         <input type="hidden" name="deletar" value="<?= $solicitacaoPersonal['id_solicitacao'] ?>">
-                                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm" id="remover-personal-btn">
                                             <i class="bi bi-trash"></i> Remover Personal
                                         </button>
                                     </form>
@@ -236,7 +237,7 @@ if($_SESSION['tipo'] == "aluno"){
                                     src="../../view/paginaInicial/imagemreader.php?id_user=<?= $aluno['id_user'] ?>" 
                                     alt="avatar" 
                                     class="rounded-circle" 
-                                    style="width: 64px; height: 64px; object-fit: cover; border: 2px solid #0d6efd;"
+                                    style="width: 64px; height: 64px; object-fit: cover; border: 2px solid #269126;"
                                     onerror="this.onerror=null; this.src='https://www.w3schools.com/howto/img_avatar.png';"
                                 >
                                 <h5 class="card-title mb-0 flex-grow-1"><?= htmlspecialchars($aluno['nome']) ?></h5>
@@ -299,7 +300,7 @@ if($_SESSION['tipo'] == "aluno"){
                                     src="../../view/paginaInicial/imagemreader.php?id_user=<?= $aluno['id_user'] ?>" 
                                     alt="avatar" 
                                     class="rounded-circle" 
-                                    style="width: 64px; height: 64px; object-fit: cover; border: 2px solid #0d6efd;"
+                                    style="width: 64px; height: 64px; object-fit: cover; border: 2px solid #269126;"
                                     onerror="this.onerror=null; this.src='https://www.w3schools.com/howto/img_avatar.png';"
                                 >
                                 <h5 class="card-title mb-0 flex-grow-1"><?= htmlspecialchars($aluno['nome']) ?></h5>
@@ -455,11 +456,6 @@ if($_SESSION['tipo'] == "aluno"){
             <br>
             <h3>Personais Em Destaque</h3>
             <br>
-            <div class="user">
-                <img src="https://pbs.twimg.com/profile_images/875391618634977280/-UYcaL0-_400x400.jpg" alt="">
-                <span>LUAN PINTO</span>
-                <button>Perfil</button>
-            </div>
             <?php foreach($personais as $personal){ 
                         $personalLog = $personalDao->carregar($personal['id_user']);
                         $alunoLog = $alunoDao->buscar('id_user', $_SESSION['id_user']);
@@ -493,16 +489,14 @@ if($_SESSION['tipo'] == "aluno"){
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Mudar Descrição</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
                     <form action="../../app/controller/UsuarioController.php" method="POST">
                         <label for="descricao">Descrição</label><br>
                         <textarea id="descricao" name="descricao" autofocus></textarea><br><br>
                         <button type="submit" name="acao" value="ATUALIZAR"
-                            class="secondary btn-sm border-0">Atualizar</button>
+                            class="btn btn-secondary">Atualizar</button>
                     </form>
                 </div>
 
